@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://bg1i4aawal5uu"]
+[gd_scene format=3 uid="uid://cpq5ribtni47t"]
 
-[ext_resource type="Texture2D" uid="uid://cfw148rt520ht" path="res://assets/restart icon.png" id="1_8r5dm"]
+[ext_resource type="Texture2D" uid="uid://cvoxl4afbus40" path="res://assets/restart icon v2.png" id="1_j072i"]
 
 [sub_resource type="GDScript" id="GDScript_eaw6l"]
 resource_name = "restart"
@@ -19,7 +19,8 @@ offset_top = 19.0
 offset_right = 1577.0
 offset_bottom = 539.0
 scale = Vector2(0.15, 0.15)
-icon = ExtResource("1_8r5dm")
+icon = ExtResource("1_j072i")
 flat = true
 icon_alignment = 1
+expand_icon = true
 script = SubResource("GDScript_eaw6l")
