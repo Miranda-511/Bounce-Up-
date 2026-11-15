@@ -4,10 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://bdaevce65k24h" path="res://escenas/background.tscn" id="2_26pgj"]
 [ext_resource type="PackedScene" uid="uid://pj6e4xubag5r" path="res://escenas/platform.tscn" id="3_26pgj"]
 [ext_resource type="PackedScene" uid="uid://bqijyx2j6xcjs" path="res://escenas/floor.tscn" id="3_dkga6"]
-[ext_resource type="PackedScene" uid="uid://bg1i4aawal5uu" path="res://escenas/button.tscn" id="5_dkga6"]
 [ext_resource type="PackedScene" uid="uid://bna3n2o36em0c" path="res://escenas/spike.tscn" id="5_o8odp"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="6_a8p2b"]
-[ext_resource type="Texture2D" uid="uid://cvoxl4afbus40" path="res://assets/restart icon v2.png" id="7_dg7ii"]
+[ext_resource type="PackedScene" uid="uid://cpq5ribtni47t" path="res://escenas/restartbutton.tscn" id="6_dg7ii"]
 [ext_resource type="PackedScene" uid="uid://c2ptj3b2qinp8" path="res://sound/.tscn" id="8_68mvh"]
 [ext_resource type="Texture2D" uid="uid://bcun5uvdwsbwx" path="res://assets/red-flag-warning-symbol-red-flag-emoji-red-flags-in-relationships-png.webp" id="8_lyxkq"]
 [ext_resource type="Texture2D" uid="uid://du5mijpinsbkv" path="res://assets/cloud.webp" id="10_woaio"]
@@ -140,14 +139,7 @@ drag_vertical_enabled = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1286689389]
 
-[node name="restart" parent="CanvasLayer" unique_id=149260693 instance=ExtResource("5_dkga6")]
-offset_left = 1027.0
-offset_top = 26.0
-offset_right = 1516.2769
-offset_bottom = 554.42267
-scale = Vector2(0.20642696, 0.17410307)
-icon = ExtResource("7_dg7ii")
-expand_icon = true
+[node name="restartbutton" parent="CanvasLayer" unique_id=149260693 instance=ExtResource("6_dg7ii")]
 
 [node name="ScoreLabel" type="Label" parent="CanvasLayer" unique_id=1491639338]
 offset_left = 804.0
