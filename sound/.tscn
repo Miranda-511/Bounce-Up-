@@ -4,4 +4,3 @@
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" unique_id=27197698]
 stream = ExtResource("1_wr5ko")
-autoplay = true

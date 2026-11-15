@@ -7,9 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bna3n2o36em0c" path="res://escenas/spike.tscn" id="5_o8odp"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="6_a8p2b"]
 [ext_resource type="PackedScene" uid="uid://cpq5ribtni47t" path="res://escenas/restartbutton.tscn" id="6_dg7ii"]
-[ext_resource type="PackedScene" uid="uid://c2ptj3b2qinp8" path="res://sound/.tscn" id="8_68mvh"]
-[ext_resource type="Texture2D" uid="uid://bcun5uvdwsbwx" path="res://assets/red-flag-warning-symbol-red-flag-emoji-red-flags-in-relationships-png.webp" id="8_lyxkq"]
-[ext_resource type="Texture2D" uid="uid://du5mijpinsbkv" path="res://assets/cloud.webp" id="10_woaio"]
+[ext_resource type="AudioStream" uid="uid://c847wwhkogxee" path="res://sound/the_mountain-retro-game-593063.mp3" id="10_dg7ii"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_kkt6c"]
 font = ExtResource("6_a8p2b")
@@ -26,8 +24,6 @@ outline_size = 10
 outline_color = Color(0, 1, 1, 1)
 
 [node name="main" type="Node2D" unique_id=1156450642]
-
-[node name="background" parent="." unique_id=33009793 instance=ExtResource("2_26pgj")]
 
 [node name="floor" parent="." unique_id=1799524660 instance=ExtResource("3_dkga6")]
 
@@ -92,7 +88,7 @@ position = Vector2(-182, -2181)
 position = Vector2(-681, -2292)
 
 [node name="platform21" parent="." unique_id=990447490 instance=ExtResource("3_26pgj")]
-position = Vector2(-379, -2482)
+position = Vector2(-329, -2443)
 
 [node name="platform17" parent="." unique_id=1574146186 instance=ExtResource("3_26pgj")]
 position = Vector2(-724, -1798)
@@ -161,24 +157,8 @@ label_settings = SubResource("LabelSettings_eaw6l")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="goal_flag" type="Sprite2D" parent="CanvasLayer" unique_id=1851517222]
-top_level = true
-position = Vector2(595, -2076)
-scale = Vector2(0.6228571, 0.6614286)
-texture = ExtResource("8_lyxkq")
+[node name="background" parent="." unique_id=33009793 instance=ExtResource("2_26pgj")]
 
-[node name="clouds" type="Sprite2D" parent="CanvasLayer" unique_id=1335049936]
-position = Vector2(277, -2437)
-texture = ExtResource("10_woaio")
-
-[node name="clouds2" type="Sprite2D" parent="CanvasLayer" unique_id=694541932]
-position = Vector2(728, -2605)
-texture = ExtResource("10_woaio")
-flip_h = true
-
-[node name="clouds3" type="Sprite2D" parent="CanvasLayer" unique_id=1271085369]
-position = Vector2(893, -2309)
-texture = ExtResource("10_woaio")
-flip_h = true
-
-[node name="AudioStreamPlayer" parent="." unique_id=27197698 instance=ExtResource("8_68mvh")]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=356976337]
+stream = ExtResource("10_dg7ii")
+autoplay = true
