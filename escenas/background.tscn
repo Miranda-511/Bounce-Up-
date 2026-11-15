@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bdaevce65k24h"]
+
+[node name="background" type="Node2D" unique_id=33009793]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1854455259]
+light_mask = 512
+visibility_layer = 512
+z_index = -4096
+offset_top = -3025.9998
+offset_right = 1150.0
+offset_bottom = -2260.0413
+scale = Vector2(1, 4.8)
+color = Color(0.54430956, 0.83670324, 0.9667843, 1)

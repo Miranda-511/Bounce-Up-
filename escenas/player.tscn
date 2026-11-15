@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://cfsn8nl7xmay2"]
+
+[ext_resource type="Texture2D" uid="uid://doi7qjubu6dsf" path="res://assets/green ball.png" id="1_esbpa"]
+
+[sub_resource type="GDScript" id="GDScript_esbpa"]
+resource_name = "mov"
+script/source = "
+extends CharacterBody2D
+
+const SPEED = 575.0
+const JUMP_VELOCITY = -550.0
+const WRAP_MARGIN = 30.0
+
+const CAMERA_SPEED = 1.0
+const CAMERA_TRIGGER = 260.0
+const FALL_LIMIT = 700.0
+const WIN_SCORE = 250
+
+@onready var camera: Camera2D = $\"../Camera2D\"
+@onready var score_label: Label = $\"../CanvasLayer/ScoreLabel\"
+@onready var win_label: Label = $\"../CanvasLayer/WinLabel\"
+
+var start_y: float
+var highest_y: float
+var won = false
+
+
+func _ready():
+	start_y = global_position.y
+	highest_y = start_y
+	win_label.visible = false
+
+
+func _physics_process(delta: float) -> void:
+
+	if won:
+		return
+
+	# GRAVEDAD
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+	# MOVIMIENTO HORIZONTAL
+	var direction := Input.get_axis(\"ui_left\", \"ui_right\")
+
+	if direction:
+		velocity.x = direction * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+
+	# MOVIMIENTO Y COLISIONES
+	move_and_slide()
+
+	# REBOTE AUTOMÁTICO
+	if is_on_floor() and velocity.y >= 0:
+		velocity.y = JUMP_VELOCITY
+
+	# SCREEN WRAPPING
+	var screen_width = get_viewport_rect().size.x
+
+	if global_position.x < -WRAP_MARGIN:
+		global_position.x = screen_width + WRAP_MARGIN
+
+	elif global_position.x > screen_width + WRAP_MARGIN:
+		global_position.x = -WRAP_MARGIN
+
+	# CÁMARA VERTICAL
+	if global_position.y < camera.global_position.y - CAMERA_TRIGGER:
+		var target_y = global_position.y + CAMERA_TRIGGER
+
+		camera.global_position.y = lerp(
+			camera.global_position.y,
+			target_y,
+			min(CAMERA_SPEED * delta, 1.0)
+		)
+
+	# PUNTUACIÓN
+	if global_position.y < highest_y:
+		highest_y = global_position.y
+
+	var score = int((start_y - highest_y) / 10.0)
+	score_label.text = \"Puntuación: \" + str(max(score, 0))
+
+	# META
+	if score >= WIN_SCORE:
+		won = true
+		velocity = Vector2.ZERO
+		win_label.visible = true
+		return
+
+	# SI EL JUGADOR CAE, REINICIAR
+	if global_position.y > camera.global_position.y + FALL_LIMIT:
+		get_tree().reload_current_scene()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pv7or"]
+radius = 242.7267
+
+[node name="player" type="CharacterBody2D" unique_id=847637617]
+position = Vector2(18, 18)
+script = SubResource("GDScript_esbpa")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1025957690]
+position = Vector2(104.099976, 534.99994)
+scale = Vector2(0.13, 0.13)
+texture = ExtResource("1_esbpa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=773558526]
+position = Vector2(104.645966, 534.99994)
+scale = Vector2(0.15, 0.15)
+shape = SubResource("CircleShape2D_pv7or")

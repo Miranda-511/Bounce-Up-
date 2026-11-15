@@ -1,0 +1,192 @@
+[gd_scene format=3 uid="uid://c25rogsoeh8ge"]
+
+[ext_resource type="PackedScene" uid="uid://cfsn8nl7xmay2" path="res://escenas/player.tscn" id="1_jumxm"]
+[ext_resource type="PackedScene" uid="uid://bdaevce65k24h" path="res://escenas/background.tscn" id="2_26pgj"]
+[ext_resource type="PackedScene" uid="uid://pj6e4xubag5r" path="res://escenas/platform.tscn" id="3_26pgj"]
+[ext_resource type="PackedScene" uid="uid://bqijyx2j6xcjs" path="res://escenas/floor.tscn" id="3_dkga6"]
+[ext_resource type="PackedScene" uid="uid://bg1i4aawal5uu" path="res://escenas/button.tscn" id="5_dkga6"]
+[ext_resource type="PackedScene" uid="uid://bna3n2o36em0c" path="res://escenas/spike.tscn" id="5_o8odp"]
+[ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="6_a8p2b"]
+[ext_resource type="Texture2D" uid="uid://cvoxl4afbus40" path="res://assets/restart icon v2.png" id="7_dg7ii"]
+[ext_resource type="PackedScene" uid="uid://c2ptj3b2qinp8" path="res://sound/.tscn" id="8_68mvh"]
+[ext_resource type="Texture2D" uid="uid://bcun5uvdwsbwx" path="res://assets/red-flag-warning-symbol-red-flag-emoji-red-flags-in-relationships-png.webp" id="8_lyxkq"]
+[ext_resource type="Texture2D" uid="uid://du5mijpinsbkv" path="res://assets/cloud.webp" id="10_woaio"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kkt6c"]
+font = ExtResource("6_a8p2b")
+font_size = 27
+font_color = Color(0, 0, 0, 1)
+outline_size = 5
+outline_color = Color(1, 1, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_eaw6l"]
+font = ExtResource("6_a8p2b")
+font_size = 100
+font_color = Color(0, 0, 0, 1)
+outline_size = 10
+outline_color = Color(0, 1, 1, 1)
+
+[node name="main" type="Node2D" unique_id=1156450642]
+
+[node name="background" parent="." unique_id=33009793 instance=ExtResource("2_26pgj")]
+
+[node name="floor" parent="." unique_id=1799524660 instance=ExtResource("3_dkga6")]
+
+[node name="player" parent="." unique_id=847637617 instance=ExtResource("1_jumxm")]
+position = Vector2(-19, -74)
+
+[node name="platform" parent="." unique_id=1443791692 instance=ExtResource("3_26pgj")]
+position = Vector2(-57, -37)
+
+[node name="platform2" parent="." unique_id=2063515316 instance=ExtResource("3_26pgj")]
+position = Vector2(-565, -148)
+
+[node name="platform3" parent="." unique_id=1125278581 instance=ExtResource("3_26pgj")]
+position = Vector2(-82, -310)
+
+[node name="platform4" parent="." unique_id=787380729 instance=ExtResource("3_26pgj")]
+position = Vector2(-650, -403)
+
+[node name="platform5" parent="." unique_id=666727352 instance=ExtResource("3_26pgj")]
+position = Vector2(-182, -537)
+
+[node name="platform6" parent="." unique_id=817258180 instance=ExtResource("3_26pgj")]
+position = Vector2(213, -692)
+
+[node name="platform7" parent="." unique_id=2019567367 instance=ExtResource("3_26pgj")]
+position = Vector2(-273, -829)
+
+[node name="platform8" parent="." unique_id=86033939 instance=ExtResource("3_26pgj")]
+position = Vector2(-724, -967)
+
+[node name="platform9" parent="." unique_id=545213942 instance=ExtResource("3_26pgj")]
+position = Vector2(-234, -1124)
+
+[node name="platform10" parent="." unique_id=66334854 instance=ExtResource("3_26pgj")]
+position = Vector2(208, -1271)
+
+[node name="platform11" parent="." unique_id=305094898 instance=ExtResource("3_26pgj")]
+position = Vector2(-304, -1403)
+
+[node name="platform12" parent="." unique_id=1527586800 instance=ExtResource("3_26pgj")]
+position = Vector2(-724, -1564)
+
+[node name="platform13" parent="." unique_id=1038650899 instance=ExtResource("3_26pgj")]
+position = Vector2(-724, -1564)
+
+[node name="platform14" parent="." unique_id=633200104 instance=ExtResource("3_26pgj")]
+position = Vector2(-226, -1665)
+
+[node name="platform15" parent="." unique_id=283470994 instance=ExtResource("3_26pgj")]
+position = Vector2(164, -1831)
+
+[node name="platform16" parent="." unique_id=610574630 instance=ExtResource("3_26pgj")]
+position = Vector2(-273, -1942)
+
+[node name="platform18" parent="." unique_id=261621933 instance=ExtResource("3_26pgj")]
+position = Vector2(-711, -2066)
+
+[node name="platform19" parent="." unique_id=2110527866 instance=ExtResource("3_26pgj")]
+position = Vector2(-182, -2181)
+
+[node name="platform20" parent="." unique_id=108965243 instance=ExtResource("3_26pgj")]
+position = Vector2(-681, -2292)
+
+[node name="platform21" parent="." unique_id=990447490 instance=ExtResource("3_26pgj")]
+position = Vector2(-379, -2482)
+
+[node name="platform17" parent="." unique_id=1574146186 instance=ExtResource("3_26pgj")]
+position = Vector2(-724, -1798)
+
+[node name="spike" parent="." unique_id=1637549672 instance=ExtResource("5_o8odp")]
+position = Vector2(212.99998, -69)
+scale = Vector2(0.5999988, 0.6000006)
+
+[node name="spike2" parent="." unique_id=1986254904 instance=ExtResource("5_o8odp")]
+position = Vector2(463.99997, -494.99997)
+scale = Vector2(0.5999988, 0.6000006)
+
+[node name="spike3" parent="." unique_id=1086112307 instance=ExtResource("5_o8odp")]
+position = Vector2(-142, -634)
+scale = Vector2(0.5999988, 0.6000006)
+
+[node name="spike4" parent="." unique_id=10469395 instance=ExtResource("5_o8odp")]
+position = Vector2(901, -936.99994)
+scale = Vector2(0.5999988, 0.6000006)
+
+[node name="spike5" parent="." unique_id=2059797688 instance=ExtResource("5_o8odp")]
+position = Vector2(-27.999994, -1230)
+scale = Vector2(0.5999988, 0.6000006)
+
+[node name="spike6" parent="." unique_id=1692214863 instance=ExtResource("5_o8odp")]
+position = Vector2(894, -1498)
+scale = Vector2(0.5999988, 0.6000006)
+
+[node name="spike7" parent="." unique_id=868861543 instance=ExtResource("5_o8odp")]
+position = Vector2(44.999996, -1731.9999)
+scale = Vector2(0.5999988, 0.6000006)
+
+[node name="spike8" parent="." unique_id=1975169179 instance=ExtResource("5_o8odp")]
+position = Vector2(569.99994, -1847.9999)
+scale = Vector2(0.5999988, 0.6000006)
+
+[node name="spike10" parent="." unique_id=2038924450 instance=ExtResource("5_o8odp")]
+position = Vector2(548, -1607.9999)
+scale = Vector2(0.5999988, 0.6000006)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=846533705]
+position = Vector2(576, 333)
+drag_vertical_enabled = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1286689389]
+
+[node name="restart" parent="CanvasLayer" unique_id=149260693 instance=ExtResource("5_dkga6")]
+offset_left = 1027.0
+offset_top = 26.0
+offset_right = 1516.2769
+offset_bottom = 554.42267
+scale = Vector2(0.20642696, 0.17410307)
+icon = ExtResource("7_dg7ii")
+expand_icon = true
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer" unique_id=1491639338]
+offset_left = 804.0
+offset_top = 59.0
+offset_right = 993.0
+offset_bottom = 87.0
+text = "Puntuación: 0"
+label_settings = SubResource("LabelSettings_kkt6c")
+horizontal_alignment = 1
+
+[node name="WinLabel" type="Label" parent="CanvasLayer" unique_id=390012771]
+visible = false
+offset_left = 367.0
+offset_top = 253.0
+offset_right = 804.0
+offset_bottom = 353.0
+text = "¡GANASTE!"
+label_settings = SubResource("LabelSettings_eaw6l")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="goal_flag" type="Sprite2D" parent="CanvasLayer" unique_id=1851517222]
+top_level = true
+position = Vector2(595, -2076)
+scale = Vector2(0.6228571, 0.6614286)
+texture = ExtResource("8_lyxkq")
+
+[node name="clouds" type="Sprite2D" parent="CanvasLayer" unique_id=1335049936]
+position = Vector2(277, -2437)
+texture = ExtResource("10_woaio")
+
+[node name="clouds2" type="Sprite2D" parent="CanvasLayer" unique_id=694541932]
+position = Vector2(728, -2605)
+texture = ExtResource("10_woaio")
+flip_h = true
+
+[node name="clouds3" type="Sprite2D" parent="CanvasLayer" unique_id=1271085369]
+position = Vector2(893, -2309)
+texture = ExtResource("10_woaio")
+flip_h = true
+
+[node name="AudioStreamPlayer" parent="." unique_id=27197698 instance=ExtResource("8_68mvh")]

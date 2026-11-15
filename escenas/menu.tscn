@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://jnr0lyh5wf73"]
+
+[ext_resource type="PackedScene" uid="uid://bdaevce65k24h" path="res://escenas/background.tscn" id="1_d7r87"]
+[ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="2_2owot"]
+
+[sub_resource type="GDScript" id="GDScript_pv7or"]
+resource_name = "title screen"
+script/source = "extends Control
+
+@onready var play = $play
+@onready var instructions = $instructions
+@onready var quit = $quit
+
+func _ready():
+	play.pressed.connect(_on_play_pressed)
+	instructions.pressed.connect(_on_instructions_pressed)
+	quit.pressed.connect(_on_quit_pressed)
+
+func _on_play_pressed():
+	get_tree().change_scene_to_file(\"res://escenas/main.tscn\")
+
+func _on_instructions_pressed():
+	get_tree().change_scene_to_file(\"res://escenas/instructions.tscn\")
+
+func _on_quit_pressed():
+	get_tree().quit()
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_eaw6l"]
+font = ExtResource("2_2owot")
+font_size = 150
+font_color = Color(0, 0, 0, 1)
+outline_size = 20
+outline_color = Color(0, 1, 0, 1)
+
+[node name="menu" type="Control" unique_id=234452494]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_pv7or")
+
+[node name="background" parent="." unique_id=33009793 instance=ExtResource("1_d7r87")]
+
+[node name="title" type="Label" parent="." unique_id=881601724]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.16017285
+anchor_right = 0.5
+anchor_bottom = 0.16017285
+offset_left = -404.0
+offset_top = -74.79201
+offset_right = 404.0
+offset_bottom = 75.20799
+grow_horizontal = 2
+text = "BOUNCE UP!"
+label_settings = SubResource("LabelSettings_eaw6l")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="play" type="Button" parent="." unique_id=315154463]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -156.0
+offset_top = -130.0
+offset_right = 157.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.19999999, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.6, 0.19999999, 1)
+theme_override_colors/font_hover_color = Color(0.7, 0.35, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.7, 0.35, 0, 1)
+theme_override_fonts/font = ExtResource("2_2owot")
+theme_override_font_sizes/font_size = 60
+text = "JUGAR"
+
+[node name="instructions" type="Button" parent="." unique_id=2121934472]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.588
+anchor_right = 0.5
+anchor_bottom = 0.588
+offset_left = -229.0
+offset_top = -41.023987
+offset_right = 240.0
+offset_bottom = 76.97601
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.19999999, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.6, 0.19999999, 1)
+theme_override_colors/font_hover_color = Color(0.7, 0.35, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.7, 0.35, 0, 1)
+theme_override_fonts/font = ExtResource("2_2owot")
+theme_override_font_sizes/font_size = 60
+text = "INSTRUCCIONES"
+
+[node name="quit" type="Button" parent="." unique_id=1098325332]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5026944
+anchor_top = 0.81200004
+anchor_right = 0.503
+anchor_bottom = 0.81200004
+offset_left = -193.104
+offset_top = -39.176025
+offset_right = 192.54395
+offset_bottom = 78.823975
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.6, 0.19999999, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.6, 0.19999999, 1)
+theme_override_colors/font_hover_color = Color(0.7, 0.35, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.7, 0.35, 0, 1)
+theme_override_fonts/font = ExtResource("2_2owot")
+theme_override_font_sizes/font_size = 60
+text = "SALIR
+"
