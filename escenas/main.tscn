@@ -2,12 +2,122 @@
 
 [ext_resource type="PackedScene" uid="uid://cfsn8nl7xmay2" path="res://escenas/player.tscn" id="1_jumxm"]
 [ext_resource type="PackedScene" uid="uid://bdaevce65k24h" path="res://escenas/background.tscn" id="2_26pgj"]
-[ext_resource type="PackedScene" uid="uid://pj6e4xubag5r" path="res://escenas/platform.tscn" id="3_26pgj"]
 [ext_resource type="PackedScene" uid="uid://bqijyx2j6xcjs" path="res://escenas/floor.tscn" id="3_dkga6"]
-[ext_resource type="PackedScene" uid="uid://bna3n2o36em0c" path="res://escenas/spike.tscn" id="5_o8odp"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="6_a8p2b"]
 [ext_resource type="PackedScene" uid="uid://cpq5ribtni47t" path="res://escenas/restartbutton.tscn" id="6_dg7ii"]
 [ext_resource type="AudioStream" uid="uid://c847wwhkogxee" path="res://sound/the_mountain-retro-game-593063.mp3" id="10_dg7ii"]
+
+[sub_resource type="GDScript" id="GDScript_eaw6l"]
+resource_name = "platformgenerator"
+script/source = "
+extends Node2D
+
+const PLATFORM_SCENE = preload(\"res://escenas/platform.tscn\")
+
+# CONFIGURACIÓN
+const VERTICAL_GAP = 110.0
+const MIN_HORIZONTAL_STEP = 120.0
+const MAX_HORIZONTAL_STEP = 190.0
+const GENERATE_AHEAD = 900.0
+
+# POSICIONES INTERNAS DE LA PLATAFORMA
+const PLATFORM_CENTER_X = 932.125
+const PLATFORM_TOP_OFFSET_Y = 481.0
+const PLATFORM_HALF_WIDTH = 140.0
+
+# POSICIÓN DEL PISO
+const FLOOR_TOP_Y = 582.5
+const FIRST_PLATFORM_ABOVE_FLOOR = 110.0
+
+@onready var main: Node2D = get_parent()
+
+var player: CharacterBody2D
+var next_platform_y: float
+var last_center_x: float
+
+
+func _ready():
+
+	# BUSCAR AL JUGADOR
+	for child in main.get_children():
+		if child is CharacterBody2D:
+			player = child
+			break
+
+	if player == null:
+		push_error(\"No se encontró al jugador.\")
+		set_process(false)
+		return
+
+	# CENTRAR LA PRIMERA PLATAFORMA CON EL JUGADOR
+	var screen_width = get_viewport_rect().size.x
+
+	last_center_x = clamp(
+		player.global_position.x + 104.6,
+		PLATFORM_HALF_WIDTH,
+		screen_width - PLATFORM_HALF_WIDTH
+	)
+
+	# ALTURA DE LA PRIMERA PLATAFORMA
+	next_platform_y = (
+		FLOOR_TOP_Y
+		- FIRST_PLATFORM_ABOVE_FLOOR
+	)
+
+	generate_ahead()
+
+
+func _process(_delta):
+
+	if player == null:
+		return
+
+	generate_ahead()
+
+
+func generate_ahead():
+
+	while next_platform_y > player.global_position.y - GENERATE_AHEAD:
+		create_platform()
+
+
+func create_platform():
+
+	var screen_width = get_viewport_rect().size.x
+
+	var min_x = PLATFORM_HALF_WIDTH
+	var max_x = screen_width - PLATFORM_HALF_WIDTH
+
+	# ELEGIR DIRECCIÓN Y DISTANCIA
+	var direction = -1.0 if randf() < 0.5 else 1.0
+
+	var step = randf_range(
+		MIN_HORIZONTAL_STEP,
+		MAX_HORIZONTAL_STEP
+	)
+
+	var new_x = last_center_x + direction * step
+
+	# EVITAR SALIR DE LA PANTALLA
+	if new_x < min_x or new_x > max_x:
+		new_x = last_center_x - direction * step
+
+	new_x = clamp(new_x, min_x, max_x)
+
+	# CREAR PLATAFORMA
+	var new_platform = PLATFORM_SCENE.instantiate()
+
+	new_platform.position = Vector2(
+		new_x - PLATFORM_CENTER_X,
+		next_platform_y - PLATFORM_TOP_OFFSET_Y
+	)
+
+	main.add_child.call_deferred(new_platform)
+
+	# ACTUALIZAR POSICIONES
+	last_center_x = new_x
+	next_platform_y -= VERTICAL_GAP
+"
 
 [sub_resource type="LabelSettings" id="LabelSettings_kkt6c"]
 font = ExtResource("6_a8p2b")
@@ -30,112 +140,17 @@ outline_color = Color(0, 1, 1, 1)
 [node name="player" parent="." unique_id=847637617 instance=ExtResource("1_jumxm")]
 position = Vector2(-19, -74)
 
-[node name="platform" parent="." unique_id=1443791692 instance=ExtResource("3_26pgj")]
-position = Vector2(-57, -37)
-
-[node name="platform2" parent="." unique_id=2063515316 instance=ExtResource("3_26pgj")]
-position = Vector2(-565, -148)
-
-[node name="platform3" parent="." unique_id=1125278581 instance=ExtResource("3_26pgj")]
-position = Vector2(-82, -310)
-
-[node name="platform4" parent="." unique_id=787380729 instance=ExtResource("3_26pgj")]
-position = Vector2(-650, -403)
-
-[node name="platform5" parent="." unique_id=666727352 instance=ExtResource("3_26pgj")]
-position = Vector2(-182, -537)
-
-[node name="platform6" parent="." unique_id=817258180 instance=ExtResource("3_26pgj")]
-position = Vector2(213, -692)
-
-[node name="platform7" parent="." unique_id=2019567367 instance=ExtResource("3_26pgj")]
-position = Vector2(-273, -829)
-
-[node name="platform8" parent="." unique_id=86033939 instance=ExtResource("3_26pgj")]
-position = Vector2(-724, -967)
-
-[node name="platform9" parent="." unique_id=545213942 instance=ExtResource("3_26pgj")]
-position = Vector2(-234, -1124)
-
-[node name="platform10" parent="." unique_id=66334854 instance=ExtResource("3_26pgj")]
-position = Vector2(208, -1271)
-
-[node name="platform11" parent="." unique_id=305094898 instance=ExtResource("3_26pgj")]
-position = Vector2(-304, -1403)
-
-[node name="platform12" parent="." unique_id=1527586800 instance=ExtResource("3_26pgj")]
-position = Vector2(-724, -1564)
-
-[node name="platform13" parent="." unique_id=1038650899 instance=ExtResource("3_26pgj")]
-position = Vector2(-724, -1564)
-
-[node name="platform14" parent="." unique_id=633200104 instance=ExtResource("3_26pgj")]
-position = Vector2(-226, -1665)
-
-[node name="platform15" parent="." unique_id=283470994 instance=ExtResource("3_26pgj")]
-position = Vector2(164, -1831)
-
-[node name="platform16" parent="." unique_id=610574630 instance=ExtResource("3_26pgj")]
-position = Vector2(-273, -1942)
-
-[node name="platform18" parent="." unique_id=261621933 instance=ExtResource("3_26pgj")]
-position = Vector2(-711, -2066)
-
-[node name="platform19" parent="." unique_id=2110527866 instance=ExtResource("3_26pgj")]
-position = Vector2(-182, -2181)
-
-[node name="platform20" parent="." unique_id=108965243 instance=ExtResource("3_26pgj")]
-position = Vector2(-681, -2292)
-
-[node name="platform21" parent="." unique_id=990447490 instance=ExtResource("3_26pgj")]
-position = Vector2(-329, -2443)
-
-[node name="platform17" parent="." unique_id=1574146186 instance=ExtResource("3_26pgj")]
-position = Vector2(-724, -1798)
-
-[node name="spike" parent="." unique_id=1637549672 instance=ExtResource("5_o8odp")]
-position = Vector2(212.99998, -69)
-scale = Vector2(0.5999988, 0.6000006)
-
-[node name="spike2" parent="." unique_id=1986254904 instance=ExtResource("5_o8odp")]
-position = Vector2(463.99997, -494.99997)
-scale = Vector2(0.5999988, 0.6000006)
-
-[node name="spike3" parent="." unique_id=1086112307 instance=ExtResource("5_o8odp")]
-position = Vector2(-142, -634)
-scale = Vector2(0.5999988, 0.6000006)
-
-[node name="spike4" parent="." unique_id=10469395 instance=ExtResource("5_o8odp")]
-position = Vector2(901, -936.99994)
-scale = Vector2(0.5999988, 0.6000006)
-
-[node name="spike5" parent="." unique_id=2059797688 instance=ExtResource("5_o8odp")]
-position = Vector2(-27.999994, -1230)
-scale = Vector2(0.5999988, 0.6000006)
-
-[node name="spike6" parent="." unique_id=1692214863 instance=ExtResource("5_o8odp")]
-position = Vector2(894, -1498)
-scale = Vector2(0.5999988, 0.6000006)
-
-[node name="spike7" parent="." unique_id=868861543 instance=ExtResource("5_o8odp")]
-position = Vector2(44.999996, -1731.9999)
-scale = Vector2(0.5999988, 0.6000006)
-
-[node name="spike8" parent="." unique_id=1975169179 instance=ExtResource("5_o8odp")]
-position = Vector2(569.99994, -1847.9999)
-scale = Vector2(0.5999988, 0.6000006)
-
-[node name="spike10" parent="." unique_id=2038924450 instance=ExtResource("5_o8odp")]
-position = Vector2(548, -1607.9999)
-scale = Vector2(0.5999988, 0.6000006)
-
 [node name="Camera2D" type="Camera2D" parent="." unique_id=846533705]
 position = Vector2(576, 333)
 drag_vertical_enabled = true
 
+[node name="PlatformGenerator" type="Node2D" parent="." unique_id=356150963]
+script = SubResource("GDScript_eaw6l")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1286689389]
 
 [node name="restartbutton" parent="CanvasLayer" unique_id=149260693 instance=ExtResource("6_dg7ii")]
+metadata/_edit_use_anchors_ = true
 
 [node name="ScoreLabel" type="Label" parent="CanvasLayer" unique_id=1491639338]
 offset_left = 804.0
@@ -145,6 +160,7 @@ offset_bottom = 87.0
 text = "Puntuación: 0"
 label_settings = SubResource("LabelSettings_kkt6c")
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="WinLabel" type="Label" parent="CanvasLayer" unique_id=390012771]
 visible = false
