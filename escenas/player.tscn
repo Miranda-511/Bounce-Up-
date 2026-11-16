@@ -22,6 +22,7 @@ const GAME_OVER_SCENE = preload(\"res://escenas/gameover.tscn\")
 @onready var score_label: Label = $\"../CanvasLayer/ScoreLabel\"
 @onready var best_score_label: Label = $\"../CanvasLayer/BestScoreLabel\"
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var music: AudioStreamPlayer = $\"../AudioStreamPlayer\"
 
 var start_y: float
 var highest_y: float
@@ -100,7 +101,7 @@ func _physics_process(delta: float) -> void:
 		best_score_label.text = \"Récord: \" + str(best_score)
 		save_best_score()
 
-	# DETECTAR CAÍDA USANDO LA POSICIÓN REAL DEL SPRITE
+	# DETECTAR CAÍDA
 	var screen_bottom = camera.get_screen_center_position().y + 324.0
 
 	if sprite.global_position.y > screen_bottom + DEATH_MARGIN:
@@ -115,6 +116,10 @@ func show_game_over():
 	velocity = Vector2.ZERO
 	set_physics_process(false)
 
+	# DETENER MÚSICA NORMAL
+	music.stop()
+
+	# MOSTRAR GAME OVER
 	var layer = CanvasLayer.new()
 	layer.layer = 100
 	get_tree().current_scene.add_child(layer)
