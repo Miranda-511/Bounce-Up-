@@ -71,7 +71,7 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5044028
-anchor_top = 0.6793088
+anchor_top = 0.6793087
 anchor_right = 0.5044028
 anchor_bottom = 0.6793087
 offset_left = -451.07202
@@ -84,8 +84,7 @@ text = "- Teclas ← → para mover la pelota
 
 - Evitá los pinchos y no te caigás
 
-- Subí lo más alto posible
-y alcanzá la meta.
+- Subí lo más alto que podás
 
 -Si te quedás atrapad@ presioná el botón de reinicio
 
@@ -101,7 +100,9 @@ offset_left = 15.0
 offset_top = 11.0
 offset_right = 176.0
 offset_bottom = 81.0
+mouse_default_cursor_shape = 2
 theme = SubResource("Theme_eaw6l")
+theme_type_variation = &"FlatButton"
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "VOLVER"
 flat = true

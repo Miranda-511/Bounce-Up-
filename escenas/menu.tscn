@@ -44,6 +44,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_pv7or")
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1637065104]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="background" parent="." unique_id=33009793 instance=ExtResource("1_d7r87")]
 
 [node name="title" type="Label" parent="." unique_id=881601724]
