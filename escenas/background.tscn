@@ -1,7 +1,5 @@
 [gd_scene format=3 uid="uid://bdaevce65k24h"]
 
-[ext_resource type="Texture2D" path="res://assets/red-flag-warning-symbol-red-flag-emoji-red-flags-in-relationships-png.webp" id="1_2gjhw"]
-
 [sub_resource type="GDScript" id="GDScript_esbpa"]
 resource_name = "bg"
 script/source = "
@@ -9,7 +7,6 @@ extends Node2D
 
 # TEXTURAS
 const CLOUD_TEXTURE = preload(\"res://assets/cloud.webp\")
-const FLAG_TEXTURE = preload(\"res://assets/red_flag.webp\")
 
 # NUBES
 const CLOUD_AHEAD = 1200.0
@@ -92,7 +89,6 @@ func _ready():
 	create_sky()
 	create_world_layers()
 	create_mountains()
-	create_flag()
 
 	# NUBES: EMPEZAR LEJOS DEL SUELO
 	next_cloud_y = start_y - CLOUDS_START_HEIGHT
@@ -727,29 +723,6 @@ func generate_space_objects_ahead():
 
 
 # ==================================
-# BANDERITA
-# ==================================
-
-func create_flag():
-
-	var flag = Sprite2D.new()
-
-	flag.name = \"goal_flag\"
-	flag.texture = FLAG_TEXTURE
-
-	flag.position = Vector2(613.0, -2040.0)
-
-	flag.scale = Vector2(
-		0.6228571,
-		0.6614286
-	)
-
-	flag.z_index = 4
-
-	add_child(flag)
-
-
-# ==================================
 # LIMPIEZA
 # ==================================
 
@@ -778,11 +751,3 @@ func cleanup_old_decorations():
 
 [node name="background" type="Node2D" unique_id=33009793]
 script = SubResource("GDScript_esbpa")
-
-[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=194765966]
-
-[node name="goal_flag_250" type="Sprite2D" parent="CanvasLayer2" unique_id=1206912782]
-top_level = true
-position = Vector2(613, -2040)
-scale = Vector2(0.6228571, 0.6614286)
-texture = ExtResource("1_2gjhw")
