@@ -228,75 +228,172 @@ func create_world_layers():
 
 
 # ==================================
-# MONTAÑAS
+# PAISAJE TERRESTRE
 # ==================================
 
 func create_mountains():
 
-	# MONTAÑAS DEL FONDO
-	var distant = Polygon2D.new()
-	distant.name = \"DistantMountains\"
-
-	distant.polygon = PackedVector2Array([
-		Vector2(-100, 700),
-		Vector2(-100, 525),
-		Vector2(70, 440),
-		Vector2(210, 530),
-		Vector2(390, 455),
-		Vector2(540, 535),
-		Vector2(700, 460),
-		Vector2(870, 535),
-		Vector2(1050, 430),
-		Vector2(1260, 515),
-		Vector2(1260, 700)
+	# COLINAS DEL FONDO
+	var far_points = PackedVector2Array([
+		Vector2(-100, 545),
+		Vector2(40, 475),
+		Vector2(190, 500),
+		Vector2(350, 430),
+		Vector2(510, 490),
+		Vector2(680, 445),
+		Vector2(850, 500),
+		Vector2(1030, 435),
+		Vector2(1260, 485)
 	])
 
-	distant.color = Color(\"#789F9A\")
+	add_terrain_layer(
+		\"FarGreenHills\",
+		far_points,
+		Color(\"#739D48\"),
+		Color(\"#557E37\"),
+		Color(\"#B96B2C\"),
+		900.0,
+		-3
+	)
 
-	mountain_layer.add_child(distant)
-
-	# MONTAÑAS DELANTERAS
-	var front = Polygon2D.new()
-	front.name = \"FrontMountains\"
-
-	front.polygon = PackedVector2Array([
-		Vector2(-100, 760),
-		Vector2(-100, 575),
-		Vector2(100, 520),
-		Vector2(260, 565),
-		Vector2(420, 495),
-		Vector2(580, 570),
-		Vector2(760, 510),
-		Vector2(940, 565),
-		Vector2(1110, 500),
-		Vector2(1260, 550),
-		Vector2(1260, 760)
+	# COLINAS INTERMEDIAS
+	var middle_points = PackedVector2Array([
+		Vector2(-100, 610),
+		Vector2(30, 555),
+		Vector2(180, 575),
+		Vector2(340, 520),
+		Vector2(500, 585),
+		Vector2(660, 535),
+		Vector2(825, 590),
+		Vector2(990, 525),
+		Vector2(1130, 570),
+		Vector2(1260, 540)
 	])
 
-	front.color = Color(\"#527D5B\")
+	add_terrain_layer(
+		\"MiddleDirtHills\",
+		middle_points,
+		Color(\"#79B52B\"),
+		Color(\"#397C24\"),
+		Color(\"#B96B2C\"),
+		1000.0,
+		-2
+	)
 
-	mountain_layer.add_child(front)
-
-	# BORDE VERDE DE LAS MONTAÑAS
-	var ridge = Line2D.new()
-	ridge.name = \"GrassRidge\"
-
-	ridge.points = PackedVector2Array([
-		Vector2(-100, 575),
-		Vector2(100, 520),
-		Vector2(260, 565),
-		Vector2(420, 495),
-		Vector2(580, 570),
-		Vector2(760, 510),
-		Vector2(940, 565),
-		Vector2(1110, 500),
-		Vector2(1260, 550)
+	# COLINAS DELANTERAS
+	var near_points = PackedVector2Array([
+		Vector2(-100, 690),
+		Vector2(40, 625),
+		Vector2(190, 650),
+		Vector2(350, 600),
+		Vector2(520, 655),
+		Vector2(690, 610),
+		Vector2(850, 660),
+		Vector2(1010, 605),
+		Vector2(1160, 640),
+		Vector2(1260, 620)
 	])
 
-	ridge.width = 7.0
-	ridge.default_color = Color(\"#A6CB72\")
+	add_terrain_layer(
+		\"NearGrassDirtHills\",
+		near_points,
+		Color(\"#8BCB28\"),
+		Color(\"#347A22\"),
+		Color(\"#C87532\"),
+		1100.0,
+		-1
+	)
 
-	mountain_layer.add_child(ridge)
+
+func add_terrain_layer(
+	layer_name: String,
+	ridge_points: PackedVector2Array,
+	grass_color: Color,
+	edge_color: Color,
+	dirt_color: Color,
+	bottom_y: float,
+	layer_z: int
+):
+
+	var layer = Node2D.new()
+	layer.name = layer_name
+	layer.z_index = layer_z
+	mountain_layer.add_child(layer)
+
+	# TIERRA
+	var dirt = Polygon2D.new()
+	dirt.name = \"WarmSoil\"
+
+	var dirt_points = ridge_points.duplicate()
+	dirt_points.append(Vector2(1260, bottom_y))
+	dirt_points.append(Vector2(-100, bottom_y))
+
+	dirt.polygon = dirt_points
+	dirt.color = dirt_color
+
+	layer.add_child(dirt)
+
+	# BORDE REDONDEADO DEL CÉSPED
+	var grass_edge = Polygon2D.new()
+	grass_edge.name = \"RoundedGrassEdge\"
+
+	var edge_points = PackedVector2Array()
+
+	for point in ridge_points:
+		edge_points.append(point + Vector2(0, 28))
+
+	for i in range(ridge_points.size() - 1, -1, -1):
+		edge_points.append(
+			ridge_points[i] + Vector2(0, 54)
+		)
+
+	grass_edge.polygon = edge_points
+	grass_edge.color = edge_color
+
+	layer.add_child(grass_edge)
+
+	# SUPERFICIE VERDE
+	var grass = Polygon2D.new()
+	grass.name = \"BrightGrassTop\"
+
+	var grass_points = ridge_points.duplicate()
+
+	for i in range(ridge_points.size() - 1, -1, -1):
+		grass_points.append(
+			ridge_points[i] + Vector2(0, 30)
+		)
+
+	grass.polygon = grass_points
+	grass.color = grass_color
+
+	layer.add_child(grass)
+
+	# BRILLO SUPERIOR
+	var highlight = Line2D.new()
+	highlight.name = \"GrassHighlight\"
+	highlight.points = ridge_points
+	highlight.width = 5.0
+	highlight.default_color = Color(\"#B6DF55\")
+
+	layer.add_child(highlight)
+
+	# PEQUEÑOS MECHONES
+	for i in range(1, ridge_points.size() - 1):
+
+		var tuft = Polygon2D.new()
+
+		tuft.polygon = PackedVector2Array([
+			Vector2(-13, 8),
+			Vector2(-9, -5),
+			Vector2(-2, -10),
+			Vector2(5, -7),
+			Vector2(13, 8)
+		])
+
+		tuft.position = ridge_points[i] + Vector2(0, 23)
+		tuft.color = grass_color.lightened(0.08)
+
+		layer.add_child(tuft)
 
 
 # ==================================
