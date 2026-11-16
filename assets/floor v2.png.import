@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwebug6pnjukv"
-path="res://.godot/imported/red_flag.webp-0cc38e0f686f270cedcdbe9aa29ee1e6.ctex"
+uid="uid://c4em6uue70vr"
+path="res://.godot/imported/floor v2.png-930affc6ed748dba02f790a69fd88f98.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/red_flag.webp"
-dest_files=["res://.godot/imported/red_flag.webp-0cc38e0f686f270cedcdbe9aa29ee1e6.ctex"]
+source_file="res://assets/floor v2.png"
+dest_files=["res://.godot/imported/floor v2.png-930affc6ed748dba02f790a69fd88f98.ctex"]
 
 [params]
 

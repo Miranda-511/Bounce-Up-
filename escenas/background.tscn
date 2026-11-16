@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bdaevce65k24h"]
 
-[ext_resource type="Texture2D" uid="uid://bcun5uvdwsbwx" path="res://assets/red-flag-warning-symbol-red-flag-emoji-red-flags-in-relationships-png.webp" id="1_2gjhw"]
+[ext_resource type="Texture2D" path="res://assets/red-flag-warning-symbol-red-flag-emoji-red-flags-in-relationships-png.webp" id="1_2gjhw"]
 
 [sub_resource type="GDScript" id="GDScript_esbpa"]
 resource_name = "bg"
@@ -9,7 +9,7 @@ extends Node2D
 
 # TEXTURAS
 const CLOUD_TEXTURE = preload(\"res://assets/cloud.webp\")
-const FLAG_TEXTURE = preload(\"res://assets/red-flag-warning-symbol-red-flag-emoji-red-flags-in-relationships-png.webp\")
+const FLAG_TEXTURE = preload(\"res://assets/red_flag.webp\")
 
 # NUBES
 const CLOUD_AHEAD = 1200.0

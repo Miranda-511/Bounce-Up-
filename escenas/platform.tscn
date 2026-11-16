@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://pj6e4xubag5r"]
 
-[ext_resource type="Texture2D" uid="uid://72bswemu1y6p" path="res://assets/floor.jpg" id="1_fu541"]
+[ext_resource type="Texture2D" uid="uid://c4em6uue70vr" path="res://assets/floor v2.png" id="1_fu541"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fu541"]
 size = Vector2(280, 20)
@@ -8,8 +8,8 @@ size = Vector2(280, 20)
 [node name="platform" type="Node2D" unique_id=1443791692]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1153215524]
-position = Vector2(932, 493)
-scale = Vector2(0.457, 0.145)
+position = Vector2(926, 493)
+scale = Vector2(0.5689354, 0.145)
 texture = ExtResource("1_fu541")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1934456800]
