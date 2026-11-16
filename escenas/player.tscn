@@ -15,12 +15,16 @@ const CAMERA_SPEED = 1.0
 const CAMERA_TRIGGER = 260.0
 const FALL_LIMIT = 700.0
 
+const SAVE_PATH = \"user://scores.cfg\"
+
 @onready var camera: Camera2D = $\"../Camera2D\"
 @onready var score_label: Label = $\"../CanvasLayer/ScoreLabel\"
+@onready var best_score_label: Label = $\"../CanvasLayer/BestScoreLabel\"
 @onready var sprite: Sprite2D = $Sprite2D
 
 var start_y: float
 var highest_y: float
+var best_score: int = 0
 
 
 func _ready():
@@ -32,6 +36,9 @@ func _ready():
 	sprite.hframes = 4
 	sprite.vframes = 4
 	sprite.frame = 0
+
+	# CARGAR RÉCORD
+	load_best_score()
 
 
 func _physics_process(delta: float) -> void:
@@ -107,15 +114,22 @@ func _physics_process(delta: float) -> void:
 
 
 	# ==================================
-	# PUNTUACIÓN
+	# PUNTUACIÓN Y RÉCORD
 	# ==================================
 
 	if global_position.y < highest_y:
 		highest_y = global_position.y
 
 	var score = int((start_y - highest_y) / 10.0)
+	score = max(score, 0)
 
-	score_label.text = \"Puntuación: \" + str(max(score, 0))
+	score_label.text = \"Puntuación: \" + str(score)
+
+	# COMPROBAR NUEVO RÉCORD
+	if score > best_score:
+		best_score = score
+		best_score_label.text = \"Récord: \" + str(best_score)
+		save_best_score()
 
 
 	# ==================================
@@ -147,6 +161,37 @@ func update_animation():
 	# CAYENDO
 	else:
 		sprite.frame = 12
+
+
+# ==================================
+# CARGAR RÉCORD GUARDADO
+# ==================================
+
+func load_best_score():
+
+	var config = ConfigFile.new()
+	var error = config.load(SAVE_PATH)
+
+	if error == OK:
+		best_score = config.get_value(\"scores\", \"best_score\", 0)
+
+	best_score_label.text = \"Récord: \" + str(best_score)
+
+
+# ==================================
+# GUARDAR NUEVO RÉCORD
+# ==================================
+
+func save_best_score():
+
+	var config = ConfigFile.new()
+
+	config.set_value(\"scores\", \"best_score\", best_score)
+
+	var error = config.save(SAVE_PATH)
+
+	if error != OK:
+		push_warning(\"No se pudo guardar el récord.\")
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pv7or"]
