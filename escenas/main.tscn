@@ -12,6 +12,7 @@ script/source = "
 extends Node2D
 
 const PLATFORM_SCENE = preload(\"res://escenas/platform.tscn\")
+const ROCK_PLATFORM_SCENE = preload(\"res://escenas/platform_rock.tscn\")
 
 # DIFICULTAD
 const VERTICAL_GAP = 270.0
@@ -29,19 +30,21 @@ const FLOOR_TOP_Y = 582.5
 const FIRST_PLATFORM_ABOVE_FLOOR = 110.0
 const FIRST_PLATFORM_HORIZONTAL_OFFSET = 200.0
 
+# ALTURA EN LA QUE COMIENZAN LAS PLATAFORMAS ROCOSAS
+const ROCK_START_HEIGHT = 20000.0
+
 @onready var main: Node2D = get_parent()
 
 var player: CharacterBody2D
+var start_y: float
 var next_platform_y: float
 var last_center_x: float
 
-# RECORDAR POSICIONES RECIENTES
 var recent_positions: Array[float] = []
 
 
 func _ready():
 
-	# BUSCAR AL JUGADOR
 	for child in main.get_children():
 		if child is CharacterBody2D:
 			player = child
@@ -52,9 +55,10 @@ func _ready():
 		set_process(false)
 		return
 
+	start_y = player.global_position.y
+
 	var screen_width = get_viewport_rect().size.x
 
-	# POSICIÓN INICIAL
 	last_center_x = clamp(
 		player.global_position.x + 104.6 + FIRST_PLATFORM_HORIZONTAL_OFFSET,
 		PLATFORM_HALF_WIDTH,
@@ -65,7 +69,6 @@ func _ready():
 
 	next_platform_y = FLOOR_TOP_Y - FIRST_PLATFORM_ABOVE_FLOOR
 
-	# PRIMERA PLATAFORMA
 	spawn_platform(last_center_x)
 
 	next_platform_y -= VERTICAL_GAP
@@ -87,9 +90,18 @@ func generate_ahead():
 		create_platform()
 
 
-func spawn_platform(center_x):
+func spawn_platform(center_x: float):
 
-	var new_platform = PLATFORM_SCENE.instantiate()
+	var height = start_y - next_platform_y
+
+	var new_platform
+
+	# ANTES DEL ESPACIO: TIERRA
+	# EN EL ESPACIO: ROCA
+	if height >= ROCK_START_HEIGHT:
+		new_platform = ROCK_PLATFORM_SCENE.instantiate()
+	else:
+		new_platform = PLATFORM_SCENE.instantiate()
 
 	new_platform.position = Vector2(
 		center_x - PLATFORM_CENTER_X,
@@ -108,21 +120,17 @@ func create_platform():
 
 	var possible_positions: Array[float] = []
 
-	# PROBAR MUCHAS POSICIONES ALEATORIAS
 	for attempt in range(100):
 
 		var candidate = randf_range(min_x, max_x)
-
 		var distance = abs(candidate - last_center_x)
 
-		# EVITAR PLATAFORMAS DEMASIADO CERCANAS O LEJANAS
 		if distance < MIN_HORIZONTAL_STEP:
 			continue
 
 		if distance > MAX_HORIZONTAL_STEP:
 			continue
 
-		# EVITAR REPETIR POSICIONES RECIENTES
 		var repeated = false
 
 		for i in range(max(0, recent_positions.size() - 2)):
@@ -134,7 +142,6 @@ func create_platform():
 		if not repeated:
 			possible_positions.append(candidate)
 
-	# ELEGIR UNA POSICIÓN ALEATORIA
 	var new_x = last_center_x
 
 	if possible_positions.size() > 0:
@@ -145,7 +152,6 @@ func create_platform():
 
 	else:
 
-		# ALTERNATIVA SI NO ENCUENTRA POSICIONES
 		var direction = -1.0 if randf() < 0.5 else 1.0
 
 		new_x = clamp(
@@ -154,10 +160,8 @@ func create_platform():
 			max_x
 		)
 
-	# CREAR PLATAFORMA
 	spawn_platform(new_x)
 
-	# RECORDAR POSICIONES
 	recent_positions.append(new_x)
 
 	if recent_positions.size() > 3:

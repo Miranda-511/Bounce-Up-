@@ -54,11 +54,9 @@ text = "- Teclas ← → para mover la pelota
 
 - La pelota rebota automáticamente.
 
-- Evitá los pinchos y no te caigás
+- Calculá tus saltos y no te caigás
 
-- Subí lo más alto que podás
-
--Si te quedás atrapad@ presioná el botón de reinicio
+- Subí lo más alto que podás y superá tu récord
 
 ¡Buena suerte!"
 label_settings = SubResource("LabelSettings_pv7or")

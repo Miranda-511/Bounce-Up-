@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://jnr0lyh5wf73"]
 
-[ext_resource type="Texture2D" uid="uid://bdunmsmfksqr" path="res://assets/bounce up menu bg.webp" id="1_d7r87"]
+[ext_resource type="Texture2D" uid="uid://d0cvy5htw7ntu" path="res://assets/bounce up pantalla de inicio bg.png" id="1_d7r87"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="2_2owot"]
 
 [sub_resource type="GDScript" id="GDScript_pv7or"]
@@ -60,29 +60,29 @@ script = SubResource("GDScript_pv7or")
 layer = -1
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer" unique_id=121247602]
-position = Vector2(576.5, 323.49997)
-scale = Vector2(1.1259767, 1.1276224)
+position = Vector2(526.00006, 309.41202)
+scale = Vector2(1.0998263, 1.0784321)
 texture = ExtResource("1_d7r87")
 
 [node name="play" type="Button" parent="." unique_id=315154463]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5125139
-anchor_top = 0.4270371
-anchor_right = 0.5125139
-anchor_bottom = 0.42717287
-offset_left = -167.41602
-offset_top = -58.72003
-offset_right = 145.58398
-offset_bottom = 59.191986
+anchor_left = 0.49693754
+anchor_top = 0.5759753
+anchor_right = 0.49693754
+anchor_bottom = 0.5759753
+offset_left = -115.472046
+offset_top = -50.231995
+offset_right = 114.527954
+offset_bottom = 49.768005
 grow_horizontal = 2
 grow_vertical = 2
 offset_transform_enabled = true
 theme = SubResource("Theme_dg7ii")
 theme_override_colors/font_color = Color(0.58431375, 0.8901961, 0.45490196, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.6, 0.19999999, 1)
-theme_override_colors/font_hover_color = Color(0.7, 0.35, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.7, 0.35, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.33333334, 0.81960785, 0.3019608, 1)
+theme_override_colors/font_hover_color = Color(0.5193333, 0.76, 0.38, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.34901962, 0.8156863, 0.2901961, 1)
 theme_override_fonts/font = ExtResource("2_2owot")
 theme_override_font_sizes/font_size = 60
 text = "JUGAR"
@@ -91,20 +91,20 @@ metadata/_edit_use_anchors_ = true
 [node name="instructions" type="Button" parent="." unique_id=2121934472]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.6360616
-anchor_right = 0.5
-anchor_bottom = 0.6360616
-offset_left = -229.0
-offset_top = -59.16803
-offset_right = 240.0
-offset_bottom = 58.83197
+anchor_left = 0.5008473
+anchor_top = 0.7363702
+anchor_right = 0.5008473
+anchor_bottom = 0.7363702
+offset_left = -239.97601
+offset_top = -48.167908
+offset_right = 240.02399
+offset_bottom = 51.832092
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.6, 0.8980392, 0.44313726, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.6, 0.19999999, 1)
-theme_override_colors/font_hover_color = Color(0.7, 0.35, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.7, 0.35, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.34117648, 0.8117647, 0.2901961, 1)
+theme_override_colors/font_hover_color = Color(0.5176471, 0.7607843, 0.38039216, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.34901962, 0.8156863, 0.2901961, 1)
 theme_override_fonts/font = ExtResource("2_2owot")
 theme_override_font_sizes/font_size = 60
 text = "INSTRUCCIONES"
@@ -113,20 +113,18 @@ metadata/_edit_use_anchors_ = true
 [node name="quit" type="Button" parent="." unique_id=1098325332]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.51500005
-anchor_top = 0.84762967
-anchor_right = 0.51500005
-anchor_bottom = 0.84762967
-offset_left = -193.28003
-offset_top = -59.264038
-offset_right = 192.71997
-offset_bottom = 58.735962
-grow_horizontal = 2
-grow_vertical = 0
+anchor_left = 0.49059725
+anchor_top = 0.90309876
+anchor_right = 0.49059725
+anchor_bottom = 0.90309876
+offset_left = -115.16803
+offset_top = -50.208008
+offset_right = 114.83197
+offset_bottom = 49.791992
 theme_override_colors/font_color = Color(0.6117647, 0.8980392, 0.45490196, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.6, 0.19999999, 1)
-theme_override_colors/font_hover_color = Color(0.7, 0.35, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.7, 0.35, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.33333334, 0.8117647, 0.30588236, 1)
+theme_override_colors/font_hover_color = Color(0.5176471, 0.7607843, 0.38039216, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.34117648, 0.8117647, 0.2901961, 1)
 theme_override_fonts/font = ExtResource("2_2owot")
 theme_override_font_sizes/font_size = 60
 text = "SALIR
