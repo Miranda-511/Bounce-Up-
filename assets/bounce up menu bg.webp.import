@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dbsropqrgrgbi"
-path="res://.godot/imported/Pelota Saltarina en el Cielo.png-e9d0aa86925fdc84ca9296aa9d2a5299.ctex"
+uid="uid://bdunmsmfksqr"
+path="res://.godot/imported/bounce up menu bg.webp-07d92871542446cdcdee523d313c4b7a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Pelota Saltarina en el Cielo.png"
-dest_files=["res://.godot/imported/Pelota Saltarina en el Cielo.png-e9d0aa86925fdc84ca9296aa9d2a5299.ctex"]
+source_file="res://assets/bounce up menu bg.webp"
+dest_files=["res://.godot/imported/bounce up menu bg.webp-07d92871542446cdcdee523d313c4b7a.ctex"]
 
 [params]
 

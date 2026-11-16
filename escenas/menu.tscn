@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://jnr0lyh5wf73"]
 
-[ext_resource type="PackedScene" uid="uid://bdaevce65k24h" path="res://escenas/background.tscn" id="1_d7r87"]
+[ext_resource type="Texture2D" uid="uid://bdunmsmfksqr" path="res://assets/bounce up menu bg.webp" id="1_d7r87"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="2_2owot"]
 
 [sub_resource type="GDScript" id="GDScript_pv7or"]
@@ -26,13 +26,6 @@ func _on_quit_pressed():
 	get_tree().quit()
 "
 
-[sub_resource type="LabelSettings" id="LabelSettings_eaw6l"]
-font = ExtResource("2_2owot")
-font_size = 150
-font_color = Color(0, 0, 0, 1)
-outline_size = 20
-outline_color = Color(0, 1, 0, 1)
-
 [sub_resource type="Theme" id="Theme_dg7ii"]
 
 [node name="menu" type="Control" unique_id=234452494]
@@ -44,88 +37,74 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_pv7or")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1637065104]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1775857918]
+layer = -1
 
-[node name="background" parent="." unique_id=33009793 instance=ExtResource("1_d7r87")]
-
-[node name="title" type="Label" parent="." unique_id=881601724]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.16017285
-anchor_right = 0.5
-anchor_bottom = 0.16017285
-offset_left = -404.0
-offset_top = -74.79201
-offset_right = 404.0
-offset_bottom = 75.20799
-grow_horizontal = 2
-text = "BOUNCE UP!"
-label_settings = SubResource("LabelSettings_eaw6l")
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer" unique_id=121247602]
+position = Vector2(576.5, 323.49997)
+scale = Vector2(1.1259767, 1.1276224)
+texture = ExtResource("1_d7r87")
 
 [node name="play" type="Button" parent="." unique_id=315154463]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -156.0
-offset_top = -130.0
-offset_right = 157.0
-offset_bottom = -12.0
+anchors_preset = -1
+anchor_left = 0.5125139
+anchor_top = 0.4270371
+anchor_right = 0.5125139
+anchor_bottom = 0.42717287
+offset_left = -167.41602
+offset_top = -58.72003
+offset_right = 145.58398
+offset_bottom = 59.191986
 grow_horizontal = 2
 grow_vertical = 2
+offset_transform_enabled = true
 theme = SubResource("Theme_dg7ii")
-theme_override_colors/font_color = Color(1, 0.6, 0.19999999, 1)
+theme_override_colors/font_color = Color(0.58431375, 0.8901961, 0.45490196, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.6, 0.19999999, 1)
 theme_override_colors/font_hover_color = Color(0.7, 0.35, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(0.7, 0.35, 0, 1)
 theme_override_fonts/font = ExtResource("2_2owot")
 theme_override_font_sizes/font_size = 60
 text = "JUGAR"
+metadata/_edit_use_anchors_ = true
 
 [node name="instructions" type="Button" parent="." unique_id=2121934472]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.588
+anchor_top = 0.6360616
 anchor_right = 0.5
-anchor_bottom = 0.588
+anchor_bottom = 0.6360616
 offset_left = -229.0
-offset_top = -41.023987
+offset_top = -59.16803
 offset_right = 240.0
-offset_bottom = 76.97601
+offset_bottom = 58.83197
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0.6, 0.19999999, 1)
+theme_override_colors/font_color = Color(0.6, 0.8980392, 0.44313726, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.6, 0.19999999, 1)
 theme_override_colors/font_hover_color = Color(0.7, 0.35, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(0.7, 0.35, 0, 1)
 theme_override_fonts/font = ExtResource("2_2owot")
 theme_override_font_sizes/font_size = 60
 text = "INSTRUCCIONES"
+metadata/_edit_use_anchors_ = true
 
 [node name="quit" type="Button" parent="." unique_id=1098325332]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5026944
-anchor_top = 0.81200004
-anchor_right = 0.503
-anchor_bottom = 0.81200004
-offset_left = -193.104
-offset_top = -39.176025
-offset_right = 192.54395
-offset_bottom = 78.823975
+anchor_left = 0.51500005
+anchor_top = 0.84762967
+anchor_right = 0.51500005
+anchor_bottom = 0.84762967
+offset_left = -193.28003
+offset_top = -59.264038
+offset_right = 192.71997
+offset_bottom = 58.735962
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(1, 0.6, 0.19999999, 1)
+theme_override_colors/font_color = Color(0.6117647, 0.8980392, 0.45490196, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.6, 0.19999999, 1)
 theme_override_colors/font_hover_color = Color(0.7, 0.35, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(0.7, 0.35, 0, 1)
@@ -133,3 +112,4 @@ theme_override_fonts/font = ExtResource("2_2owot")
 theme_override_font_sizes/font_size = 60
 text = "SALIR
 "
+metadata/_edit_use_anchors_ = true

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://pc3dxwnri37g"
-path="res://.godot/imported/im.png-2d567295d6c79d08f96343f4469f00fc.ctex"
+uid="uid://p3a3jkd3goh1"
+path="res://.godot/imported/gd_spike.png-de2f6c279a71bf06f556df07da88cecd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Bounce Up! Icon_files/im.png"
-dest_files=["res://.godot/imported/im.png-2d567295d6c79d08f96343f4469f00fc.ctex"]
+source_file="res://assets/gd_spike.png"
+dest_files=["res://.godot/imported/gd_spike.png-de2f6c279a71bf06f556df07da88cecd.ctex"]
 
 [params]
 

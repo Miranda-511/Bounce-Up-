@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtfln33d127eu"
-path="res://.godot/imported/geometry_dash_spike_by_pastilias2011_dfixr6b-fullview.png-66f95eeea275ee67d45ec907bcbfbcb3.ctex"
+uid="uid://dbsropqrgrgbi"
+path="res://.godot/imported/Pelota Saltarina en el Cielo.png-f099bc527238b316882e81d212b48eed.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/geometry_dash_spike_by_pastilias2011_dfixr6b-fullview.png"
-dest_files=["res://.godot/imported/geometry_dash_spike_by_pastilias2011_dfixr6b-fullview.png-66f95eeea275ee67d45ec907bcbfbcb3.ctex"]
+source_file="res://Bounce Up! Icon_files/Pelota Saltarina en el Cielo.png"
+dest_files=["res://.godot/imported/Pelota Saltarina en el Cielo.png-f099bc527238b316882e81d212b48eed.ctex"]
 
 [params]
 

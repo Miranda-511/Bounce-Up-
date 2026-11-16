@@ -13,20 +13,30 @@ const FLAG_TEXTURE = preload(\"res://assets/red-flag-warning-symbol-red-flag-emo
 
 # NUBES
 const CLOUD_AHEAD = 1200.0
-const CLOUD_SPACING_MIN = 550.0
-const CLOUD_SPACING_MAX = 850.0
-const CLOUD_FADE_START = 12000.0
-const CLOUD_FADE_END = 30000.0
+const CLOUDS_START_HEIGHT = 5500.0
+const CLOUD_SPACING_MIN = 750.0
+const CLOUD_SPACING_MAX = 1100.0
+const CLOUD_FADE_START = 9000.0
+const CLOUD_FADE_END = 15000.0
 
 # ESTRELLAS
 const STAR_AHEAD = 1500.0
-const STAR_START_HEIGHT = 42000.0
+const STAR_START_HEIGHT = 20000.0
 
 # PLANETAS
-const PLANET_AHEAD = 2200.0
-const PLANET_START_HEIGHT = 50000.0
-const PLANET_SPACING_MIN = 8000.0
-const PLANET_SPACING_MAX = 12000.0
+const PLANET_AHEAD = 2500.0
+const PLANET_START_HEIGHT = 30000.0
+const PLANET_SPACING_MIN = 2800.0
+const PLANET_SPACING_MAX = 4500.0
+
+# OBJETOS ESPACIALES
+const SPACE_OBJECT_AHEAD = 1800.0
+const SPACE_OBJECT_START = 28000.0
+const SPACE_OBJECT_SPACING_MIN = 450.0
+const SPACE_OBJECT_SPACING_MAX = 800.0
+
+# SUELO
+const FLOOR_TOP_Y = 582.5
 
 @onready var main = get_parent()
 
@@ -34,18 +44,24 @@ var player: CharacterBody2D
 var start_y: float
 
 var sky: ColorRect
+
+var mountain_layer: Node2D
 var cloud_layer: Node2D
 var star_layer: Node2D
 var planet_layer: Node2D
+var space_layer: Node2D
 
 var next_cloud_y: float
 var next_star_y: float
 var next_planet_y: float
+var next_space_y: float
 
 
 func _ready():
 
-	# ESPERAR A QUE GODOT PREPARE LA ESCENA
+	# TODO EL FONDO DETRÁS DEL JUEGO
+	z_index = -20
+
 	await get_tree().process_frame
 
 	# BUSCAR AL JUGADOR
@@ -75,13 +91,11 @@ func _ready():
 	# CREAR ELEMENTOS
 	create_sky()
 	create_world_layers()
+	create_mountains()
 	create_flag()
 
-	# NUBES INICIALES
-	create_cloud(player.global_position.y + 210.0)
-	create_cloud(player.global_position.y + 360.0)
-
-	next_cloud_y = player.global_position.y + 50.0
+	# NUBES: EMPEZAR LEJOS DEL SUELO
+	next_cloud_y = start_y - CLOUDS_START_HEIGHT
 	generate_clouds_ahead()
 
 	# ESTRELLAS
@@ -91,6 +105,10 @@ func _ready():
 	# PLANETAS
 	next_planet_y = start_y - PLANET_START_HEIGHT
 	generate_planets_ahead()
+
+	# OBJETOS ESPACIALES
+	next_space_y = start_y - SPACE_OBJECT_START
+	generate_space_objects_ahead()
 
 
 func _process(_delta):
@@ -103,20 +121,18 @@ func _process(_delta):
 		start_y - player.global_position.y
 	)
 
-	# CAMBIAR COLOR DEL CIELO
 	sky.color = get_sky_color(height)
 
-	# GENERAR ELEMENTOS
 	generate_clouds_ahead()
 	generate_stars_ahead()
 	generate_planets_ahead()
+	generate_space_objects_ahead()
 
-	# LIMPIAR ELEMENTOS LEJANOS
 	cleanup_old_decorations()
 
 
 # ==================================
-# CIELO INFINITO
+# CIELO
 # ==================================
 
 func create_sky():
@@ -148,36 +164,32 @@ func get_sky_color(height: float) -> Color:
 	var sky_4 = Color(\"#252047\")
 	var sky_5 = Color(\"#090F25\")
 
-	# CIELO
-	if height < 15000.0:
+	if height < 9000.0:
 
 		return sky_1.lerp(
 			sky_2,
-			height / 15000.0
+			height / 9000.0
 		)
 
-	# SOBRE LAS NUBES
-	elif height < 32000.0:
+	elif height < 15000.0:
 
 		return sky_2.lerp(
 			sky_3,
-			(height - 15000.0) / 17000.0
+			(height - 9000.0) / 6000.0
 		)
 
-	# ALTA ATMÓSFERA
-	elif height < 50000.0:
+	elif height < 22000.0:
 
 		return sky_3.lerp(
 			sky_4,
-			(height - 32000.0) / 18000.0
+			(height - 15000.0) / 7000.0
 		)
 
-	# ESPACIO
-	elif height < 70000.0:
+	elif height < 30000.0:
 
 		return sky_4.lerp(
 			sky_5,
-			(height - 50000.0) / 20000.0
+			(height - 22000.0) / 8000.0
 		)
 
 	return sky_5
@@ -189,19 +201,106 @@ func get_sky_color(height: float) -> Color:
 
 func create_world_layers():
 
+	# MONTAÑAS
+	mountain_layer = Node2D.new()
+	mountain_layer.name = \"Mountains\"
+	mountain_layer.z_index = -1
+	add_child(mountain_layer)
+
+	# NUBES
 	cloud_layer = Node2D.new()
 	cloud_layer.name = \"Clouds\"
 	add_child(cloud_layer)
 
+	# ESTRELLAS
 	star_layer = Node2D.new()
 	star_layer.name = \"Stars\"
 	star_layer.z_index = 1
 	add_child(star_layer)
 
+	# PLANETAS
 	planet_layer = Node2D.new()
 	planet_layer.name = \"Planets\"
 	planet_layer.z_index = 2
 	add_child(planet_layer)
+
+	# OBJETOS ESPACIALES
+	space_layer = Node2D.new()
+	space_layer.name = \"SpaceObjects\"
+	space_layer.z_index = 3
+	add_child(space_layer)
+
+
+# ==================================
+# MONTAÑAS
+# ==================================
+
+func create_mountains():
+
+	# MONTAÑAS DEL FONDO
+	var distant = Polygon2D.new()
+	distant.name = \"DistantMountains\"
+
+	distant.polygon = PackedVector2Array([
+		Vector2(-100, 700),
+		Vector2(-100, 525),
+		Vector2(70, 440),
+		Vector2(210, 530),
+		Vector2(390, 455),
+		Vector2(540, 535),
+		Vector2(700, 460),
+		Vector2(870, 535),
+		Vector2(1050, 430),
+		Vector2(1260, 515),
+		Vector2(1260, 700)
+	])
+
+	distant.color = Color(\"#789F9A\")
+
+	mountain_layer.add_child(distant)
+
+	# MONTAÑAS DELANTERAS
+	var front = Polygon2D.new()
+	front.name = \"FrontMountains\"
+
+	front.polygon = PackedVector2Array([
+		Vector2(-100, 760),
+		Vector2(-100, 575),
+		Vector2(100, 520),
+		Vector2(260, 565),
+		Vector2(420, 495),
+		Vector2(580, 570),
+		Vector2(760, 510),
+		Vector2(940, 565),
+		Vector2(1110, 500),
+		Vector2(1260, 550),
+		Vector2(1260, 760)
+	])
+
+	front.color = Color(\"#527D5B\")
+
+	mountain_layer.add_child(front)
+
+	# BORDE VERDE DE LAS MONTAÑAS
+	var ridge = Line2D.new()
+	ridge.name = \"GrassRidge\"
+
+	ridge.points = PackedVector2Array([
+		Vector2(-100, 575),
+		Vector2(100, 520),
+		Vector2(260, 565),
+		Vector2(420, 495),
+		Vector2(580, 570),
+		Vector2(760, 510),
+		Vector2(940, 565),
+		Vector2(1110, 500),
+		Vector2(1260, 550)
+	])
+
+	ridge.width = 7.0
+	ridge.default_color = Color(\"#A6CB72\")
+
+	mountain_layer.add_child(ridge)
 
 
 # ==================================
@@ -209,6 +308,20 @@ func create_world_layers():
 # ==================================
 
 func create_cloud(cloud_y: float):
+
+	var altitude = start_y - cloud_y
+
+	var fade = clampf(
+		(altitude - CLOUD_FADE_START) /
+		(CLOUD_FADE_END - CLOUD_FADE_START),
+		0.0,
+		1.0
+	)
+
+	var alpha = 0.82 * (1.0 - fade)
+
+	if alpha <= 0.02:
+		return
 
 	var cloud = Sprite2D.new()
 	cloud.texture = CLOUD_TEXTURE
@@ -226,22 +339,6 @@ func create_cloud(cloud_y: float):
 	)
 
 	cloud.flip_h = randf() < 0.5
-
-	# DESVANECER NUBES CON LA ALTURA
-	var altitude = start_y - cloud_y
-
-	var fade = clampf(
-		(altitude - CLOUD_FADE_START) /
-		(CLOUD_FADE_END - CLOUD_FADE_START),
-		0.0,
-		1.0
-	)
-
-	var alpha = 0.82 * (1.0 - fade)
-
-	if alpha <= 0.02:
-		return
-
 	cloud.modulate = Color(1, 1, 1, alpha)
 
 	cloud_layer.add_child(cloud)
@@ -253,7 +350,6 @@ func generate_clouds_ahead():
 
 		create_cloud(next_cloud_y)
 
-		# PEQUEÑOS GRUPOS OCASIONALES
 		if randf() < 0.15:
 
 			create_cloud(
@@ -270,12 +366,31 @@ func generate_clouds_ahead():
 # ESTRELLAS
 # ==================================
 
+func make_star(radius: float) -> PackedVector2Array:
+
+	var points = PackedVector2Array()
+
+	for i in range(8):
+
+		var angle = -PI / 2.0 + TAU * i / 8.0
+		var r = radius
+
+		if i % 2 != 0:
+			r *= 0.3
+
+		points.append(
+			Vector2(cos(angle), sin(angle)) * r
+		)
+
+	return points
+
+
 func create_star(star_y: float):
 
 	var star = Polygon2D.new()
-
 	var radius = randf_range(2.0, 4.0)
-	star.polygon = make_circle(radius, 8)
+
+	star.polygon = make_star(radius)
 
 	star.color = Color(
 		1.0,
@@ -296,20 +411,36 @@ func generate_stars_ahead():
 
 	while next_star_y > player.global_position.y - STAR_AHEAD:
 
-		create_star(next_star_y)
-
-		if randf() < 0.6:
+		for i in range(randi_range(3, 6)):
 
 			create_star(
-				next_star_y + randf_range(40.0, 130.0)
+				next_star_y + randf_range(-100.0, 100.0)
 			)
 
-		next_star_y -= randf_range(180.0, 320.0)
+		next_star_y -= randf_range(100.0, 180.0)
 
 
 # ==================================
 # PLANETAS
 # ==================================
+
+func make_circle(
+	radius: float,
+	segments: int = 32
+) -> PackedVector2Array:
+
+	var points = PackedVector2Array()
+
+	for i in range(segments):
+
+		var angle = TAU * float(i) / float(segments)
+
+		points.append(
+			Vector2(cos(angle), sin(angle)) * radius
+		)
+
+	return points
+
 
 func create_planet(planet_y: float):
 
@@ -323,7 +454,6 @@ func create_planet(planet_y: float):
 
 	var radius = randf_range(45.0, 85.0)
 
-	# COLORES ALEATORIOS
 	var planet_colors = [
 		Color(\"#D58B76\"),
 		Color(\"#B49ADB\"),
@@ -337,11 +467,10 @@ func create_planet(planet_y: float):
 		randi_range(0, planet_colors.size() - 1)
 	]
 
-	# ANILLOS OPCIONALES
+	# ANILLOS
 	if randf() < 0.55:
 
 		var ring = Line2D.new()
-
 		ring.width = randf_range(3.0, 6.0)
 		ring.default_color = planet_color.lightened(0.35)
 
@@ -359,45 +488,30 @@ func create_planet(planet_y: float):
 			)
 
 		ring.points = ring_points
-
-		# EL ANILLO QUEDA DETRÁS DEL PLANETA
 		planet.add_child(ring)
 
-	# BRILLO EXTERIOR
+	# BRILLO
 	var halo = Polygon2D.new()
-
-	halo.polygon = make_circle(
-		radius * 1.12,
-		40
-	)
-
+	halo.polygon = make_circle(radius * 1.12)
 	halo.color = planet_color.lightened(0.35)
 	halo.color.a = 0.16
 
 	planet.add_child(halo)
 
-	# CUERPO DEL PLANETA
+	# CUERPO
 	var body = Polygon2D.new()
-
 	body.polygon = make_circle(radius, 48)
 	body.color = planet_color
 
 	planet.add_child(body)
 
-	# CRÁTERES DECORATIVOS
+	# CRÁTERES
 	for i in range(randi_range(2, 4)):
 
 		var crater = Polygon2D.new()
+		var crater_radius = radius * randf_range(0.07, 0.15)
 
-		var crater_radius = radius * randf_range(
-			0.07,
-			0.15
-		)
-
-		crater.polygon = make_circle(
-			crater_radius,
-			16
-		)
+		crater.polygon = make_circle(crater_radius, 16)
 
 		crater.position = Vector2(
 			randf_range(-radius * 0.55, radius * 0.55),
@@ -417,6 +531,12 @@ func generate_planets_ahead():
 
 		create_planet(next_planet_y)
 
+		if randf() < 0.25:
+
+			create_planet(
+				next_planet_y + randf_range(250.0, 500.0)
+			)
+
 		next_planet_y -= randf_range(
 			PLANET_SPACING_MIN,
 			PLANET_SPACING_MAX
@@ -424,28 +544,186 @@ func generate_planets_ahead():
 
 
 # ==================================
-# FORMAS CIRCULARES
+# ASTEROIDES
 # ==================================
 
-func make_circle(
-	radius: float,
-	segments: int = 32
-) -> PackedVector2Array:
+func create_asteroid(asteroid_y: float):
 
+	var asteroid = Node2D.new()
+
+	asteroid.position = Vector2(
+		randf_range(40.0, 1112.0),
+		asteroid_y
+	)
+
+	var radius = randf_range(12.0, 27.0)
 	var points = PackedVector2Array()
+
+	var segments = randi_range(7, 10)
 
 	for i in range(segments):
 
 		var angle = TAU * float(i) / float(segments)
+		var variation = randf_range(0.75, 1.2)
 
 		points.append(
 			Vector2(
 				cos(angle),
 				sin(angle)
-			) * radius
+			) * radius * variation
 		)
 
-	return points
+	var body = Polygon2D.new()
+	body.polygon = points
+	body.color = Color(\"#85818B\")
+
+	asteroid.add_child(body)
+
+	var crater = Polygon2D.new()
+	crater.polygon = make_circle(radius * 0.18, 12)
+	crater.position = Vector2(radius * 0.3, -radius * 0.2)
+	crater.color = Color(\"#55515E\")
+
+	asteroid.add_child(crater)
+
+	space_layer.add_child(asteroid)
+
+
+# ==================================
+# SATÉLITES
+# ==================================
+
+func add_rectangle(
+	parent: Node2D,
+	center: Vector2,
+	size: Vector2,
+	color: Color
+):
+
+	var rect = Polygon2D.new()
+	var half = size / 2.0
+
+	rect.polygon = PackedVector2Array([
+		Vector2(-half.x, -half.y),
+		Vector2(half.x, -half.y),
+		Vector2(half.x, half.y),
+		Vector2(-half.x, half.y)
+	])
+
+	rect.position = center
+	rect.color = color
+
+	parent.add_child(rect)
+
+
+func create_satellite(satellite_y: float):
+
+	var satellite = Node2D.new()
+
+	satellite.position = Vector2(
+		randf_range(150.0, 1000.0),
+		satellite_y
+	)
+
+	satellite.rotation = randf_range(-0.35, 0.35)
+
+	var color = Color(\"#B8C4D8\")
+
+	add_rectangle(
+		satellite,
+		Vector2(-35, 0),
+		Vector2(28, 15),
+		Color(\"#567AA5\")
+	)
+
+	add_rectangle(
+		satellite,
+		Vector2(35, 0),
+		Vector2(28, 15),
+		Color(\"#567AA5\")
+	)
+
+	add_rectangle(
+		satellite,
+		Vector2.ZERO,
+		Vector2(22, 22),
+		color
+	)
+
+	var antenna = Line2D.new()
+
+	antenna.points = PackedVector2Array([
+		Vector2(0, -11),
+		Vector2(0, -24),
+		Vector2(10, -30)
+	])
+
+	antenna.width = 2.0
+	antenna.default_color = color
+
+	satellite.add_child(antenna)
+
+	space_layer.add_child(satellite)
+
+
+# ==================================
+# ESTRELLAS FUGACES
+# ==================================
+
+func create_comet(comet_y: float):
+
+	var comet = Node2D.new()
+
+	comet.position = Vector2(
+		randf_range(100.0, 1000.0),
+		comet_y
+	)
+
+	var tail = Line2D.new()
+
+	tail.points = PackedVector2Array([
+		Vector2(-85, 65),
+		Vector2(-35, 25),
+		Vector2.ZERO
+	])
+
+	tail.width = 3.0
+	tail.default_color = Color(\"#B8DFFF\")
+
+	comet.add_child(tail)
+
+	var head = Polygon2D.new()
+	head.polygon = make_star(5.0)
+	head.color = Color.WHITE
+
+	comet.add_child(head)
+
+	space_layer.add_child(comet)
+
+
+# ==================================
+# GENERACIÓN DE OBJETOS ESPACIALES
+# ==================================
+
+func generate_space_objects_ahead():
+
+	while next_space_y > player.global_position.y - SPACE_OBJECT_AHEAD:
+
+		var type = randf()
+
+		if type < 0.50:
+			create_asteroid(next_space_y)
+
+		elif type < 0.78:
+			create_satellite(next_space_y)
+
+		else:
+			create_comet(next_space_y)
+
+		next_space_y -= randf_range(
+			SPACE_OBJECT_SPACING_MIN,
+			SPACE_OBJECT_SPACING_MAX
+		)
 
 
 # ==================================
@@ -466,7 +744,7 @@ func create_flag():
 		0.6614286
 	)
 
-	flag.z_index = 3
+	flag.z_index = 4
 
 	add_child(flag)
 
@@ -491,6 +769,11 @@ func cleanup_old_decorations():
 
 		if planet.global_position.y > player.global_position.y + 8000.0:
 			planet.queue_free()
+
+	for object in space_layer.get_children():
+
+		if object.global_position.y > player.global_position.y + 2500.0:
+			object.queue_free()
 "
 
 [node name="background" type="Node2D" unique_id=33009793]
