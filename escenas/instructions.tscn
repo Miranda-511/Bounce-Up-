@@ -1,18 +1,12 @@
 [gd_scene format=3 uid="uid://cao2t42jj6k2t"]
 
+[ext_resource type="Texture2D" uid="uid://ce4htaho23tqh" path="res://assets/cómo jugar bg.webp" id="1_jocam"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="1_luvsg"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_eaw6l"]
-font = ExtResource("1_luvsg")
-font_size = 80
-font_color = Color(0, 0, 0, 1)
-outline_size = 10
-outline_color = Color(0.13, 0.8549999, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_pv7or"]
 line_spacing = 1.0
 font = ExtResource("1_luvsg")
-font_size = 35
+font_size = 40
 font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Theme" id="Theme_eaw6l"]
@@ -38,46 +32,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1467629764]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.50100005
-anchor_bottom = 0.5
-offset_left = -576.0
-offset_top = -324.0
-offset_right = 576.84796
-offset_bottom = 328.0
-color = Color(0.88, 0.50159997, 0.88, 1)
-
-[node name="instr_title" type="Label" parent="." unique_id=912125895]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.50043404
-anchor_top = 0.13144445
-anchor_right = 0.50043404
-anchor_bottom = 0.13144445
-offset_left = -284.5
-offset_top = -40.176003
-offset_right = 284.5
-offset_bottom = 39.823997
-grow_horizontal = 2
-text = "INSTRUCCIONES"
-label_settings = SubResource("LabelSettings_eaw6l")
-metadata/_edit_use_anchors_ = true
+[node name="TextureRect" type="TextureRect" parent="." unique_id=371374344]
+layout_mode = 0
+offset_left = -2.0
+offset_right = 1157.0
+offset_bottom = 648.0
+texture = ExtResource("1_jocam")
 
 [node name="instr_text" type="Label" parent="." unique_id=2082364869]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5044028
-anchor_top = 0.6793087
-anchor_right = 0.5044028
-anchor_bottom = 0.6793087
-offset_left = -451.07202
-offset_top = -291.19205
-offset_right = 449.92798
-offset_bottom = 151.80795
+anchor_left = 0.49673617
+anchor_top = 0.5839753
+anchor_right = 0.5017361
+anchor_bottom = 0.5839753
+offset_left = -515.24005
+offset_top = -232.41602
+offset_right = 509.0
+offset_bottom = 232.58398
 text = "- Teclas ← → para mover la pelota
 
 - La pelota rebota automáticamente.

@@ -14,6 +14,7 @@ const WRAP_MARGIN = 30.0
 const CAMERA_SPEED = 1.0
 const CAMERA_TRIGGER = 260.0
 const FALL_LIMIT = 700.0
+const DEATH_DELAY = 0.8
 
 const SAVE_PATH = \"user://scores.cfg\"
 
@@ -25,6 +26,9 @@ const SAVE_PATH = \"user://scores.cfg\"
 var start_y: float
 var highest_y: float
 var best_score: int = 0
+
+var is_dead: bool = false
+var death_timer: float = 0.0
 
 
 func _ready():
@@ -43,18 +47,20 @@ func _ready():
 
 func _physics_process(delta: float) -> void:
 
-	# ==================================
-	# GRAVEDAD
-	# ==================================
+	# ESPERAR ANTES DE REINICIAR
+	if is_dead:
+		death_timer -= delta
 
+		if death_timer <= 0:
+			get_tree().reload_current_scene()
+
+		return
+
+	# GRAVEDAD
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-
-	# ==================================
 	# MOVIMIENTO HORIZONTAL
-	# ==================================
-
 	var direction := Input.get_axis(\"ui_left\", \"ui_right\")
 
 	if direction:
@@ -62,33 +68,17 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
-
-	# ==================================
 	# MOVIMIENTO Y COLISIONES
-	# ==================================
-
 	move_and_slide()
 
-
-	# ==================================
 	# REBOTE AUTOMÁTICO
-	# ==================================
-
 	if is_on_floor() and velocity.y >= 0:
 		velocity.y = JUMP_VELOCITY
 
-
-	# ==================================
 	# ANIMACIÓN
-	# ==================================
-
 	update_animation()
 
-
-	# ==================================
 	# SCREEN WRAPPING
-	# ==================================
-
 	var screen_width = get_viewport_rect().size.x
 
 	if global_position.x < -WRAP_MARGIN:
@@ -97,11 +87,7 @@ func _physics_process(delta: float) -> void:
 	elif global_position.x > screen_width + WRAP_MARGIN:
 		global_position.x = -WRAP_MARGIN
 
-
-	# ==================================
 	# CÁMARA VERTICAL
-	# ==================================
-
 	if global_position.y < camera.global_position.y - CAMERA_TRIGGER:
 
 		var target_y = global_position.y + CAMERA_TRIGGER
@@ -112,11 +98,7 @@ func _physics_process(delta: float) -> void:
 			min(CAMERA_SPEED * delta, 1.0)
 		)
 
-
-	# ==================================
 	# PUNTUACIÓN Y RÉCORD
-	# ==================================
-
 	if global_position.y < highest_y:
 		highest_y = global_position.y
 
@@ -131,41 +113,31 @@ func _physics_process(delta: float) -> void:
 		best_score_label.text = \"Récord: \" + str(best_score)
 		save_best_score()
 
+	# DETECTAR MUERTE
+	if sprite.global_position.y > camera.global_position.y + FALL_LIMIT:
 
-	# ==================================
-	# SI EL JUGADOR CAE, REINICIAR
-	# ==================================
-
-	if global_position.y > camera.global_position.y + FALL_LIMIT:
-		get_tree().reload_current_scene()
+		is_dead = true
+		death_timer = DEATH_DELAY
 
 
-# ==================================
 # ANIMACIÓN DEL JUGADOR
-# ==================================
 
 func update_animation():
 
-	# TOCANDO EL SUELO
 	if is_on_floor():
 		sprite.frame = 0
 
-	# SUBIENDO
 	elif velocity.y < -100.0:
 		sprite.frame = 4
 
-	# PUNTO MÁS ALTO
 	elif velocity.y <= 150.0:
 		sprite.frame = 8
 
-	# CAYENDO
 	else:
 		sprite.frame = 12
 
 
-# ==================================
 # CARGAR RÉCORD GUARDADO
-# ==================================
 
 func load_best_score():
 
@@ -178,9 +150,7 @@ func load_best_score():
 	best_score_label.text = \"Récord: \" + str(best_score)
 
 
-# ==================================
 # GUARDAR NUEVO RÉCORD
-# ==================================
 
 func save_best_score():
 
