@@ -13,10 +13,10 @@ const WRAP_MARGIN = 30.0
 
 const CAMERA_SPEED = 1.0
 const CAMERA_TRIGGER = 260.0
-const FALL_LIMIT = 700.0
-const DEATH_DELAY = 0.8
+const DEATH_MARGIN = 180.0
 
 const SAVE_PATH = \"user://scores.cfg\"
+const GAME_OVER_SCENE = preload(\"res://escenas/gameover.tscn\")
 
 @onready var camera: Camera2D = $\"../Camera2D\"
 @onready var score_label: Label = $\"../CanvasLayer/ScoreLabel\"
@@ -26,9 +26,8 @@ const SAVE_PATH = \"user://scores.cfg\"
 var start_y: float
 var highest_y: float
 var best_score: int = 0
-
+var current_score: int = 0
 var is_dead: bool = false
-var death_timer: float = 0.0
 
 
 func _ready():
@@ -36,24 +35,16 @@ func _ready():
 	start_y = global_position.y
 	highest_y = start_y
 
-	# CONFIGURACIÓN DEL SPRITE SHEET
 	sprite.hframes = 4
 	sprite.vframes = 4
 	sprite.frame = 0
 
-	# CARGAR RÉCORD
 	load_best_score()
 
 
 func _physics_process(delta: float) -> void:
 
-	# ESPERAR ANTES DE REINICIAR
 	if is_dead:
-		death_timer -= delta
-
-		if death_timer <= 0:
-			get_tree().reload_current_scene()
-
 		return
 
 	# GRAVEDAD
@@ -68,7 +59,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
-	# MOVIMIENTO Y COLISIONES
+	# MOVIMIENTO
 	move_and_slide()
 
 	# REBOTE AUTOMÁTICO
@@ -87,7 +78,7 @@ func _physics_process(delta: float) -> void:
 	elif global_position.x > screen_width + WRAP_MARGIN:
 		global_position.x = -WRAP_MARGIN
 
-	# CÁMARA VERTICAL
+	# CÁMARA
 	if global_position.y < camera.global_position.y - CAMERA_TRIGGER:
 
 		var target_y = global_position.y + CAMERA_TRIGGER
@@ -98,29 +89,48 @@ func _physics_process(delta: float) -> void:
 			min(CAMERA_SPEED * delta, 1.0)
 		)
 
-	# PUNTUACIÓN Y RÉCORD
+	# PUNTUACIÓN
 	if global_position.y < highest_y:
 		highest_y = global_position.y
 
-	var score = int((start_y - highest_y) / 10.0)
-	score = max(score, 0)
+	current_score = int((start_y - highest_y) / 10.0)
+	current_score = max(current_score, 0)
 
-	score_label.text = \"Puntuación: \" + str(score)
+	score_label.text = \"Puntuación: \" + str(current_score)
 
-	# COMPROBAR NUEVO RÉCORD
-	if score > best_score:
-		best_score = score
+	# RÉCORD
+	if current_score > best_score:
+		best_score = current_score
 		best_score_label.text = \"Récord: \" + str(best_score)
 		save_best_score()
 
-	# DETECTAR MUERTE
-	if sprite.global_position.y > camera.global_position.y + FALL_LIMIT:
+	# DETECTAR CAÍDA FUERA DE LA PANTALLA
+	var screen_bottom = camera.global_position.y + (
+		get_viewport_rect().size.y / 2.0
+	)
 
-		is_dead = true
-		death_timer = DEATH_DELAY
+	if sprite.global_position.y > screen_bottom + DEATH_MARGIN:
+		show_game_over()
 
 
-# ANIMACIÓN DEL JUGADOR
+# GAME OVER
+
+func show_game_over():
+
+	if is_dead:
+		return
+
+	is_dead = true
+	velocity = Vector2.ZERO
+
+	var game_over = GAME_OVER_SCENE.instantiate()
+
+	get_tree().current_scene.add_child(game_over)
+
+	game_over.setup(current_score, best_score)
+
+
+# ANIMACIÓN
 
 func update_animation():
 
@@ -137,7 +147,7 @@ func update_animation():
 		sprite.frame = 12
 
 
-# CARGAR RÉCORD GUARDADO
+# CARGAR RÉCORD
 
 func load_best_score():
 
@@ -150,7 +160,7 @@ func load_best_score():
 	best_score_label.text = \"Récord: \" + str(best_score)
 
 
-# GUARDAR NUEVO RÉCORD
+# GUARDAR RÉCORD
 
 func save_best_score():
 

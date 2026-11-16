@@ -1,14 +1,146 @@
 [gd_scene format=3 uid="uid://dgtvx408ta2qj"]
 
-[node name="gameover" type="Control" unique_id=574312247]
+[ext_resource type="Texture2D" uid="uid://ciaees4ixda0s" path="res://assets/game over bg.jpg" id="1_ys24l"]
+[ext_resource type="Texture2D" uid="uid://bvjl6k302vygj" path="res://assets/restart button bounce up.png" id="2_prenm"]
+[ext_resource type="Texture2D" uid="uid://lub1k3ynyo3k" path="res://assets/restart button bounce up PRESSED.png" id="3_a75a3"]
+[ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="4_merfv"]
+
+[sub_resource type="GDScript" id="GDScript_ys24l"]
+resource_name = "game_over"
+script/source = "
+extends Control
+
+
+func _ready():
+
+	var restart_button = find_child(\"RestartButton\", true, false)
+
+	if restart_button:
+		restart_button.pressed.connect(_on_restart_pressed)
+
+
+func setup(final_score: int, best_score: int):
+
+	var score_label = find_child(\"ScoreLabel\", true, false)
+	var best_score_label = find_child(\"BestScoreLabel\", true, false)
+
+	if score_label:
+		score_label.text = \"Puntuación: \" + str(final_score)
+
+	if best_score_label:
+		best_score_label.text = \"Récord: \" + str(best_score)
+
+
+func _on_restart_pressed():
+
+	get_tree().reload_current_scene()
+"
+
+[sub_resource type="GDScript" id="GDScript_nrxm1"]
+resource_name = "restart"
+script/source = "extends TextureButton
+
+func _ready():
+	pressed.connect(_on_pressed)
+
+func _on_pressed():
+	get_tree().reload_current_scene()
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_ewdes"]
+font = ExtResource("4_merfv")
+font_size = 80
+font_color = Color(0, 0, 0, 1)
+outline_size = 4
+outline_color = Color(1, 1, 0, 1)
+shadow_size = 15
+shadow_color = Color(1, 1, 0, 1)
+shadow_offset = Vector2(0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_eaw6l"]
+font = ExtResource("4_merfv")
+font_size = 175
+font_color = Color(0.7372549, 0, 0, 1)
+outline_size = 5
+outline_color = Color(1, 0, 0.24313726, 1)
+shadow_size = 100
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0, 0)
+
+[node name="GameOver" type="Control" unique_id=574312247]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = SubResource("GDScript_ys24l")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1827750454]
+layout_mode = 1
+offset_left = -19.0
+offset_top = -16.0
+offset_right = 1168.0
+offset_bottom = 668.0
+texture = ExtResource("1_ys24l")
+expand_mode = 1
+
+[node name="RestartButton" type="TextureButton" parent="." unique_id=2130504874]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 877.0
+offset_top = 418.0
+offset_right = 1527.1589
+offset_bottom = 1010.74304
+scale = Vector2(0.37529266, 0.37452996)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource("2_prenm")
+texture_pressed = ExtResource("3_a75a3")
+ignore_texture_size = true
+stretch_mode = 0
+script = SubResource("GDScript_nrxm1")
+
+[node name="ScoreLabel" type="Label" parent="." unique_id=1763219133]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.8334517
+anchor_top = -0.23049885
+anchor_right = -0.43327808
+anchor_bottom = -0.15025192
+offset_left = 1212.1364
+offset_top = 427.36325
+offset_right = 1401.1364
+offset_bottom = 455.36325
+text = "Puntuación: 0"
+label_settings = SubResource("LabelSettings_ewdes")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="BestScoreLabel" type="Label" parent="." unique_id=1675372408]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.73956895
+anchor_top = -0.11473489
+anchor_right = -0.51474255
+anchor_bottom = -0.03448797
+offset_left = 1191.9834
+offset_top = 439.3482
+offset_right = 1380.9834
+offset_bottom = 467.3482
+text = "Récord: 0"
+label_settings = SubResource("LabelSettings_ewdes")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TitleLabel" type="Label" parent="." unique_id=1319267948]
+layout_mode = 0
+offset_left = 110.0
+offset_top = 83.0
+offset_right = 1083.0
+offset_bottom = 268.0
+text = "¡PERDISTE! :("
+label_settings = SubResource("LabelSettings_eaw6l")
+horizontal_alignment = 1
+vertical_alignment = 1
