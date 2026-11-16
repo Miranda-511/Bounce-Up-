@@ -201,12 +201,12 @@ metadata/_edit_use_anchors_ = true
 
 [node name="BestScoreLabel" type="Label" parent="CanvasLayer" unique_id=477997808]
 anchors_preset = -1
-anchor_left = 0.051215276
+anchor_left = -0.0026041667
 anchor_right = -0.0026041667
-offset_left = 833.0
-offset_top = 57.0
-offset_right = 1022.0
-offset_bottom = 85.0
+offset_left = 896.0
+offset_top = 53.0
+offset_right = 1085.0
+offset_bottom = 81.0
 text = "Récord: 0"
 label_settings = SubResource("LabelSettings_kkt6c")
 metadata/_edit_use_anchors_ = true

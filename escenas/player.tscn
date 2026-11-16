@@ -13,7 +13,7 @@ const WRAP_MARGIN = 30.0
 
 const CAMERA_SPEED = 1.0
 const CAMERA_TRIGGER = 260.0
-const DEATH_MARGIN = 180.0
+const DEATH_MARGIN = 100.0
 
 const SAVE_PATH = \"user://scores.cfg\"
 const GAME_OVER_SCENE = preload(\"res://escenas/gameover.tscn\")
@@ -31,7 +31,6 @@ var is_dead: bool = false
 
 
 func _ready():
-
 	start_y = global_position.y
 	highest_y = start_y
 
@@ -59,7 +58,6 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
-	# MOVIMIENTO
 	move_and_slide()
 
 	# REBOTE AUTOMÁTICO
@@ -74,13 +72,11 @@ func _physics_process(delta: float) -> void:
 
 	if global_position.x < -WRAP_MARGIN:
 		global_position.x = screen_width + WRAP_MARGIN
-
 	elif global_position.x > screen_width + WRAP_MARGIN:
 		global_position.x = -WRAP_MARGIN
 
 	# CÁMARA
 	if global_position.y < camera.global_position.y - CAMERA_TRIGGER:
-
 		var target_y = global_position.y + CAMERA_TRIGGER
 
 		camera.global_position.y = lerp(
@@ -104,50 +100,42 @@ func _physics_process(delta: float) -> void:
 		best_score_label.text = \"Récord: \" + str(best_score)
 		save_best_score()
 
-	# DETECTAR CAÍDA FUERA DE LA PANTALLA
-	var screen_bottom = camera.global_position.y + (
-		get_viewport_rect().size.y / 2.0
-	)
+	# DETECTAR CAÍDA USANDO LA POSICIÓN REAL DEL SPRITE
+	var screen_bottom = camera.get_screen_center_position().y + 324.0
 
 	if sprite.global_position.y > screen_bottom + DEATH_MARGIN:
 		show_game_over()
 
 
-# GAME OVER
-
 func show_game_over():
-
 	if is_dead:
 		return
 
 	is_dead = true
 	velocity = Vector2.ZERO
+	set_physics_process(false)
+
+	var layer = CanvasLayer.new()
+	layer.layer = 100
+	get_tree().current_scene.add_child(layer)
 
 	var game_over = GAME_OVER_SCENE.instantiate()
-
-	get_tree().current_scene.add_child(game_over)
+	layer.add_child(game_over)
 
 	game_over.setup(current_score, best_score)
 
-
-# ANIMACIÓN
 
 func update_animation():
 
 	if is_on_floor():
 		sprite.frame = 0
-
 	elif velocity.y < -100.0:
 		sprite.frame = 4
-
 	elif velocity.y <= 150.0:
 		sprite.frame = 8
-
 	else:
 		sprite.frame = 12
 
-
-# CARGAR RÉCORD
 
 func load_best_score():
 
@@ -160,12 +148,9 @@ func load_best_score():
 	best_score_label.text = \"Récord: \" + str(best_score)
 
 
-# GUARDAR RÉCORD
-
 func save_best_score():
 
 	var config = ConfigFile.new()
-
 	config.set_value(\"scores\", \"best_score\", best_score)
 
 	var error = config.save(SAVE_PATH)
