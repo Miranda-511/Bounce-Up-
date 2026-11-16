@@ -2,27 +2,25 @@
 
 [ext_resource type="Texture2D" uid="uid://ce4htaho23tqh" path="res://assets/cómo jugar bg.webp" id="1_jocam"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="1_luvsg"]
+[ext_resource type="Script" uid="uid://bdcxvpt7g2iyy" path="res://scripts/back.gd" id="3_68gym"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pv7or"]
 line_spacing = 1.0
 font = ExtResource("1_luvsg")
-font_size = 40
+font_size = 45
 font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_51fi4"]
+font = ExtResource("1_luvsg")
+font_size = 70
+font_color = Color(0, 0, 0, 1)
+shadow_size = 50
+shadow_color = Color(0.100000024, 0.8800001, 1, 1)
+shadow_offset = Vector2(0, 0)
 
 [sub_resource type="Theme" id="Theme_eaw6l"]
 default_font = ExtResource("1_luvsg")
 default_font_size = 40
-
-[sub_resource type="GDScript" id="GDScript_pv7or"]
-resource_name = "back"
-script/source = "extends Button
-
-func _ready():
-	pressed.connect(_on_pressed)
-
-func _on_pressed():
-	get_tree().change_scene_to_file(\"res://escenas/menu.tscn\")
-"
 
 [node name="Instructions" type="Control" unique_id=1092062286]
 layout_mode = 3
@@ -42,27 +40,40 @@ texture = ExtResource("1_jocam")
 [node name="instr_text" type="Label" parent="." unique_id=2082364869]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.49673617
-anchor_top = 0.5839753
-anchor_right = 0.5017361
-anchor_bottom = 0.5839753
+anchor_left = 0.44552088
+anchor_top = 0.55465454
+anchor_right = 0.5616319
+anchor_bottom = 0.35712367
 offset_left = -515.24005
 offset_top = -232.41602
 offset_right = 509.0
 offset_bottom = 232.58398
-text = "- Teclas ← → para mover la pelota
+text = "- Teclas ⬅⮕ para mover la pelota
 
 - La pelota rebota automáticamente.
 
 - Calculá tus saltos y no te caigás
 
-- Subí lo más alto que podás y superá tu récord
-
-¡Buena suerte!"
+- Subí lo más alto que podás y superá tu récord"
 label_settings = SubResource("LabelSettings_pv7or")
 horizontal_alignment = 1
-vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="instr_text2" type="Label" parent="." unique_id=791652460]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -247.5
+offset_top = -104.0
+offset_right = 247.5
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "¡Buena suerte!"
+label_settings = SubResource("LabelSettings_51fi4")
 
 [node name="back" type="Button" parent="." unique_id=1877970447]
 layout_mode = 0
@@ -76,4 +87,4 @@ theme_type_variation = &"FlatButton"
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "VOLVER"
 flat = true
-script = SubResource("GDScript_pv7or")
+script = ExtResource("3_68gym")
