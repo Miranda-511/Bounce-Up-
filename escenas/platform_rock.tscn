@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dnkunjxfiwym3"]
+
+[ext_resource type="Texture2D" uid="uid://kvqp7iogwc7d" path="res://assets/Plataforma Rocosa Flotante.png" id="1_e0wkv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_khefp"]
+size = Vector2(280, 20)
+
+[node name="platform_rock" type="Node2D" unique_id=2042642491]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1734903502]
+position = Vector2(893, 228)
+scale = Vector2(0.13599214, 0.09053617)
+texture = ExtResource("1_e0wkv")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1205474556]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=211680226]
+position = Vector2(893.125, 229)
+shape = SubResource("RectangleShape2D_khefp")
+one_way_collision = true
