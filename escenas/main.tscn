@@ -14,20 +14,21 @@ extends Node2D
 
 const PLATFORM_SCENE = preload(\"res://escenas/platform.tscn\")
 
-# CONFIGURACIÓN
-const VERTICAL_GAP = 110.0
-const MIN_HORIZONTAL_STEP = 120.0
-const MAX_HORIZONTAL_STEP = 190.0
+# DIFICULTAD
+const VERTICAL_GAP = 135.0
+const MIN_HORIZONTAL_STEP = 210.0
+const MAX_HORIZONTAL_STEP = 290.0
 const GENERATE_AHEAD = 900.0
 
 # POSICIONES INTERNAS DE LA PLATAFORMA
 const PLATFORM_CENTER_X = 932.125
 const PLATFORM_TOP_OFFSET_Y = 481.0
-const PLATFORM_HALF_WIDTH = 140.0
+const PLATFORM_HALF_WIDTH = 90.0
 
-# POSICIÓN DEL PISO
+# POSICIÓN INICIAL
 const FLOOR_TOP_Y = 582.5
 const FIRST_PLATFORM_ABOVE_FLOOR = 110.0
+const FIRST_PLATFORM_HORIZONTAL_OFFSET = 200.0
 
 @onready var main: Node2D = get_parent()
 
@@ -49,20 +50,21 @@ func _ready():
 		set_process(false)
 		return
 
-	# CENTRAR LA PRIMERA PLATAFORMA CON EL JUGADOR
 	var screen_width = get_viewport_rect().size.x
 
+	# POSICIÓN INICIAL
 	last_center_x = clamp(
-		player.global_position.x + 104.6,
-		PLATFORM_HALF_WIDTH,
-		screen_width - PLATFORM_HALF_WIDTH
+		player.global_position.x + 104.6 + FIRST_PLATFORM_HORIZONTAL_OFFSET,
+		120.0,
+		screen_width - 120.0
 	)
 
-	# ALTURA DE LA PRIMERA PLATAFORMA
-	next_platform_y = (
-		FLOOR_TOP_Y
-		- FIRST_PLATFORM_ABOVE_FLOOR
-	)
+	next_platform_y = FLOOR_TOP_Y - FIRST_PLATFORM_ABOVE_FLOOR
+
+	# CREAR PRIMERA PLATAFORMA
+	spawn_platform(last_center_x)
+
+	next_platform_y -= VERTICAL_GAP
 
 	generate_ahead()
 
@@ -81,38 +83,64 @@ func generate_ahead():
 		create_platform()
 
 
-func create_platform():
+func spawn_platform(center_x):
 
-	var screen_width = get_viewport_rect().size.x
-
-	var min_x = PLATFORM_HALF_WIDTH
-	var max_x = screen_width - PLATFORM_HALF_WIDTH
-
-	# ELEGIR DIRECCIÓN Y DISTANCIA
-	var direction = -1.0 if randf() < 0.5 else 1.0
-
-	var step = randf_range(
-		MIN_HORIZONTAL_STEP,
-		MAX_HORIZONTAL_STEP
-	)
-
-	var new_x = last_center_x + direction * step
-
-	# EVITAR SALIR DE LA PANTALLA
-	if new_x < min_x or new_x > max_x:
-		new_x = last_center_x - direction * step
-
-	new_x = clamp(new_x, min_x, max_x)
-
-	# CREAR PLATAFORMA
 	var new_platform = PLATFORM_SCENE.instantiate()
 
 	new_platform.position = Vector2(
-		new_x - PLATFORM_CENTER_X,
+		center_x - PLATFORM_CENTER_X,
 		next_platform_y - PLATFORM_TOP_OFFSET_Y
 	)
 
 	main.add_child.call_deferred(new_platform)
+
+
+func create_platform():
+
+	var screen_width = get_viewport_rect().size.x
+
+	var min_x = 120.0
+	var max_x = screen_width - 120.0
+
+	# POSICIONES POSIBLES A LA IZQUIERDA
+	var left_min = max(
+		min_x,
+		last_center_x - MAX_HORIZONTAL_STEP
+	)
+
+	var left_max = last_center_x - MIN_HORIZONTAL_STEP
+
+	# POSICIONES POSIBLES A LA DERECHA
+	var right_min = last_center_x + MIN_HORIZONTAL_STEP
+
+	var right_max = min(
+		max_x,
+		last_center_x + MAX_HORIZONTAL_STEP
+	)
+
+	var can_go_left = left_max >= left_min
+	var can_go_right = right_max >= right_min
+
+	var new_x = last_center_x
+
+	# ELEGIR ALEATORIAMENTE ENTRE AMBOS LADOS
+	if can_go_left and can_go_right:
+
+		if randf() < 0.5:
+			new_x = randf_range(left_min, left_max)
+		else:
+			new_x = randf_range(right_min, right_max)
+
+	elif can_go_left:
+
+		new_x = randf_range(left_min, left_max)
+
+	elif can_go_right:
+
+		new_x = randf_range(right_min, right_max)
+
+	# CREAR PLATAFORMA
+	spawn_platform(new_x)
 
 	# ACTUALIZAR POSICIONES
 	last_center_x = new_x

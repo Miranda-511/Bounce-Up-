@@ -86,11 +86,11 @@ radius = 242.7267
 script = SubResource("GDScript_esbpa")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1025957690]
-position = Vector2(471, -74)
+position = Vector2(104.099976, 534.99994)
 scale = Vector2(0.13, 0.13)
 texture = ExtResource("1_esbpa")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=773558526]
-position = Vector2(471, -74)
+position = Vector2(104.645966, 534.99994)
 scale = Vector2(0.15, 0.15)
 shape = SubResource("CircleShape2D_pv7or")
