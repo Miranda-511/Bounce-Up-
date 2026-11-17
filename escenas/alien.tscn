@@ -6,7 +6,7 @@
 resource_name = "alien"
 script/source = "extends Area2D
 
-const SPEED = 180.0
+const SPEED = 300
 
 var direction := 1.0
 

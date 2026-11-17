@@ -1,8 +1,8 @@
-
 extends Node2D
 
 const PLATFORM_SCENE = preload("res://escenas/platform.tscn")
 const ROCK_PLATFORM_SCENE = preload("res://escenas/platform_rock.tscn")
+const ALIEN_SCENE = preload("res://escenas/alien.tscn")
 
 # DIFICULTAD
 const VERTICAL_GAP = 270.0
@@ -23,15 +23,19 @@ const FIRST_PLATFORM_HORIZONTAL_OFFSET = 200.0
 # ALTURA EN LA QUE COMIENZAN LAS PLATAFORMAS ROCOSAS
 const ROCK_START_HEIGHT = 20000.0
 
+# ALIENS
+const ALIEN_START_HEIGHT = 20000.0
+const ALIEN_VERTICAL_GAP = 810.0
+
 @onready var main: Node2D = get_parent()
 
 var player: CharacterBody2D
 var start_y: float
 var next_platform_y: float
 var last_center_x: float
+var next_alien_y: float
 
 var recent_positions: Array[float] = []
-
 
 func _ready():
 
@@ -63,6 +67,9 @@ func _ready():
 
 	next_platform_y -= VERTICAL_GAP
 
+	# El primer alien aparecerá cuando lleguemos al espacio
+	next_alien_y = start_y - ALIEN_START_HEIGHT
+
 	generate_ahead()
 
 
@@ -78,6 +85,11 @@ func generate_ahead():
 
 	while next_platform_y > player.global_position.y - GENERATE_AHEAD:
 		create_platform()
+
+	# Generar aliens solamente en el espacio
+	while next_alien_y > player.global_position.y - GENERATE_AHEAD:
+		create_alien()
+		next_alien_y -= ALIEN_VERTICAL_GAP
 
 
 func spawn_platform(center_x: float):
@@ -113,6 +125,7 @@ func create_platform():
 	for attempt in range(100):
 
 		var candidate = randf_range(min_x, max_x)
+
 		var distance = abs(candidate - last_center_x)
 
 		if distance < MIN_HORIZONTAL_STEP:
@@ -158,4 +171,25 @@ func create_platform():
 		recent_positions.pop_front()
 
 	last_center_x = new_x
+
 	next_platform_y -= VERTICAL_GAP
+
+
+func create_alien():
+
+	var screen_width = get_viewport_rect().size.x
+
+	# Evitamos que aparezca pegado al borde
+	var min_x = 100.0
+	var max_x = screen_width - 100.0
+
+	var alien_x = randf_range(min_x, max_x)
+
+	var alien = ALIEN_SCENE.instantiate()
+
+	alien.global_position = Vector2(
+		alien_x,
+		next_alien_y
+	)
+
+	main.add_child.call_deferred(alien)
