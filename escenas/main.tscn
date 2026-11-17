@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://c25rogsoeh8ge"]
 
 [ext_resource type="PackedScene" uid="uid://cfsn8nl7xmay2" path="res://escenas/player.tscn" id="1_jumxm"]
-[ext_resource type="PackedScene" uid="uid://ch5ner46gv436" path="res://escenas/alien.tscn" id="1_o8odp"]
 [ext_resource type="PackedScene" uid="uid://bdaevce65k24h" path="res://escenas/background.tscn" id="2_26pgj"]
 [ext_resource type="PackedScene" uid="uid://bqijyx2j6xcjs" path="res://escenas/floor.tscn" id="3_dkga6"]
 [ext_resource type="Script" uid="uid://b1j42va45lk7k" path="res://scripts/platformgenerator.gd" id="4_68mvh"]
@@ -16,8 +15,6 @@ outline_size = 4
 outline_color = Color(1, 1, 0, 1)
 
 [node name="main" type="Node2D" unique_id=1156450642]
-
-[node name="Alien" parent="." unique_id=387026917 instance=ExtResource("1_o8odp")]
 
 [node name="floor" parent="." unique_id=1799524660 instance=ExtResource("3_dkga6")]
 

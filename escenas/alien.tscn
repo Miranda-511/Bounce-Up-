@@ -40,7 +40,7 @@ radius = 95.566734
 
 [node name="Alien" type="Area2D" unique_id=387026917]
 position = Vector2(572, 334)
-scale = Vector2(0.56999177, 0.5476038)
+scale = Vector2(0.52999663, 0.5476038)
 script = SubResource("GDScript_ryjbn")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1175185483]
