@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cfsn8nl7xmay2" path="res://escenas/player.tscn" id="1_jumxm"]
 [ext_resource type="PackedScene" uid="uid://bdaevce65k24h" path="res://escenas/background.tscn" id="2_26pgj"]
+[ext_resource type="PackedScene" uid="uid://bgxfwrlclu13d" path="res://escenas/platform_moving.tscn" id="3_a8p2b"]
 [ext_resource type="PackedScene" uid="uid://bqijyx2j6xcjs" path="res://escenas/floor.tscn" id="3_dkga6"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="6_a8p2b"]
 [ext_resource type="AudioStream" uid="uid://c847wwhkogxee" path="res://sound/the_mountain-retro-game-593063.mp3" id="10_dg7ii"]
@@ -224,6 +225,9 @@ drag_vertical_enabled = true
 
 [node name="AutomaticGenerator" type="Node2D" parent="." unique_id=356150963]
 script = SubResource("GDScript_dkga6")
+
+[node name="platform_moving" parent="." unique_id=547119095 instance=ExtResource("3_a8p2b")]
+position = Vector2(-724, -248)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1286689389]
 
