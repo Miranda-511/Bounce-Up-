@@ -3,9 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://ce4htaho23tqh" path="res://assets/cómo jugar bg.webp" id="1_jocam"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="1_luvsg"]
 [ext_resource type="Script" uid="uid://bdcxvpt7g2iyy" path="res://scripts/back.gd" id="3_68gym"]
+[ext_resource type="Texture2D" uid="uid://c8lwlutpkk60v" path="res://assets/pixel arrows.png" id="4_fwpr1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pv7or"]
-line_spacing = 1.0
+line_spacing = 0.0
 font = ExtResource("1_luvsg")
 font_size = 45
 font_color = Color(0, 0, 0, 1)
@@ -41,14 +42,14 @@ texture = ExtResource("1_jocam")
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.44552088
-anchor_top = 0.55465454
+anchor_top = 0.56082726
 anchor_right = 0.5616319
-anchor_bottom = 0.35712367
+anchor_bottom = 0.32934588
 offset_left = -515.24005
 offset_top = -232.41602
 offset_right = 509.0
 offset_bottom = 232.58398
-text = "- Teclas ⬅⮕ para mover la pelota
+text = "- Teclas               para mover la pelota
 
 - La pelota rebota automáticamente.
 
@@ -88,3 +89,12 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "VOLVER"
 flat = true
 script = ExtResource("3_68gym")
+
+[node name="arrows" type="TextureRect" parent="." unique_id=80774146]
+layout_mode = 0
+offset_left = 355.0
+offset_top = 131.0
+offset_right = 493.0
+offset_bottom = 178.0
+texture = ExtResource("4_fwpr1")
+expand_mode = 1
