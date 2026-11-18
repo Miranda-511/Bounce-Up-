@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bfvgnttptge2v"]
+
+[ext_resource type="Script" uid="uid://suajvieso4qh" path="res://scripts/platform_disappearing.gd" id="1_x6fud"]
+[ext_resource type="Texture2D" uid="uid://feqwaionnvbq" path="res://assets/platform_disappearing.png" id="2_ghllf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eaw6l"]
+size = Vector2(286.9375, 19)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pv7or"]
+size = Vector2(265, 0.3943367)
+
+[node name="platform_disappearing" type="Node2D" unique_id=547119095]
+script = ExtResource("1_x6fud")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1990015952]
+position = Vector2(929.00006, 493.87125)
+scale = Vector2(0.569, 0.16370524)
+texture = ExtResource("2_ghllf")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1182056072]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1534437433]
+position = Vector2(929, 493.99997)
+scale = Vector2(0.9208642, 0.9006633)
+shape = SubResource("RectangleShape2D_eaw6l")
+one_way_collision = true
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=363804157]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=874665949]
+position = Vector2(929, 483.4982)
+scale = Vector2(1, 7.598539)
+shape = SubResource("RectangleShape2D_pv7or")
