@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c48qln8qkjtjq" path="res://assets/pause button bounce up.png" id="5_68mvh"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="6_a8p2b"]
 [ext_resource type="Texture2D" uid="uid://b1fmvnjceqkvs" path="res://assets/pause button bounce up PRESSED.png" id="6_lyxkq"]
+[ext_resource type="Script" uid="uid://b6s1qh8kf4ynp" path="res://scripts/pause.gd" id="7_lyxkq"]
 [ext_resource type="AudioStream" uid="uid://c847wwhkogxee" path="res://sound/the_mountain-retro-game-593063.mp3" id="10_dg7ii"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_kkt6c"]
@@ -53,7 +54,7 @@ text = "Récord: 0"
 label_settings = SubResource("LabelSettings_kkt6c")
 metadata/_edit_use_anchors_ = true
 
-[node name="TextureButton" type="TextureButton" parent="CanvasLayer" unique_id=1082336560]
+[node name="PauseButton" type="TextureButton" parent="CanvasLayer" unique_id=1082336560]
 anchors_preset = -1
 anchor_left = 0.37
 anchor_top = 0.29500002
@@ -66,10 +67,13 @@ offset_bottom = 328.84
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.25764436, 0.26054606)
+toggle_mode = true
+keep_pressed_outside = true
 texture_normal = ExtResource("5_68mvh")
 texture_pressed = ExtResource("6_lyxkq")
 ignore_texture_size = true
 stretch_mode = 0
+script = ExtResource("7_lyxkq")
 metadata/_edit_use_anchors_ = true
 
 [node name="background" parent="." unique_id=33009793 instance=ExtResource("2_26pgj")]
