@@ -6,7 +6,7 @@ const ROCK_PLATFORM_SCENE = preload("res://escenas/platform_rock.tscn")
 const ALIEN_SCENE = preload("res://escenas/alien.tscn")
 
 # DIFICULTAD
-const VERTICAL_GAP = 270.0
+const VERTICAL_GAP = 220.0
 const MIN_HORIZONTAL_STEP = 140.0
 const MAX_HORIZONTAL_STEP = 420.0
 const GENERATE_AHEAD = 900.0
