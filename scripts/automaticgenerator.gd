@@ -1,6 +1,7 @@
 extends Node2D
 
 const PLATFORM_SCENE = preload("res://escenas/platform.tscn")
+const MOVING_PLATFORM_SCENE = preload("res://escenas/platform_moving.tscn")
 const ROCK_PLATFORM_SCENE = preload("res://escenas/platform_rock.tscn")
 const ALIEN_SCENE = preload("res://escenas/alien.tscn")
 
@@ -20,7 +21,9 @@ const FLOOR_TOP_Y = 582.5
 const FIRST_PLATFORM_ABOVE_FLOOR = 110.0
 const FIRST_PLATFORM_HORIZONTAL_OFFSET = 200.0
 
-# ALTURA EN LA QUE COMIENZAN LAS PLATAFORMAS ROCOSAS
+# ALTURAS
+const MOVING_START_HEIGHT = 5000.0
+const MOVING_END_HEIGHT = 15000.0
 const ROCK_START_HEIGHT = 20000.0
 
 # ALIENS
@@ -36,6 +39,7 @@ var last_center_x: float
 var next_alien_y: float
 
 var recent_positions: Array[float] = []
+
 
 func _ready():
 
@@ -67,7 +71,7 @@ func _ready():
 
 	next_platform_y -= VERTICAL_GAP
 
-	# El primer alien aparecerá cuando lleguemos al espacio
+	# Primer alien cuando se llegue al espacio
 	next_alien_y = start_y - ALIEN_START_HEIGHT
 
 	generate_ahead()
@@ -98,11 +102,32 @@ func spawn_platform(center_x: float):
 
 	var new_platform
 
-	# ANTES DEL ESPACIO: TIERRA
-	# EN EL ESPACIO: ROCA
+	# 20,000+ → PLATAFORMAS ROCOSAS
 	if height >= ROCK_START_HEIGHT:
+
 		new_platform = ROCK_PLATFORM_SCENE.instantiate()
+
+	# 5,000–20,000 → POSIBILIDAD DE PLATAFORMA MÓVIL
+	elif height >= MOVING_START_HEIGHT:
+
+		# A partir de 5,000 pueden aparecer móviles.
+		# La probabilidad aumenta con la altura.
+		var moving_chance = 0.25
+
+		if height >= 10000.0:
+			moving_chance = 0.40
+
+		if height >= MOVING_END_HEIGHT:
+			moving_chance = 0.55
+
+		if randf() < moving_chance:
+			new_platform = MOVING_PLATFORM_SCENE.instantiate()
+		else:
+			new_platform = PLATFORM_SCENE.instantiate()
+
+	# Antes de 5,000 → SOLO NORMALES
 	else:
+
 		new_platform = PLATFORM_SCENE.instantiate()
 
 	new_platform.position = Vector2(
@@ -179,7 +204,6 @@ func create_alien():
 
 	var screen_width = get_viewport_rect().size.x
 
-	# Evitamos que aparezca pegado al borde
 	var min_x = 100.0
 	var max_x = screen_width - 100.0
 
