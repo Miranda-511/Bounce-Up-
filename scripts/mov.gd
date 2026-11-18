@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 const SPEED = 575.0
 const JUMP_VELOCITY = -750.0
+const SPRING_VELOCITY = -1250.0
 const WRAP_MARGIN = 30.0
 
 const CAMERA_SPEED = 0.65
@@ -57,7 +58,21 @@ func _physics_process(delta: float) -> void:
 
 	# REBOTE AUTOMÁTICO
 	if is_on_floor() and velocity.y >= 0:
-		velocity.y = JUMP_VELOCITY
+
+		var bounce_force = JUMP_VELOCITY
+
+		# DETECTAR SI ATERRIZÓ SOBRE UN RESORTE
+		for i in range(get_slide_collision_count()):
+
+			var collision = get_slide_collision(i)
+			var collider = collision.get_collider()
+
+			if collider is StaticBody2D:
+				if collider.is_in_group("spring_platforms"):
+					bounce_force = SPRING_VELOCITY
+					break
+
+		velocity.y = bounce_force
 
 	# ANIMACIÓN
 	update_animation()
@@ -72,6 +87,7 @@ func _physics_process(delta: float) -> void:
 
 	# CÁMARA
 	if global_position.y < camera.global_position.y - CAMERA_TRIGGER:
+
 		var target_y = global_position.y + CAMERA_TRIGGER
 
 		camera.global_position.y = lerp(
@@ -103,6 +119,7 @@ func _physics_process(delta: float) -> void:
 
 
 func show_game_over():
+
 	if is_dead:
 		return
 

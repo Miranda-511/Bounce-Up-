@@ -6,6 +6,7 @@ const MOVING_PLATFORM_SCENE = preload("res://escenas/platform_moving.tscn")
 const DISAPPEARING_PLATFORM_SCENE = preload("res://escenas/platform_disappearing.tscn")
 const ROCK_PLATFORM_SCENE = preload("res://escenas/platform_rock.tscn")
 const ALIEN_SCENE = preload("res://escenas/alien.tscn")
+const SPRING_SCENE = preload("res://escenas/spring.tscn")
 
 # DIFICULTAD
 const VERTICAL_GAP = 220.0
@@ -32,6 +33,10 @@ const ROCK_START_HEIGHT = 20000.0
 # ALIENS
 const ALIEN_START_HEIGHT = 20000.0
 const ALIEN_VERTICAL_GAP = 810.0
+
+# RESORTES
+const SPRING_CHANCE = 0.08
+const SPRING_OFFSET_Y = -35.0
 
 @onready var main: Node2D = get_parent()
 
@@ -102,6 +107,7 @@ func spawn_platform(center_x: float):
 	var height = start_y - next_platform_y
 
 	var new_platform
+	var is_normal_platform = false
 
 	# 20,000+ → PLATAFORMAS ROCOSAS
 	if height >= ROCK_START_HEIGHT:
@@ -131,6 +137,7 @@ func spawn_platform(center_x: float):
 
 		else:
 			new_platform = PLATFORM_SCENE.instantiate()
+			is_normal_platform = true
 
 	# 5,000–10,000 → NORMALES Y MÓVILES
 	elif height >= MOVING_START_HEIGHT:
@@ -139,11 +146,13 @@ func spawn_platform(center_x: float):
 			new_platform = MOVING_PLATFORM_SCENE.instantiate()
 		else:
 			new_platform = PLATFORM_SCENE.instantiate()
+			is_normal_platform = true
 
 	# 0–5,000 → SOLO NORMALES
 	else:
 
 		new_platform = PLATFORM_SCENE.instantiate()
+		is_normal_platform = true
 
 	new_platform.position = Vector2(
 		center_x - PLATFORM_CENTER_X,
@@ -151,6 +160,18 @@ func spawn_platform(center_x: float):
 	)
 
 	main.add_child.call_deferred(new_platform)
+
+	# GENERAR RESORTE SOBRE PLATAFORMAS NORMALES
+	if is_normal_platform and randf() < SPRING_CHANCE:
+
+		var spring = SPRING_SCENE.instantiate()
+
+		spring.position = Vector2(
+			center_x,
+			next_platform_y + SPRING_OFFSET_Y
+		)
+
+		main.add_child.call_deferred(spring)
 
 
 func create_platform():
