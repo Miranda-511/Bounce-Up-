@@ -19,17 +19,17 @@ script = ExtResource("1_5t3kx")
 layer = -1
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer" unique_id=121247602]
-position = Vector2(526.00006, 309.41202)
-scale = Vector2(1.0998263, 1.0784321)
+position = Vector2(510.74997, 312.99997)
+scale = Vector2(1.1323785, 1.0784321)
 texture = ExtResource("1_d7r87")
 
 [node name="play" type="Button" parent="." unique_id=315154463]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.49693754
-anchor_top = 0.5759753
-anchor_right = 0.49693754
-anchor_bottom = 0.5759753
+anchor_left = 0.47350004
+anchor_top = 0.57906175
+anchor_right = 0.47350004
+anchor_bottom = 0.57906175
 offset_left = -115.472046
 offset_top = -50.231995
 offset_right = 114.527954
@@ -50,10 +50,10 @@ metadata/_edit_use_anchors_ = true
 [node name="instructions" type="Button" parent="." unique_id=2121934472]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5008473
-anchor_top = 0.7363702
-anchor_right = 0.5008473
-anchor_bottom = 0.7363702
+anchor_left = 0.47740978
+anchor_top = 0.73945665
+anchor_right = 0.47740978
+anchor_bottom = 0.73945665
 offset_left = -239.97601
 offset_top = -48.167908
 offset_right = 240.02399
@@ -72,10 +72,10 @@ metadata/_edit_use_anchors_ = true
 [node name="quit" type="Button" parent="." unique_id=1098325332]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.49059725
-anchor_top = 0.90309876
-anchor_right = 0.49059725
-anchor_bottom = 0.90309876
+anchor_left = 0.46715975
+anchor_top = 0.9061852
+anchor_right = 0.46715975
+anchor_bottom = 0.9061852
 offset_left = -115.16803
 offset_top = -50.208008
 offset_right = 114.83197
