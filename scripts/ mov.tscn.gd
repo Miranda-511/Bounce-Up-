@@ -2,10 +2,12 @@
 extends CharacterBody2D
 
 const SPEED = 575.0
-const JUMP_VELOCITY = -780.0
+const JUMP_VELOCITY = -750.0
+const SPRING_VELOCITY = -1250.0
+const SPRING_IMMUNITY_DURATION = 2.0
 const WRAP_MARGIN = 30.0
 
-const CAMERA_SPEED = 0.8
+const CAMERA_SPEED = 0.65
 const CAMERA_TRIGGER = 260.0
 const DEATH_MARGIN = 100.0
 
@@ -24,8 +26,11 @@ var best_score: int = 0
 var current_score: int = 0
 var is_dead: bool = false
 
+var spring_immunity_timer: float = 0.0
+
 
 func _ready():
+
 	start_y = global_position.y
 	highest_y = start_y
 
@@ -40,6 +45,10 @@ func _physics_process(delta: float) -> void:
 
 	if is_dead:
 		return
+
+	# ACTUALIZAR INMUNIDAD
+	if spring_immunity_timer > 0.0:
+		spring_immunity_timer -= delta
 
 	# GRAVEDAD
 	if not is_on_floor():
@@ -57,7 +66,28 @@ func _physics_process(delta: float) -> void:
 
 	# REBOTE AUTOMÁTICO
 	if is_on_floor() and velocity.y >= 0:
-		velocity.y = JUMP_VELOCITY
+
+		var bounce_force = JUMP_VELOCITY
+		var bounced_on_spring = false
+
+		# DETECTAR RESORTE
+		for i in range(get_slide_collision_count()):
+
+			var collision = get_slide_collision(i)
+			var collider = collision.get_collider()
+
+			if collider is StaticBody2D:
+				if collider.is_in_group("spring_platforms"):
+
+					bounce_force = SPRING_VELOCITY
+					bounced_on_spring = true
+					break
+
+		velocity.y = bounce_force
+
+		# ACTIVAR INMUNIDAD
+		if bounced_on_spring:
+			spring_immunity_timer = SPRING_IMMUNITY_DURATION
 
 	# ANIMACIÓN
 	update_animation()
@@ -72,6 +102,7 @@ func _physics_process(delta: float) -> void:
 
 	# CÁMARA
 	if global_position.y < camera.global_position.y - CAMERA_TRIGGER:
+
 		var target_y = global_position.y + CAMERA_TRIGGER
 
 		camera.global_position.y = lerp(
@@ -102,7 +133,12 @@ func _physics_process(delta: float) -> void:
 		show_game_over()
 
 
+func is_immune_from_aliens() -> bool:
+	return spring_immunity_timer > 0.0
+
+
 func show_game_over():
+
 	if is_dead:
 		return
 

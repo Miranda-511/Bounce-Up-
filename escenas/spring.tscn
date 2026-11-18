@@ -4,23 +4,24 @@
 [ext_resource type="Texture2D" uid="uid://7vrkg4cgrrvt" path="res://assets/spring.png" id="1_rfvfj"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_eaw6l"]
-radius = 23.234592
-height = 112.38289
+radius = 39.673195
+height = 132.2939
 
 [node name="Spring" type="Node2D" unique_id=593130799]
 scale = Vector2(0.5516854, 0.50422454)
 script = ExtResource("1_piab2")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1017404765]
-position = Vector2(2, 9.916199)
-scale = Vector2(0.35468152, 0.40765023)
+position = Vector2(2, 43.631325)
+scale = Vector2(0.33045796, 0.28550646)
 texture = ExtResource("1_rfvfj")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=2035563957]
-position = Vector2(0, 9.916222)
+position = Vector2(0, 43.631348)
+scale = Vector2(0.9317033, 0.70037115)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2112059653]
-position = Vector2(0, -51)
+position = Vector2(-1.7839772e-13, -42.47554)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_eaw6l")
 one_way_collision = true

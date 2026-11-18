@@ -1,39 +1,7 @@
 [gd_scene format=3 uid="uid://ch5ner46gv436"]
 
 [ext_resource type="Texture2D" uid="uid://bd4irbw3ly1ku" path="res://assets/alien.png" id="1_hl1ab"]
-
-[sub_resource type="GDScript" id="GDScript_ryjbn"]
-resource_name = "alien"
-script/source = "extends Area2D
-
-const SPEED = 300
-
-var direction := 1.0
-
-func _ready():
-	body_entered.connect(_on_body_entered)
-
-	# Dirección aleatoria
-	if randf() < 0.5:
-		direction = -1.0
-
-func _process(delta):
-	position.x += SPEED * direction * delta
-
-	# Si sale por un lado, aparece por el otro
-	var screen_width = get_viewport_rect().size.x
-
-	if global_position.x < -100:
-		global_position.x = screen_width + 100
-
-	elif global_position.x > screen_width + 100:
-		global_position.x = -100
-
-func _on_body_entered(body):
-	if body.name == \"player\":
-		if body.has_method(\"show_game_over\"):
-			body.show_game_over()
-"
+[ext_resource type="Script" uid="uid://clpewift42h6c" path="res://scripts/alien.gd" id="1_ryjbn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5txut"]
 radius = 95.566734
@@ -41,7 +9,7 @@ radius = 95.566734
 [node name="Alien" type="Area2D" unique_id=387026917]
 position = Vector2(572, 334)
 scale = Vector2(0.52999663, 0.5476038)
-script = SubResource("GDScript_ryjbn")
+script = ExtResource("1_ryjbn")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1175185483]
 position = Vector2(0, -1)
