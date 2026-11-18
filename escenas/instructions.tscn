@@ -40,15 +40,17 @@ texture = ExtResource("1_jocam")
 
 [node name="instr_text" type="Label" parent="." unique_id=2082364869]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.44552088
-anchor_top = 0.56082726
-anchor_right = 0.5616319
-anchor_bottom = 0.32934588
-offset_left = -515.24005
-offset_top = -232.41602
-offset_right = 509.0
-offset_bottom = 232.58398
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -522.5
+offset_top = -171.5
+offset_right = 522.5
+offset_bottom = 143.5
+grow_horizontal = 2
+grow_vertical = 2
 text = "- Teclas               para mover la pelota
 
 - La pelota rebota automáticamente.
@@ -58,7 +60,6 @@ text = "- Teclas               para mover la pelota
 - Subí lo más alto que podás y superá tu récord"
 label_settings = SubResource("LabelSettings_pv7or")
 horizontal_alignment = 1
-metadata/_edit_use_anchors_ = true
 
 [node name="instr_text2" type="Label" parent="." unique_id=791652460]
 layout_mode = 1
@@ -93,8 +94,8 @@ script = ExtResource("3_68gym")
 [node name="arrows" type="TextureRect" parent="." unique_id=80774146]
 layout_mode = 0
 offset_left = 355.0
-offset_top = 131.0
+offset_top = 150.0
 offset_right = 493.0
-offset_bottom = 178.0
+offset_bottom = 197.0
 texture = ExtResource("4_fwpr1")
 expand_mode = 1
