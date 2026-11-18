@@ -5,7 +5,7 @@ const SPEED = 575.0
 const JUMP_VELOCITY = -780.0
 const WRAP_MARGIN = 30.0
 
-const CAMERA_SPEED = 1.0
+const CAMERA_SPEED = 0.7
 const CAMERA_TRIGGER = 260.0
 const DEATH_MARGIN = 100.0
 

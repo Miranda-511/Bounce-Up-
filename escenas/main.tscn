@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://bdaevce65k24h" path="res://escenas/background.tscn" id="2_26pgj"]
 [ext_resource type="Script" uid="uid://dqla1yp0keet" path="res://scripts/automaticgenerator.gd" id="3_a8p2b"]
 [ext_resource type="PackedScene" uid="uid://bqijyx2j6xcjs" path="res://escenas/floor.tscn" id="3_dkga6"]
-[ext_resource type="PackedScene" uid="uid://bfvgnttptge2v" path="res://escenas/platform_disappearing.tscn" id="4_o8odp"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="6_a8p2b"]
 [ext_resource type="AudioStream" uid="uid://c847wwhkogxee" path="res://sound/the_mountain-retro-game-593063.mp3" id="10_dg7ii"]
 
@@ -28,9 +27,6 @@ drag_vertical_enabled = true
 
 [node name="AutomaticGenerator" type="Node2D" parent="." unique_id=356150963]
 script = ExtResource("3_a8p2b")
-
-[node name="platform_disappearing" parent="." unique_id=547119095 instance=ExtResource("4_o8odp")]
-position = Vector2(-640, -323)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1286689389]
 

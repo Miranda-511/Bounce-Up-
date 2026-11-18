@@ -7,7 +7,7 @@
 size = Vector2(286.9375, 19)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pv7or"]
-size = Vector2(265, 0.3943367)
+size = Vector2(265, 6.05332)
 
 [node name="platform_disappearing" type="Node2D" unique_id=547119095]
 script = ExtResource("1_x6fud")
@@ -28,6 +28,6 @@ one_way_collision = true
 [node name="DetectionArea" type="Area2D" parent="." unique_id=363804157]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=874665949]
-position = Vector2(929, 483.4982)
+position = Vector2(929, 461.9982)
 scale = Vector2(1, 7.598539)
 shape = SubResource("RectangleShape2D_pv7or")

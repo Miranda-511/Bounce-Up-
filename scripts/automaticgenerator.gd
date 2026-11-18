@@ -1,7 +1,9 @@
+
 extends Node2D
 
 const PLATFORM_SCENE = preload("res://escenas/platform.tscn")
 const MOVING_PLATFORM_SCENE = preload("res://escenas/platform_moving.tscn")
+const DISAPPEARING_PLATFORM_SCENE = preload("res://escenas/platform_disappearing.tscn")
 const ROCK_PLATFORM_SCENE = preload("res://escenas/platform_rock.tscn")
 const ALIEN_SCENE = preload("res://escenas/alien.tscn")
 
@@ -23,7 +25,8 @@ const FIRST_PLATFORM_HORIZONTAL_OFFSET = 200.0
 
 # ALTURAS
 const MOVING_START_HEIGHT = 5000.0
-const MOVING_END_HEIGHT = 15000.0
+const DISAPPEARING_START_HEIGHT = 10000.0
+const ADVANCED_START_HEIGHT = 15000.0
 const ROCK_START_HEIGHT = 20000.0
 
 # ALIENS
@@ -71,7 +74,6 @@ func _ready():
 
 	next_platform_y -= VERTICAL_GAP
 
-	# Primer alien cuando se llegue al espacio
 	next_alien_y = start_y - ALIEN_START_HEIGHT
 
 	generate_ahead()
@@ -90,7 +92,6 @@ func generate_ahead():
 	while next_platform_y > player.global_position.y - GENERATE_AHEAD:
 		create_platform()
 
-	# Generar aliens solamente en el espacio
 	while next_alien_y > player.global_position.y - GENERATE_AHEAD:
 		create_alien()
 		next_alien_y -= ALIEN_VERTICAL_GAP
@@ -107,25 +108,39 @@ func spawn_platform(center_x: float):
 
 		new_platform = ROCK_PLATFORM_SCENE.instantiate()
 
-	# 5,000–20,000 → POSIBILIDAD DE PLATAFORMA MÓVIL
+	# 15,000–20,000 → MÓVILES Y DESAPARECEDORAS
+	elif height >= ADVANCED_START_HEIGHT:
+
+		var roll = randf()
+
+		if roll < 0.45:
+			new_platform = DISAPPEARING_PLATFORM_SCENE.instantiate()
+		else:
+			new_platform = MOVING_PLATFORM_SCENE.instantiate()
+
+	# 10,000–15,000 → NORMALES, MÓVILES Y DESAPARECEDORAS
+	elif height >= DISAPPEARING_START_HEIGHT:
+
+		var roll = randf()
+
+		if roll < 0.25:
+			new_platform = DISAPPEARING_PLATFORM_SCENE.instantiate()
+
+		elif roll < 0.60:
+			new_platform = MOVING_PLATFORM_SCENE.instantiate()
+
+		else:
+			new_platform = PLATFORM_SCENE.instantiate()
+
+	# 5,000–10,000 → NORMALES Y MÓVILES
 	elif height >= MOVING_START_HEIGHT:
 
-		# A partir de 5,000 pueden aparecer móviles.
-		# La probabilidad aumenta con la altura.
-		var moving_chance = 0.25
-
-		if height >= 10000.0:
-			moving_chance = 0.40
-
-		if height >= MOVING_END_HEIGHT:
-			moving_chance = 0.55
-
-		if randf() < moving_chance:
+		if randf() < 0.25:
 			new_platform = MOVING_PLATFORM_SCENE.instantiate()
 		else:
 			new_platform = PLATFORM_SCENE.instantiate()
 
-	# Antes de 5,000 → SOLO NORMALES
+	# 0–5,000 → SOLO NORMALES
 	else:
 
 		new_platform = PLATFORM_SCENE.instantiate()
