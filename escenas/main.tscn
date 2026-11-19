@@ -8,6 +8,9 @@
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="6_a8p2b"]
 [ext_resource type="Texture2D" uid="uid://b1fmvnjceqkvs" path="res://assets/pause button bounce up PRESSED.png" id="6_lyxkq"]
 [ext_resource type="Script" uid="uid://b6s1qh8kf4ynp" path="res://scripts/pause.gd" id="7_lyxkq"]
+[ext_resource type="Texture2D" uid="uid://d1qfxx7863sh6" path="res://assets/home button bounce up.png" id="8_7an46"]
+[ext_resource type="Texture2D" uid="uid://da4tbe4m11ifs" path="res://assets/home button bounce up PRESSED.png" id="9_acisx"]
+[ext_resource type="Script" uid="uid://d3hsf5bpf6cm0" path="res://scripts/home2.gd" id="10_a5wrc"]
 [ext_resource type="AudioStream" uid="uid://c847wwhkogxee" path="res://sound/the_mountain-retro-game-593063.mp3" id="10_dg7ii"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_kkt6c"]
@@ -75,6 +78,18 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("7_lyxkq")
 metadata/_edit_use_anchors_ = true
+
+[node name="HomeButton" type="TextureButton" parent="CanvasLayer" unique_id=579634377]
+process_mode = 3
+offset_left = 188.0
+offset_top = 20.0
+offset_right = 327.0
+offset_bottom = 149.0
+texture_normal = ExtResource("8_7an46")
+texture_pressed = ExtResource("9_acisx")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("10_a5wrc")
 
 [node name="background" parent="." unique_id=33009793 instance=ExtResource("2_26pgj")]
 
