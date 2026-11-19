@@ -7,6 +7,8 @@ extends Control
 
 
 func _ready():
+	MenuMusic.play_music()
+
 	if play:
 		play.pressed.connect(_on_play_pressed)
 	else:
