@@ -1,4 +1,3 @@
-
 extends CharacterBody2D
 
 const SPEED = 575.0
@@ -59,6 +58,13 @@ func _physics_process(delta: float) -> void:
 
 	if direction:
 		velocity.x = direction * SPEED
+
+		# VOLTEAR SPRITE SEGÚN LA DIRECCIÓN
+		if direction < 0:
+			sprite.flip_h = true
+		elif direction > 0:
+			sprite.flip_h = false
+
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
