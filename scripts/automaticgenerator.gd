@@ -35,7 +35,7 @@ const ALIEN_START_HEIGHT = 20000.0
 const ALIEN_VERTICAL_GAP = 810.0
 
 # RESORTES
-const SPRING_CHANCE = 1
+const SPRING_CHANCE = 0.12
 const SPRING_OFFSET_Y = -35.0
 
 @onready var main: Node2D = get_parent()
