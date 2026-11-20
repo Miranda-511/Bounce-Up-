@@ -19,24 +19,25 @@ script = ExtResource("1_5t3kx")
 layer = -1
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer" unique_id=121247602]
-position = Vector2(510.74997, 312.99997)
-scale = Vector2(1.1323785, 1.0784321)
+position = Vector2(544.4998, 293)
+scale = Vector2(1.0737845, 1.1018519)
 texture = ExtResource("1_d7r87")
 
 [node name="play" type="Button" parent="." unique_id=315154463]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.47350004
-anchor_top = 0.57906175
-anchor_right = 0.47350004
-anchor_bottom = 0.57906175
-offset_left = -115.472046
-offset_top = -50.231995
-offset_right = 114.527954
-offset_bottom = 49.768005
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.0
+offset_top = -24.0
+offset_right = 115.0
+offset_bottom = 76.0
 grow_horizontal = 2
 grow_vertical = 2
 offset_transform_enabled = true
+mouse_default_cursor_shape = 2
 theme = SubResource("Theme_dg7ii")
 theme_override_colors/font_color = Color(0.58431375, 0.8901961, 0.45490196, 1)
 theme_override_colors/font_pressed_color = Color(0.33333334, 0.81960785, 0.3019608, 1)
@@ -50,16 +51,17 @@ metadata/_edit_use_anchors_ = true
 [node name="instructions" type="Button" parent="." unique_id=2121934472]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.47740978
-anchor_top = 0.73945665
-anchor_right = 0.47740978
-anchor_bottom = 0.73945665
-offset_left = -239.97601
-offset_top = -48.167908
-offset_right = 240.02399
-offset_bottom = 51.832092
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = 91.0
+offset_right = 240.0
+offset_bottom = 191.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.6, 0.8980392, 0.44313726, 1)
 theme_override_colors/font_pressed_color = Color(0.34117648, 0.8117647, 0.2901961, 1)
 theme_override_colors/font_hover_color = Color(0.5176471, 0.7607843, 0.38039216, 1)
@@ -69,23 +71,27 @@ theme_override_font_sizes/font_size = 60
 text = "INSTRUCCIONES"
 metadata/_edit_use_anchors_ = true
 
-[node name="quit" type="Button" parent="." unique_id=1098325332]
+[node name="ranking" type="Button" parent="." unique_id=1098325332]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.46715975
-anchor_top = 0.9061852
-anchor_right = 0.46715975
-anchor_bottom = 0.9061852
-offset_left = -115.16803
-offset_top = -50.208008
-offset_right = 114.83197
-offset_bottom = 49.791992
+anchor_left = 0.5
+anchor_top = 0.5015432
+anchor_right = 0.5
+anchor_bottom = 0.5015432
+offset_left = -157.25
+offset_top = 205.0
+offset_right = 157.25
+offset_bottom = 305.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.6117647, 0.8980392, 0.45490196, 1)
 theme_override_colors/font_pressed_color = Color(0.33333334, 0.8117647, 0.30588236, 1)
 theme_override_colors/font_hover_color = Color(0.5176471, 0.7607843, 0.38039216, 1)
 theme_override_colors/font_hover_pressed_color = Color(0.34117648, 0.8117647, 0.2901961, 1)
 theme_override_fonts/font = ExtResource("2_2owot")
 theme_override_font_sizes/font_size = 60
-text = "SALIR
+text = "RANKING
+
 "
 metadata/_edit_use_anchors_ = true

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Bounce Up!"
-run/main_scene="uid://c25rogsoeh8ge"
+run/main_scene="uid://jnr0lyh5wf73"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="uid://dbsropqrgrgbi"
 

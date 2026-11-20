@@ -3,7 +3,7 @@ extends Control
 
 @onready var play = get_node_or_null("play")
 @onready var instructions = get_node_or_null("instructions")
-@onready var quit = get_node_or_null("quit")
+@onready var ranking = get_node_or_null("ranking")
 
 
 func _ready():
@@ -19,10 +19,10 @@ func _ready():
 	else:
 		push_warning("No se encontró el botón instructions.")
 
-	if quit:
-		quit.pressed.connect(_on_quit_pressed)
+	if ranking:
+		ranking.pressed.connect(_on_ranking_pressed)
 	else:
-		push_warning("No se encontró el botón quit.")
+		push_warning("No se encontró el botón ranking.")
 
 
 func _on_play_pressed():
@@ -37,5 +37,5 @@ func _on_instructions_pressed():
 		push_warning("No existe la escena de instrucciones.")
 
 
-func _on_quit_pressed():
-	get_tree().quit()
+func _on_ranking_pressed():
+	get_tree().change_scene_to_file("res://escenas/leaderboard.scn")
