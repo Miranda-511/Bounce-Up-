@@ -2,7 +2,7 @@
 extends Control
 
 @onready var entries_container: VBoxContainer = $MainContainer/RankingPanel/EntriesContainer
-@onready var back_button: TextureButton = $MainContainer/BackButton
+@onready var back_button: TextureButton = $BackButton
 
 
 func _ready():

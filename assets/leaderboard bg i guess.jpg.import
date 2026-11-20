@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ddvywr0eduyxv"
-path="res://.godot/imported/leaderboard bg i guess.png-cca391ebdd85cb7805ee107b4c985317.ctex"
+uid="uid://do5wpord6ad8h"
+path="res://.godot/imported/leaderboard bg i guess.jpg-864983cf13706b3e7a3de90d629c1156.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/leaderboard bg i guess.png"
-dest_files=["res://.godot/imported/leaderboard bg i guess.png-cca391ebdd85cb7805ee107b4c985317.ctex"]
+source_file="res://assets/leaderboard bg i guess.jpg"
+dest_files=["res://.godot/imported/leaderboard bg i guess.jpg-864983cf13706b3e7a3de90d629c1156.ctex"]
 
 [params]
 
