@@ -27,7 +27,11 @@ func _ready():
 
 func _on_play_pressed():
 	MenuMusic.stop_music()
-	get_tree().change_scene_to_file("res://escenas/main.tscn")
+
+	if PlayerData.username.is_empty():
+		get_tree().change_scene_to_file("res://escenas/username.tscn")
+	else:
+		get_tree().change_scene_to_file("res://escenas/main.tscn")
 
 
 func _on_instructions_pressed():
