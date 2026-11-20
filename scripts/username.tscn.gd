@@ -2,7 +2,7 @@
 extends Control
 
 @onready var username_input: LineEdit = $UsernameInput
-@onready var confirm_button: Button = $ConfirmButton
+@onready var confirm_button: TextureButton = $ConfirmButton
 @onready var error_label: Label = $ErrorLabel
 
 

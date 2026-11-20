@@ -3,6 +3,8 @@ extends Control
 
 @onready var game_over_audio: AudioStreamPlayer = $GameOverAudio
 
+var score_submitted := false
+
 
 func _ready():
 	game_over_audio.play()
@@ -18,3 +20,7 @@ func setup(final_score: int, best_score: int):
 
 	if best_score_label:
 		best_score_label.text = "Récord: " + str(best_score)
+
+	if not score_submitted:
+		score_submitted = true
+		Leaderboard.submit_score(final_score)

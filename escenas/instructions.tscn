@@ -2,8 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://ce4htaho23tqh" path="res://assets/cómo jugar bg.webp" id="1_jocam"]
 [ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="1_luvsg"]
-[ext_resource type="Script" uid="uid://bdcxvpt7g2iyy" path="res://scripts/back.gd" id="3_68gym"]
+[ext_resource type="Script" uid="uid://cslwqb4yhtwvu" path="res://scripts/back_instr_to_menu.gd" id="3_fwpr1"]
+[ext_resource type="Texture2D" uid="uid://58voa21vtecv" path="res://assets/back button bounce up.png" id="3_r3itw"]
 [ext_resource type="Texture2D" uid="uid://c8lwlutpkk60v" path="res://assets/pixel arrows.png" id="4_fwpr1"]
+[ext_resource type="Texture2D" uid="uid://dowc078jrs6bh" path="res://assets/back button bounce up PRESSED.png" id="4_nuceb"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pv7or"]
 line_spacing = 0.0
@@ -77,21 +79,20 @@ grow_vertical = 0
 text = "¡Buena suerte!"
 label_settings = SubResource("LabelSettings_51fi4")
 
-[node name="back" type="Button" parent="." unique_id=1877970447]
+[node name="back" type="TextureButton" parent="." unique_id=32315283]
 layout_mode = 0
 offset_left = 15.0
 offset_top = 11.0
-offset_right = 176.0
-offset_bottom = 81.0
+offset_right = 172.0
+offset_bottom = 83.0
 mouse_default_cursor_shape = 2
 theme = SubResource("Theme_eaw6l")
 theme_type_variation = &"FlatButton"
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0.34, 0.34, 0.34, 1)
-theme_override_colors/font_hover_color = Color(0.34117648, 0.34117648, 0.34117648, 1)
-text = "VOLVER"
-flat = true
-script = ExtResource("3_68gym")
+texture_normal = ExtResource("3_r3itw")
+texture_pressed = ExtResource("4_nuceb")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_fwpr1")
 
 [node name="arrows" type="TextureRect" parent="." unique_id=80774146]
 layout_mode = 0

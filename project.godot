@@ -19,6 +19,7 @@ config/icon="uid://dbsropqrgrgbi"
 
 MenuMusic="*uid://6ax4hnremwg3"
 PlayerData="*uid://dba0465vu2gub"
+Leaderboard="*uid://bom40s4wlftge"
 
 [display]
 
