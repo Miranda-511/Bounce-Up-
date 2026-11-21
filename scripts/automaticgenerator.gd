@@ -14,6 +14,12 @@ const MIN_HORIZONTAL_STEP = 140.0
 const MAX_HORIZONTAL_STEP = 420.0
 const GENERATE_AHEAD = 900.0
 
+# BIFURCACIONES
+const BRANCH_CHANCE = 0.35
+const MIN_BRANCH_DISTANCE = 550.0
+const MAX_BRANCH_DISTANCE = 750.0
+const BRANCH_SEARCH_ATTEMPTS = 1000
+
 # PLATAFORMA
 const PLATFORM_CENTER_X = 932.125
 const PLATFORM_TOP_OFFSET_Y = 481.0
@@ -44,6 +50,7 @@ var player: CharacterBody2D
 var start_y: float
 var next_platform_y: float
 var last_center_x: float
+var last_branch_x: float = -1.0
 var next_alien_y: float
 
 var recent_positions: Array[float] = []
@@ -184,28 +191,30 @@ func create_platform():
 
 	var possible_positions: Array[float] = []
 
+	# BUSCAR LA SIGUIENTE PLATAFORMA PRINCIPAL.
 	for attempt in range(100):
 
 		var candidate = randf_range(min_x, max_x)
 
-		var distance = abs(candidate - last_center_x)
+		var distance_main = abs(candidate - last_center_x)
 
-		if distance < MIN_HORIZONTAL_STEP:
+		if distance_main < MIN_HORIZONTAL_STEP:
 			continue
 
-		if distance > MAX_HORIZONTAL_STEP:
+		if distance_main > MAX_HORIZONTAL_STEP:
 			continue
 
-		var repeated = false
+		if last_branch_x >= 0.0:
 
-		for i in range(max(0, recent_positions.size() - 2)):
+			var distance_branch = abs(candidate - last_branch_x)
 
-			if abs(candidate - recent_positions[i]) < 170.0:
-				repeated = true
-				break
+			if distance_branch < MIN_HORIZONTAL_STEP:
+				continue
 
-		if not repeated:
-			possible_positions.append(candidate)
+			if distance_branch > MAX_HORIZONTAL_STEP:
+				continue
+
+		possible_positions.append(candidate)
 
 	var new_x = last_center_x
 
@@ -214,6 +223,10 @@ func create_platform():
 		new_x = possible_positions[
 			randi_range(0, possible_positions.size() - 1)
 		]
+
+	elif last_branch_x >= 0.0:
+
+		new_x = (last_center_x + last_branch_x) / 2.0
 
 	else:
 
@@ -231,6 +244,51 @@ func create_platform():
 
 	if recent_positions.size() > 3:
 		recent_positions.pop_front()
+
+	last_branch_x = -1.0
+
+	# GENERAR SEGUNDA RUTA.
+	if randf() < BRANCH_CHANCE:
+
+		var branch_positions: Array[float] = []
+
+		for attempt in range(BRANCH_SEARCH_ATTEMPTS):
+
+			var branch_x = randf_range(min_x, max_x)
+
+			# SEPARACIÓN ENTRE LAS DOS PLATAFORMAS.
+			var distance_from_main = abs(branch_x - new_x)
+
+			if distance_from_main < MIN_BRANCH_DISTANCE:
+				continue
+
+			if distance_from_main > MAX_BRANCH_DISTANCE:
+				continue
+
+			# LA RAMA DEBE SER ALCANZABLE DESDE LA PLATAFORMA ANTERIOR.
+			var distance_from_previous = abs(branch_x - last_center_x)
+
+			if distance_from_previous < MIN_HORIZONTAL_STEP:
+				continue
+
+			if distance_from_previous > MAX_HORIZONTAL_STEP:
+				continue
+
+			branch_positions.append(branch_x)
+
+		if branch_positions.size() > 0:
+
+			last_branch_x = branch_positions[
+				randi_range(0, branch_positions.size() - 1)
+			]
+
+			spawn_platform(last_branch_x)
+
+			print(
+				"¡Bifurcación generada! Separación: ",
+				round(abs(last_branch_x - new_x)),
+                " px"
+			)
 
 	last_center_x = new_x
 
