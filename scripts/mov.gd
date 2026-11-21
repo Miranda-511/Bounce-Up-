@@ -1,3 +1,4 @@
+
 extends CharacterBody2D
 
 const SPEED = 575.0
@@ -23,9 +24,11 @@ var start_y: float
 var highest_y: float
 var best_score: int = 0
 var current_score: int = 0
-var is_dead: bool = false
+var last_checked_score: int = 0
 
+var is_dead: bool = false
 var spring_immunity_timer: float = 0.0
+var run_time: float = 0.0
 
 
 func _ready():
@@ -39,11 +42,27 @@ func _ready():
 
 	load_best_score()
 
+	# SINCRONIZAR RÉCORD CON PLAYERDATA
+	PlayerData.best_score = max(PlayerData.best_score, best_score)
+	PlayerData.save_player_data()
+
+	# PRIMER LOGRO AL COMENZAR LA PRIMERA PARTIDA
+	if PlayerData.games_played == 0:
+		call_deferred("_check_first_game")
+
+
+func _check_first_game():
+	if PlayerData.games_played == 0:
+		PlayerData.unlock_achievement("first_game")
+
 
 func _physics_process(delta: float) -> void:
 
 	if is_dead:
 		return
+
+	# CONTADOR DE TIEMPO
+	run_time += delta
 
 	# ACTUALIZAR INMUNIDAD
 	if spring_immunity_timer > 0.0:
@@ -59,7 +78,6 @@ func _physics_process(delta: float) -> void:
 	if direction:
 		velocity.x = direction * SPEED
 
-		# VOLTEAR SPRITE SEGÚN LA DIRECCIÓN
 		if direction < 0:
 			sprite.flip_h = true
 		elif direction > 0:
@@ -76,7 +94,6 @@ func _physics_process(delta: float) -> void:
 		var bounce_force = JUMP_VELOCITY
 		var bounced_on_spring = false
 
-		# DETECTAR RESORTE
 		for i in range(get_slide_collision_count()):
 
 			var collision = get_slide_collision(i)
@@ -91,7 +108,6 @@ func _physics_process(delta: float) -> void:
 
 		velocity.y = bounce_force
 
-		# ACTIVAR INMUNIDAD
 		if bounced_on_spring:
 			spring_immunity_timer = SPRING_IMMUNITY_DURATION
 
@@ -126,6 +142,16 @@ func _physics_process(delta: float) -> void:
 
 	score_label.text = "Puntuación: " + str(current_score)
 
+	# COMPROBAR LOGROS EN TIEMPO REAL
+	if current_score > last_checked_score:
+
+		PlayerData.check_run_achievements(
+			current_score,
+			run_time
+		)
+
+		last_checked_score = current_score
+
 	# RÉCORD
 	if current_score > best_score:
 		best_score = current_score
@@ -151,6 +177,9 @@ func show_game_over():
 	is_dead = true
 	velocity = Vector2.ZERO
 	set_physics_process(false)
+
+	# REGISTRAR ESTADÍSTICAS DE LA PARTIDA
+	PlayerData.record_game(current_score, run_time)
 
 	# DETENER MÚSICA NORMAL
 	music.stop()

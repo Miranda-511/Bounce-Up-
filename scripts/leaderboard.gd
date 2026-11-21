@@ -5,6 +5,7 @@ signal top_players_received(players: Array)
 
 const SUPABASE_URL = "https://tgrvkopyhrnnbxzqaepo.supabase.co"
 const SUPABASE_KEY = "sb_publishable_RHREk546QQoYftbpA1m-Bw_ObUo2xUE"
+const TEST_USERNAME = "ISA_DEV_MODE_511"
 
 var http: HTTPRequest
 var is_requesting := false
@@ -44,6 +45,12 @@ func get_top_players():
 
 
 func submit_score(score: int):
+
+	# MODO DE DESARROLLO: NO ENVIAR PUNTUACIONES
+	if PlayerData.username.strip_edges().to_upper() == TEST_USERNAME:
+		print("Modo de desarrollo activo. Puntuación no enviada al ranking.")
+		return
+
 	if PlayerData.username.is_empty() or PlayerData.player_id.is_empty():
 		print("Error: faltan los datos del jugador.")
 		return

@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://da4tbe4m11ifs" path="res://assets/home button bounce up PRESSED.png" id="9_acisx"]
 [ext_resource type="Script" uid="uid://d3hsf5bpf6cm0" path="res://scripts/home2.gd" id="10_a5wrc"]
 [ext_resource type="AudioStream" uid="uid://c847wwhkogxee" path="res://sound/the_mountain-retro-game-593063.mp3" id="10_dg7ii"]
+[ext_resource type="PackedScene" uid="uid://c2clrsng8dutf" path="res://escenas/achievement_notifications.tscn" id="13_acisx"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_kkt6c"]
 font = ExtResource("6_a8p2b")
@@ -96,3 +97,5 @@ script = ExtResource("10_a5wrc")
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=356976337]
 stream = ExtResource("10_dg7ii")
 autoplay = true
+
+[node name="AchievementNotifications" parent="." unique_id=240902537 instance=ExtResource("13_acisx")]

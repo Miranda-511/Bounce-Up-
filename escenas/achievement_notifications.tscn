@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://c2clrsng8dutf"]
+
+[ext_resource type="Script" uid="uid://bwwq5rfis1g1n" path="res://scripts/achievement_notifications.gd" id="1_uwcut"]
+[ext_resource type="FontFile" uid="uid://c4a6oj1d3qow6" path="res://font/lower-pixel.regular.otf" id="2_ke1so"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_acisx"]
+font = ExtResource("2_ke1so")
+
+[node name="AchievementNotifications" type="CanvasLayer" unique_id=240902537]
+process_mode = 3
+layer = 110
+script = ExtResource("1_uwcut")
+
+[node name="NotificationContainer" type="Control" parent="." unique_id=932912322]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AchievementNotification" type="Panel" parent="NotificationContainer" unique_id=1578698672]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.225
+anchor_top = 16.15
+anchor_right = 0.225
+anchor_bottom = 16.15
+offset_left = -9.0
+offset_top = -111.0
+offset_right = 351.0
+offset_bottom = -1.0
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Icon" type="TextureRect" parent="NotificationContainer/AchievementNotification" unique_id=251201345]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 23.0
+offset_right = 79.0
+offset_bottom = 87.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Title" type="Label" parent="NotificationContainer/AchievementNotification" unique_id=214427212]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.09090909
+anchor_bottom = -0.09090909
+offset_left = 95.0
+offset_top = 25.0
+offset_right = 340.0
+offset_bottom = 55.0
+label_settings = SubResource("LabelSettings_acisx")
+metadata/_edit_use_anchors_ = true
+
+[node name="Description" type="Label" parent="NotificationContainer/AchievementNotification" unique_id=755151205]
+custom_minimum_size = Vector2(245, 50)
+custom_maximum_size = Vector2(245, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.09090909
+anchor_bottom = -0.009090909
+offset_left = 95.0
+offset_top = 57.0
+offset_right = 340.0
+offset_bottom = 98.0
+label_settings = SubResource("LabelSettings_acisx")
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true

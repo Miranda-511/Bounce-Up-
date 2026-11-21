@@ -1,10 +1,9 @@
-
 extends Control
 
 @onready var play = get_node_or_null("play")
 @onready var instructions = get_node_or_null("instructions")
 @onready var ranking = get_node_or_null("ranking")
-
+@onready var achievements_button = get_node_or_null("AchievementsButton")
 
 func _ready():
 	MenuMusic.play_music()
@@ -24,6 +23,10 @@ func _ready():
 	else:
 		push_warning("No se encontró el botón ranking.")
 
+	if achievements_button:
+		achievements_button.pressed.connect(_on_achievements_pressed)
+	else:
+		push_warning("No se encontró el botón AchievementsButton.")
 
 func _on_play_pressed():
 	MenuMusic.stop_music()
@@ -33,13 +36,14 @@ func _on_play_pressed():
 	else:
 		get_tree().change_scene_to_file("res://escenas/main.tscn")
 
-
 func _on_instructions_pressed():
 	if ResourceLoader.exists("res://escenas/instructions.tscn"):
 		get_tree().change_scene_to_file("res://escenas/instructions.tscn")
 	else:
 		push_warning("No existe la escena de instrucciones.")
 
-
 func _on_ranking_pressed():
 	get_tree().change_scene_to_file("res://escenas/leaderboard.scn")
+
+func _on_achievements_pressed():
+	get_tree().change_scene_to_file("res://escenas/achievements.tscn")
