@@ -30,6 +30,7 @@ position = Vector2(-19, -74)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=846533705]
 position = Vector2(576, 333)
+zoom = Vector2(0.7, 0.7)
 drag_vertical_enabled = true
 
 [node name="AutomaticGenerator" type="Node2D" parent="." unique_id=356150963]

@@ -50,21 +50,37 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ewdes")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1827750454]
+[node name="bg" type="TextureRect" parent="." unique_id=1827750454]
 layout_mode = 1
-offset_left = -19.0
-offset_top = -16.0
-offset_right = 1168.0
-offset_bottom = 668.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_ys24l")
 expand_mode = 1
 
-[node name="RestartButton" type="TextureButton" parent="." unique_id=2130504874]
-layout_mode = 0
-offset_left = 877.0
-offset_top = 418.0
-offset_right = 1527.0
-offset_bottom = 1008.0
+[node name="UIContainer" type="Control" parent="." unique_id=1186175356]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RestartButton" type="TextureButton" parent="UIContainer" unique_id=2130504874]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -235.0
+offset_right = 390.0
+offset_bottom = 355.0
+grow_horizontal = 0
+grow_vertical = 0
 scale = Vector2(0.37529266, 0.37452996)
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -74,57 +90,60 @@ ignore_texture_size = true
 stretch_mode = 0
 script = SubResource("GDScript_nrxm1")
 
-[node name="HomeButton" type="TextureButton" parent="." unique_id=800385484]
-layout_mode = 0
-offset_left = 40.0
-offset_top = 418.0
-offset_right = 277.0
-offset_bottom = 628.0
+[node name="HomeButton" type="TextureButton" parent="UIContainer" unique_id=800385484]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -223.0
+offset_right = 257.0
+offset_bottom = -13.0
+grow_vertical = 0
 texture_normal = ExtResource("4_nrxm1")
 texture_pressed = ExtResource("5_ewdes")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("6_j5brv")
 
-[node name="ScoreLabel" type="Label" parent="." unique_id=1763219133]
+[node name="ScoreLabel" type="Label" parent="UIContainer" unique_id=1763219133]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.8334517
-anchor_top = -0.23049885
-anchor_right = -0.43327808
-anchor_bottom = -0.15025192
-offset_left = 1212.1364
-offset_top = 427.36325
-offset_right = 1401.1364
-offset_bottom = 455.36325
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -251.0
+offset_top = 287.21994
+offset_right = -251.0
+offset_bottom = 364.0
 text = "Puntuación: 0"
 label_settings = SubResource("LabelSettings_ewdes")
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="BestScoreLabel" type="Label" parent="." unique_id=1675372408]
+[node name="BestScoreLabel" type="Label" parent="UIContainer" unique_id=1675372408]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.73956895
-anchor_top = -0.11473489
-anchor_right = -0.51474255
-anchor_bottom = -0.03448797
-offset_left = 1191.9834
-offset_top = 439.3482
-offset_right = 1380.9834
-offset_bottom = 467.3482
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -304.0
+offset_top = 369.5894
+offset_right = 304.0
+offset_bottom = 446.37952
 text = "Récord: 0"
 label_settings = SubResource("LabelSettings_ewdes")
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="TitleLabel" type="Label" parent="." unique_id=1319267948]
-layout_mode = 0
-offset_left = 110.0
+[node name="TitleLabel" type="Label" parent="UIContainer" unique_id=1319267948]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -486.0
 offset_top = 83.0
-offset_right = 1083.0
+offset_right = 487.0
 offset_bottom = 268.0
 text = "¡PERDISTE! :("
 label_settings = SubResource("LabelSettings_eaw6l")

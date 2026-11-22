@@ -34,14 +34,19 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=371374344]
-layout_mode = 0
-offset_left = -2.0
-offset_right = 1157.0
-offset_bottom = 648.0
-texture = ExtResource("1_jocam")
-
-[node name="instr_text" type="Label" parent="." unique_id=2082364869]
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_jocam")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1646610075]
+
+[node name="instr_text" type="Label" parent="CanvasLayer" unique_id=2082364869]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -63,8 +68,7 @@ text = "- Teclas               para mover la pelota
 label_settings = SubResource("LabelSettings_pv7or")
 horizontal_alignment = 1
 
-[node name="instr_text2" type="Label" parent="." unique_id=791652460]
-layout_mode = 1
+[node name="instr_text2" type="Label" parent="CanvasLayer" unique_id=791652460]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -78,6 +82,20 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "¡Buena suerte!"
 label_settings = SubResource("LabelSettings_51fi4")
+
+[node name="arrows" type="TextureRect" parent="CanvasLayer" unique_id=80774146]
+anchors_preset = -1
+anchor_left = 0.36800003
+anchor_top = 0.268
+anchor_right = 0.36800003
+anchor_bottom = 0.268
+offset_left = -48.936035
+offset_top = -19.664001
+offset_right = 89.063965
+offset_bottom = 27.335999
+texture = ExtResource("4_fwpr1")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="back" type="TextureButton" parent="." unique_id=32315283]
 layout_mode = 0
@@ -93,12 +111,3 @@ texture_pressed = ExtResource("4_nuceb")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_fwpr1")
-
-[node name="arrows" type="TextureRect" parent="." unique_id=80774146]
-layout_mode = 0
-offset_left = 355.0
-offset_top = 150.0
-offset_right = 493.0
-offset_bottom = 197.0
-texture = ExtResource("4_fwpr1")
-expand_mode = 1

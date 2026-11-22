@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0cvy5htw7ntu"
-path="res://.godot/imported/bounce up pantalla de inicio bg.png-80ad28373a09f6eb4e61af09c1cbe933.ctex"
+uid="uid://u0pjfh5xfin2"
+path="res://.godot/imported/bounce up pantalla de inicio bg.jpg-e8884e7c2e4b01d8a24969cd88ed3f2a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/bounce up pantalla de inicio bg.png"
-dest_files=["res://.godot/imported/bounce up pantalla de inicio bg.png-80ad28373a09f6eb4e61af09c1cbe933.ctex"]
+source_file="res://assets/bounce up pantalla de inicio bg.jpg"
+dest_files=["res://.godot/imported/bounce up pantalla de inicio bg.jpg-e8884e7c2e4b01d8a24969cd88ed3f2a.ctex"]
 
 [params]
 
