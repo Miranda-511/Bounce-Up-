@@ -7,14 +7,14 @@
 radius = 95.566734
 
 [node name="Alien" type="Area2D" unique_id=387026917]
-position = Vector2(572, 334)
 scale = Vector2(0.52999663, 0.5476038)
 script = ExtResource("1_ryjbn")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1175185483]
-position = Vector2(0, -1)
+position = Vector2(334.8839, 604.09894)
 scale = Vector2(0.65635854, 0.63794386)
 texture = ExtResource("1_hl1ab")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1679191459]
+position = Vector2(334.88397, 604.0987)
 shape = SubResource("CircleShape2D_5txut")

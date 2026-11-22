@@ -3,8 +3,10 @@ extends CharacterBody2D
 
 const SPEED = 575.0
 const JUMP_VELOCITY = -750.0
-const SPRING_VELOCITY = -1250.0
+const SPRING_VELOCITY = -3500.0
 const SPRING_IMMUNITY_DURATION = 2.0
+
+# MARGEN EXTRA PARA EL TELETRANSPORTE LATERAL
 const WRAP_MARGIN = 30.0
 
 const CAMERA_SPEED = 0.65
@@ -52,6 +54,7 @@ func _ready():
 
 
 func _check_first_game():
+
 	if PlayerData.games_played == 0:
 		PlayerData.unlock_achievement("first_game")
 
@@ -114,13 +117,23 @@ func _physics_process(delta: float) -> void:
 	# ANIMACIÓN
 	update_animation()
 
-	# SCREEN WRAPPING
-	var screen_width = get_viewport_rect().size.x
+	# TELETRANSPORTE LATERAL
+	var viewport_size := get_viewport_rect().size
+	var camera_zoom := camera.zoom
 
-	if global_position.x < -WRAP_MARGIN:
-		global_position.x = screen_width + WRAP_MARGIN
-	elif global_position.x > screen_width + WRAP_MARGIN:
-		global_position.x = -WRAP_MARGIN
+	var visible_world_width := viewport_size.x / camera_zoom.x
+	var half_visible_width := visible_world_width * 0.5
+
+	var screen_center_x := camera.get_screen_center_position().x
+
+	var screen_left := screen_center_x - half_visible_width
+	var screen_right := screen_center_x + half_visible_width
+
+	if global_position.x < screen_left - WRAP_MARGIN:
+		global_position.x = screen_right + WRAP_MARGIN
+
+	elif global_position.x > screen_right + WRAP_MARGIN:
+		global_position.x = screen_left - WRAP_MARGIN
 
 	# CÁMARA
 	if global_position.y < camera.global_position.y - CAMERA_TRIGGER:
@@ -154,18 +167,23 @@ func _physics_process(delta: float) -> void:
 
 	# RÉCORD
 	if current_score > best_score:
+
 		best_score = current_score
 		best_score_label.text = "Récord: " + str(best_score)
 		save_best_score()
 
 	# DETECTAR CAÍDA
-	var screen_bottom = camera.get_screen_center_position().y + 324.0
+	var visible_world_height := viewport_size.y / camera_zoom.y
+	var half_visible_height := visible_world_height * 0.5
+
+	var screen_bottom := camera.get_screen_center_position().y + half_visible_height
 
 	if sprite.global_position.y > screen_bottom + DEATH_MARGIN:
 		show_game_over()
 
 
 func is_immune_from_aliens() -> bool:
+
 	return spring_immunity_timer > 0.0
 
 
