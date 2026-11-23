@@ -5,44 +5,42 @@ resource_name = "bg"
 script/source = "
 extends Node2D
 
-# TEXTURAS
+# ==================================
+# CONFIGURACIÓN GENERAL
+# ==================================
+
 const CLOUD_TEXTURE = preload(\"res://assets/cloud.webp\")
 
-# NUBES
-const CLOUD_AHEAD = 1200.0
-const CLOUDS_START_HEIGHT = 5500.0
-const CLOUD_SPACING_MIN = 750.0
-const CLOUD_SPACING_MAX = 1100.0
-const CLOUD_FADE_START = 9000.0
-const CLOUD_FADE_END = 15000.0
+const CLOUDS_START_HEIGHT = 1200.0
+const CLOUD_AHEAD = 1400.0
+const CLOUD_SPACING_MIN = 450.0
+const CLOUD_SPACING_MAX = 700.0
+const CLOUD_FADE_START = 8500.0
+const CLOUD_FADE_END = 13000.0
 
-# ESTRELLAS
-const STAR_AHEAD = 1500.0
 const STAR_START_HEIGHT = 20000.0
+const STAR_AHEAD = 1500.0
 
-# PLANETAS
-const PLANET_AHEAD = 2500.0
 const PLANET_START_HEIGHT = 30000.0
+const PLANET_AHEAD = 2500.0
 const PLANET_SPACING_MIN = 2800.0
 const PLANET_SPACING_MAX = 4500.0
 
-# OBJETOS ESPACIALES
-const SPACE_OBJECT_AHEAD = 1800.0
 const SPACE_OBJECT_START = 28000.0
+const SPACE_OBJECT_AHEAD = 1800.0
 const SPACE_OBJECT_SPACING_MIN = 450.0
 const SPACE_OBJECT_SPACING_MAX = 800.0
 
-# SUELO
-const FLOOR_TOP_Y = 582.5
+const FOREST_BOTTOM = 1150.0
 
-@onready var main = get_parent()
-
+var main
 var player: CharacterBody2D
+var camera: Camera2D
 var start_y: float
 
 var sky: ColorRect
 
-var mountain_layer: Node2D
+var forest_layer: Node2D
 var cloud_layer: Node2D
 var star_layer: Node2D
 var planet_layer: Node2D
@@ -56,20 +54,16 @@ var next_space_y: float
 
 func _ready():
 
-	# TODO EL FONDO DETRÁS DEL JUEGO
 	z_index = -20
+
+	randomize()
+
+	main = get_parent()
 
 	await get_tree().process_frame
 
-	# BUSCAR AL JUGADOR
 	player = main.get_node_or_null(\"player\") as CharacterBody2D
-
-	if player == null:
-		player = get_tree().current_scene.find_child(
-			\"player\",
-			true,
-			false
-		) as CharacterBody2D
+	camera = main.get_node_or_null(\"Camera2D\") as Camera2D
 
 	if player == null:
 		push_error(\"No se encontró el nodo player.\")
@@ -78,32 +72,18 @@ func _ready():
 
 	start_y = player.global_position.y
 
-	# ELIMINAR EL FONDO ANTIGUO
-	for child in get_children():
-
-		if child.name == \"ColorRect\" or child.name == \"CanvasLayer2\":
-			remove_child(child)
-			child.queue_free()
-
-	# CREAR ELEMENTOS
 	create_sky()
 	create_world_layers()
-	create_mountains()
+	create_forest()
 
-	# NUBES: EMPEZAR LEJOS DEL SUELO
 	next_cloud_y = start_y - CLOUDS_START_HEIGHT
-	generate_clouds_ahead()
-
-	# ESTRELLAS
 	next_star_y = start_y - STAR_START_HEIGHT
-	generate_stars_ahead()
-
-	# PLANETAS
 	next_planet_y = start_y - PLANET_START_HEIGHT
-	generate_planets_ahead()
-
-	# OBJETOS ESPACIALES
 	next_space_y = start_y - SPACE_OBJECT_START
+
+	generate_clouds_ahead()
+	generate_stars_ahead()
+	generate_planets_ahead()
 	generate_space_objects_ahead()
 
 
@@ -125,6 +105,30 @@ func _process(_delta):
 	generate_space_objects_ahead()
 
 	cleanup_old_decorations()
+
+
+# ==================================
+# ANCHO VISIBLE DE LA CÁMARA
+# ==================================
+
+func get_world_bounds() -> Vector2:
+
+	var viewport_width = get_viewport_rect().size.x
+	var zoom_value = 1.0
+
+	if camera != null:
+		zoom_value = camera.zoom.x
+
+	var visible_width = viewport_width / zoom_value
+	var center_x = 576.0
+
+	if camera != null:
+		center_x = camera.get_screen_center_position().x
+
+	return Vector2(
+		center_x - visible_width * 0.5 - 250.0,
+		center_x + visible_width * 0.5 + 250.0
+	)
 
 
 # ==================================
@@ -161,28 +165,21 @@ func get_sky_color(height: float) -> Color:
 	var sky_5 = Color(\"#090F25\")
 
 	if height < 9000.0:
-
-		return sky_1.lerp(
-			sky_2,
-			height / 9000.0
-		)
+		return sky_1.lerp(sky_2, height / 9000.0)
 
 	elif height < 15000.0:
-
 		return sky_2.lerp(
 			sky_3,
 			(height - 9000.0) / 6000.0
 		)
 
 	elif height < 22000.0:
-
 		return sky_3.lerp(
 			sky_4,
 			(height - 15000.0) / 7000.0
 		)
 
 	elif height < 30000.0:
-
 		return sky_4.lerp(
 			sky_5,
 			(height - 22000.0) / 8000.0
@@ -192,35 +189,30 @@ func get_sky_color(height: float) -> Color:
 
 
 # ==================================
-# CAPAS DEL MUNDO
+# CAPAS
 # ==================================
 
 func create_world_layers():
 
-	# MONTAÑAS
-	mountain_layer = Node2D.new()
-	mountain_layer.name = \"Mountains\"
-	mountain_layer.z_index = -1
-	add_child(mountain_layer)
+	forest_layer = Node2D.new()
+	forest_layer.name = \"Forest\"
+	forest_layer.z_index = -2
+	add_child(forest_layer)
 
-	# NUBES
 	cloud_layer = Node2D.new()
 	cloud_layer.name = \"Clouds\"
 	add_child(cloud_layer)
 
-	# ESTRELLAS
 	star_layer = Node2D.new()
 	star_layer.name = \"Stars\"
 	star_layer.z_index = 1
 	add_child(star_layer)
 
-	# PLANETAS
 	planet_layer = Node2D.new()
 	planet_layer.name = \"Planets\"
 	planet_layer.z_index = 2
 	add_child(planet_layer)
 
-	# OBJETOS ESPACIALES
 	space_layer = Node2D.new()
 	space_layer.name = \"SpaceObjects\"
 	space_layer.z_index = 3
@@ -228,172 +220,392 @@ func create_world_layers():
 
 
 # ==================================
-# PAISAJE TERRESTRE
+# BOSQUE
 # ==================================
 
-func create_mountains():
+func create_forest():
 
-	# COLINAS DEL FONDO
-	var far_points = PackedVector2Array([
-		Vector2(-100, 545),
-		Vector2(40, 475),
-		Vector2(190, 500),
-		Vector2(350, 430),
-		Vector2(510, 490),
-		Vector2(680, 445),
-		Vector2(850, 500),
-		Vector2(1030, 435),
-		Vector2(1260, 485)
-	])
+	var bounds = get_world_bounds()
+	var left = bounds.x
+	var right = bounds.y
+	var width = right - left
 
-	add_terrain_layer(
-		\"FarGreenHills\",
-		far_points,
-		Color(\"#739D48\"),
-		Color(\"#557E37\"),
-		Color(\"#B96B2C\"),
-		900.0,
+	# CIELO DECORATIVO DEL HORIZONTE
+	var distant_hill = create_hill(
+		\"FarForest\",
+		left,
+		right,
+		690.0,
+		65.0,
+		Color(\"#91B99B\"),
+		-5
+	)
+
+	forest_layer.add_child(distant_hill)
+
+	# ÁRBOLES LEJANOS
+	var far_tree_colors = [
+		Color(\"#547F69\"),
+		Color(\"#638D70\"),
+		Color(\"#729B7A\"),
+		Color(\"#47745F\")
+	]
+
+	for i in range(30):
+
+		var x = left + width * float(i) / 29.0
+		x += randf_range(-35.0, 35.0)
+
+		var y = randf_range(625.0, 710.0)
+
+		create_tree(
+			x,
+			y,
+			randf_range(0.65, 0.95),
+			far_tree_colors,
+			-4
+		)
+
+	# COLINAS INTERMEDIAS
+	var middle_hill = create_hill(
+		\"MiddleForest\",
+		left,
+		right,
+		790.0,
+		75.0,
+		Color(\"#4E9169\"),
 		-3
 	)
 
-	# COLINAS INTERMEDIAS
-	var middle_points = PackedVector2Array([
-		Vector2(-100, 610),
-		Vector2(30, 555),
-		Vector2(180, 575),
-		Vector2(340, 520),
-		Vector2(500, 585),
-		Vector2(660, 535),
-		Vector2(825, 590),
-		Vector2(990, 525),
-		Vector2(1130, 570),
-		Vector2(1260, 540)
-	])
+	forest_layer.add_child(middle_hill)
 
-	add_terrain_layer(
-		\"MiddleDirtHills\",
-		middle_points,
-		Color(\"#79B52B\"),
-		Color(\"#397C24\"),
-		Color(\"#B96B2C\"),
-		1000.0,
-		-2
-	)
+	# ÁRBOLES MEDIANOS
+	var middle_tree_colors = [
+		Color(\"#347B50\"),
+		Color(\"#438B59\"),
+		Color(\"#579C65\"),
+		Color(\"#286A48\")
+	]
 
-	# COLINAS DELANTERAS
-	var near_points = PackedVector2Array([
-		Vector2(-100, 690),
-		Vector2(40, 625),
-		Vector2(190, 650),
-		Vector2(350, 600),
-		Vector2(520, 655),
-		Vector2(690, 610),
-		Vector2(850, 660),
-		Vector2(1010, 605),
-		Vector2(1160, 640),
-		Vector2(1260, 620)
-	])
+	for i in range(23):
 
-	add_terrain_layer(
-		\"NearGrassDirtHills\",
-		near_points,
-		Color(\"#8BCB28\"),
-		Color(\"#347A22\"),
-		Color(\"#C87532\"),
-		1100.0,
+		var x = randf_range(left, right)
+		var y = randf_range(700.0, 810.0)
+
+		create_tree(
+			x,
+			y,
+			randf_range(0.85, 1.2),
+			middle_tree_colors,
+			-2
+		)
+
+	# COLINA DELANTERA
+	var front_hill = create_hill(
+		\"FrontForest\",
+		left,
+		right,
+		900.0,
+		65.0,
+		Color(\"#367C4B\"),
 		-1
 	)
 
+	forest_layer.add_child(front_hill)
 
-func add_terrain_layer(
-	layer_name: String,
-	ridge_points: PackedVector2Array,
-	grass_color: Color,
-	edge_color: Color,
-	dirt_color: Color,
-	bottom_y: float,
+	# ÁRBOLES DELANTEROS
+	var front_tree_colors = [
+		Color(\"#23633E\"),
+		Color(\"#2E7547\"),
+		Color(\"#39834F\"),
+		Color(\"#1C5938\")
+	]
+
+	for i in range(17):
+
+		var x = randf_range(left, right)
+		var y = randf_range(830.0, 940.0)
+
+		create_tree(
+			x,
+			y,
+			randf_range(1.1, 1.55),
+			front_tree_colors,
+			0
+		)
+
+	# ARBUSTOS Y VEGETACIÓN
+	for i in range(45):
+
+		var x = randf_range(left, right)
+		var y = randf_range(720.0, 1010.0)
+
+		create_bush(
+			x,
+			y,
+			randf_range(0.55, 1.15)
+		)
+
+	# FLORES DECORATIVAS
+	for i in range(45):
+
+		var x = randf_range(left, right)
+		var y = randf_range(850.0, 1080.0)
+
+		create_flower(x, y)
+
+
+func create_hill(
+	hill_name: String,
+	left: float,
+	right: float,
+	base_y: float,
+	amplitude: float,
+	color: Color,
+	layer_z: int
+) -> Node2D:
+
+	var layer = Node2D.new()
+	layer.name = hill_name
+	layer.z_index = layer_z
+
+	var points = PackedVector2Array()
+
+	var segments = 40
+
+	for i in range(segments + 1):
+
+		var t = float(i) / float(segments)
+		var x = lerpf(left, right, t)
+
+		var wave = (
+			sin(t * TAU * 2.0) * 0.45 +
+			sin(t * TAU * 4.0 + 1.5) * 0.25 +
+			sin(t * TAU * 7.0) * 0.15
+		)
+
+		var y = base_y + wave * amplitude
+
+		points.append(Vector2(x, y))
+
+	points.append(Vector2(right, FOREST_BOTTOM))
+	points.append(Vector2(left, FOREST_BOTTOM))
+
+	var hill = Polygon2D.new()
+	hill.name = \"Hill\"
+	hill.polygon = points
+	hill.color = color
+
+	layer.add_child(hill)
+
+	# BRILLO SUAVE EN EL BORDE
+	var highlight = Line2D.new()
+	highlight.name = \"HillHighlight\"
+	highlight.width = 4.0
+	highlight.default_color = color.lightened(0.15)
+
+	var line_points = PackedVector2Array()
+
+	for i in range(segments + 1):
+		line_points.append(points[i])
+
+	highlight.points = line_points
+	layer.add_child(highlight)
+
+	return layer
+
+
+# ==================================
+# ÁRBOLES
+# ==================================
+
+func create_tree(
+	x: float,
+	y: float,
+	tree_scale: float,
+	colors: Array,
 	layer_z: int
 ):
 
-	var layer = Node2D.new()
-	layer.name = layer_name
-	layer.z_index = layer_z
-	mountain_layer.add_child(layer)
+	var tree = Node2D.new()
+	tree.position = Vector2(x, y)
+	tree.scale = Vector2.ONE * tree_scale
+	tree.z_index = layer_z
 
-	# TIERRA
-	var dirt = Polygon2D.new()
-	dirt.name = \"WarmSoil\"
+	# TRONCO
+	var trunk = Polygon2D.new()
 
-	var dirt_points = ridge_points.duplicate()
-	dirt_points.append(Vector2(1260, bottom_y))
-	dirt_points.append(Vector2(-100, bottom_y))
+	trunk.polygon = PackedVector2Array([
+		Vector2(-13, -5),
+		Vector2(13, -5),
+		Vector2(10, 75),
+		Vector2(-10, 75)
+	])
 
-	dirt.polygon = dirt_points
-	dirt.color = dirt_color
+	trunk.color = Color(\"#80563D\")
 
-	layer.add_child(dirt)
+	tree.add_child(trunk)
 
-	# BORDE REDONDEADO DEL CÉSPED
-	var grass_edge = Polygon2D.new()
-	grass_edge.name = \"RoundedGrassEdge\"
+	# SOMBRA DEL TRONCO
+	var trunk_shadow = Polygon2D.new()
 
-	var edge_points = PackedVector2Array()
+	trunk_shadow.polygon = PackedVector2Array([
+		Vector2(3, 0),
+		Vector2(13, -5),
+		Vector2(10, 75),
+		Vector2(2, 75)
+	])
 
-	for point in ridge_points:
-		edge_points.append(point + Vector2(0, 28))
+	trunk_shadow.color = Color(\"#64432F\")
 
-	for i in range(ridge_points.size() - 1, -1, -1):
-		edge_points.append(
-			ridge_points[i] + Vector2(0, 54)
+	tree.add_child(trunk_shadow)
+
+	# COPA REDONDEADA
+	var crown_positions = [
+		Vector2(0, -65),
+		Vector2(-34, -43),
+		Vector2(34, -42),
+		Vector2(-22, -83),
+		Vector2(23, -87),
+		Vector2(0, -105)
+	]
+
+	for i in range(crown_positions.size()):
+
+		var crown = Polygon2D.new()
+		crown.polygon = make_circle(
+			randf_range(30.0, 42.0),
+			32
 		)
 
-	grass_edge.polygon = edge_points
-	grass_edge.color = edge_color
+		crown.position = crown_positions[i]
 
-	layer.add_child(grass_edge)
-
-	# SUPERFICIE VERDE
-	var grass = Polygon2D.new()
-	grass.name = \"BrightGrassTop\"
-
-	var grass_points = ridge_points.duplicate()
-
-	for i in range(ridge_points.size() - 1, -1, -1):
-		grass_points.append(
-			ridge_points[i] + Vector2(0, 30)
+		var color_index = randi_range(
+			0,
+			colors.size() - 1
 		)
 
-	grass.polygon = grass_points
-	grass.color = grass_color
+		crown.color = colors[color_index]
 
-	layer.add_child(grass)
+		tree.add_child(crown)
 
-	# BRILLO SUPERIOR
-	var highlight = Line2D.new()
-	highlight.name = \"GrassHighlight\"
-	highlight.points = ridge_points
-	highlight.width = 5.0
-	highlight.default_color = Color(\"#B6DF55\")
+	# DETALLES DE LUZ
+	for i in range(3):
 
-	layer.add_child(highlight)
+		var light = Polygon2D.new()
 
-	# PEQUEÑOS MECHONES
-	for i in range(1, ridge_points.size() - 1):
+		light.polygon = make_circle(
+			randf_range(7.0, 12.0),
+			24
+		)
 
-		var tuft = Polygon2D.new()
+		light.position = Vector2(
+			randf_range(-28.0, 28.0),
+			randf_range(-95.0, -45.0)
+		)
 
-		tuft.polygon = PackedVector2Array([
-			Vector2(-13, 8),
-			Vector2(-9, -5),
-			Vector2(-2, -10),
-			Vector2(5, -7),
-			Vector2(13, 8)
-		])
+		light.color = colors[0].lightened(0.22)
+		light.color.a = 0.65
 
-		tuft.position = ridge_points[i] + Vector2(0, 23)
-		tuft.color = grass_color.lightened(0.08)
+		tree.add_child(light)
 
-		layer.add_child(tuft)
+	forest_layer.add_child(tree)
+
+
+# ==================================
+# ARBUSTOS
+# ==================================
+
+func create_bush(x: float, y: float, bush_scale: float):
+
+	var bush = Node2D.new()
+	bush.position = Vector2(x, y)
+	bush.scale = Vector2.ONE * bush_scale
+
+	var colors = [
+		Color(\"#34794B\"),
+		Color(\"#438B53\"),
+		Color(\"#579D60\")
+	]
+
+	for i in range(4):
+
+		var leaf = Polygon2D.new()
+
+		leaf.polygon = make_circle(
+			randf_range(17.0, 25.0),
+			24
+		)
+
+		leaf.position = Vector2(
+			(i - 1.5) * 17.0,
+			randf_range(-8.0, 8.0)
+		)
+
+		leaf.color = colors[
+			randi_range(0, colors.size() - 1)
+		]
+
+		bush.add_child(leaf)
+
+	forest_layer.add_child(bush)
+
+
+# ==================================
+# FLORES
+# ==================================
+
+func create_flower(x: float, y: float):
+
+	var flower = Node2D.new()
+	flower.position = Vector2(x, y)
+
+	var stem = Line2D.new()
+	stem.points = PackedVector2Array([
+		Vector2.ZERO,
+		Vector2(0, -12)
+	])
+
+	stem.width = 2.0
+	stem.default_color = Color(\"#376D3E\")
+
+	flower.add_child(stem)
+
+	var flower_colors = [
+		Color(\"#F7D77A\"),
+		Color(\"#F4A6A6\"),
+		Color(\"#E9D8F7\"),
+		Color(\"#FFFFFF\")
+	]
+
+	var petal_color = flower_colors[
+		randi_range(0, flower_colors.size() - 1)
+	]
+
+	for i in range(5):
+
+		var angle = TAU * float(i) / 5.0
+
+		var petal = Polygon2D.new()
+		petal.polygon = make_circle(3.5, 16)
+
+		petal.position = Vector2(
+			cos(angle) * 5.0,
+			-12.0 + sin(angle) * 5.0
+		)
+
+		petal.color = petal_color
+
+		flower.add_child(petal)
+
+	var center = Polygon2D.new()
+	center.polygon = make_circle(2.5, 16)
+	center.position = Vector2(0, -12)
+	center.color = Color(\"#E8B84B\")
+
+	flower.add_child(center)
+
+	forest_layer.add_child(flower)
 
 
 # ==================================
@@ -416,21 +628,19 @@ func create_cloud(cloud_y: float):
 	if alpha <= 0.02:
 		return
 
+	var bounds = get_world_bounds()
+
 	var cloud = Sprite2D.new()
 	cloud.texture = CLOUD_TEXTURE
 
 	cloud.position = Vector2(
-		randf_range(40.0, 1112.0),
+		randf_range(bounds.x, bounds.y),
 		cloud_y
 	)
 
-	var cloud_size = randf_range(0.7, 1.15)
+	var cloud_size = randf_range(0.75, 1.25)
 
-	cloud.scale = Vector2(
-		cloud_size,
-		cloud_size
-	)
-
+	cloud.scale = Vector2.ONE * cloud_size
 	cloud.flip_h = randf() < 0.5
 	cloud.modulate = Color(1, 1, 1, alpha)
 
@@ -443,10 +653,10 @@ func generate_clouds_ahead():
 
 		create_cloud(next_cloud_y)
 
-		if randf() < 0.15:
+		if randf() < 0.30:
 
 			create_cloud(
-				next_cloud_y + randf_range(100.0, 180.0)
+				next_cloud_y + randf_range(100.0, 220.0)
 			)
 
 		next_cloud_y -= randf_range(
@@ -456,8 +666,26 @@ func generate_clouds_ahead():
 
 
 # ==================================
-# ESTRELLAS
+# FORMAS
 # ==================================
+
+func make_circle(
+	radius: float,
+	segments: int = 32
+) -> PackedVector2Array:
+
+	var points = PackedVector2Array()
+
+	for i in range(segments):
+
+		var angle = TAU * float(i) / float(segments)
+
+		points.append(
+			Vector2(cos(angle), sin(angle)) * radius
+		)
+
+	return points
+
 
 func make_star(radius: float) -> PackedVector2Array:
 
@@ -478,7 +706,13 @@ func make_star(radius: float) -> PackedVector2Array:
 	return points
 
 
+# ==================================
+# ESTRELLAS
+# ==================================
+
 func create_star(star_y: float):
+
+	var bounds = get_world_bounds()
 
 	var star = Polygon2D.new()
 	var radius = randf_range(2.0, 4.0)
@@ -493,7 +727,7 @@ func create_star(star_y: float):
 	)
 
 	star.position = Vector2(
-		randf_range(20.0, 1132.0),
+		randf_range(bounds.x, bounds.y),
 		star_y
 	)
 
@@ -517,31 +751,15 @@ func generate_stars_ahead():
 # PLANETAS
 # ==================================
 
-func make_circle(
-	radius: float,
-	segments: int = 32
-) -> PackedVector2Array:
-
-	var points = PackedVector2Array()
-
-	for i in range(segments):
-
-		var angle = TAU * float(i) / float(segments)
-
-		points.append(
-			Vector2(cos(angle), sin(angle)) * radius
-		)
-
-	return points
-
-
 func create_planet(planet_y: float):
+
+	var bounds = get_world_bounds()
 
 	var planet = Node2D.new()
 	planet.name = \"Planet\"
 
 	planet.position = Vector2(
-		randf_range(140.0, 1012.0),
+		randf_range(bounds.x + 150.0, bounds.y - 150.0),
 		planet_y
 	)
 
@@ -560,7 +778,6 @@ func create_planet(planet_y: float):
 		randi_range(0, planet_colors.size() - 1)
 	]
 
-	# ANILLOS
 	if randf() < 0.55:
 
 		var ring = Line2D.new()
@@ -583,7 +800,6 @@ func create_planet(planet_y: float):
 		ring.points = ring_points
 		planet.add_child(ring)
 
-	# BRILLO
 	var halo = Polygon2D.new()
 	halo.polygon = make_circle(radius * 1.12)
 	halo.color = planet_color.lightened(0.35)
@@ -591,14 +807,12 @@ func create_planet(planet_y: float):
 
 	planet.add_child(halo)
 
-	# CUERPO
 	var body = Polygon2D.new()
 	body.polygon = make_circle(radius, 48)
 	body.color = planet_color
 
 	planet.add_child(body)
 
-	# CRÁTERES
 	for i in range(randi_range(2, 4)):
 
 		var crater = Polygon2D.new()
@@ -642,10 +856,12 @@ func generate_planets_ahead():
 
 func create_asteroid(asteroid_y: float):
 
+	var bounds = get_world_bounds()
+
 	var asteroid = Node2D.new()
 
 	asteroid.position = Vector2(
-		randf_range(40.0, 1112.0),
+		randf_range(bounds.x, bounds.y),
 		asteroid_y
 	)
 
@@ -660,10 +876,7 @@ func create_asteroid(asteroid_y: float):
 		var variation = randf_range(0.75, 1.2)
 
 		points.append(
-			Vector2(
-				cos(angle),
-				sin(angle)
-			) * radius * variation
+			Vector2(cos(angle), sin(angle)) * radius * variation
 		)
 
 	var body = Polygon2D.new()
@@ -711,10 +924,12 @@ func add_rectangle(
 
 func create_satellite(satellite_y: float):
 
+	var bounds = get_world_bounds()
+
 	var satellite = Node2D.new()
 
 	satellite.position = Vector2(
-		randf_range(150.0, 1000.0),
+		randf_range(bounds.x + 150.0, bounds.y - 150.0),
 		satellite_y
 	)
 
@@ -760,15 +975,17 @@ func create_satellite(satellite_y: float):
 
 
 # ==================================
-# ESTRELLAS FUGACES
+# COMETAS
 # ==================================
 
 func create_comet(comet_y: float):
 
+	var bounds = get_world_bounds()
+
 	var comet = Node2D.new()
 
 	comet.position = Vector2(
-		randf_range(100.0, 1000.0),
+		randf_range(bounds.x + 100.0, bounds.y - 100.0),
 		comet_y
 	)
 
@@ -795,7 +1012,7 @@ func create_comet(comet_y: float):
 
 
 # ==================================
-# GENERACIÓN DE OBJETOS ESPACIALES
+# GENERACIÓN ESPACIAL
 # ==================================
 
 func generate_space_objects_ahead():
