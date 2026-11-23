@@ -46,6 +46,7 @@ const FIRST_PLATFORM_HORIZONTAL_OFFSET = 200.0
 # ALIENS
 const ALIEN_START_HEIGHT = 20000.0
 const ALIEN_VERTICAL_GAP = 810.0
+const ALIEN_SAFE_HALF_HEIGHT = 85.0
 
 # RESORTES
 const SPRING_CHANCE = 0.12
@@ -59,6 +60,7 @@ var player: CharacterBody2D
 var start_y: float
 var next_platform_y: float
 var next_alien_y: float
+var platform_anchor_y: float
 
 # POSICIONES DEL NIVEL ANTERIOR
 var previous_level_positions: Array[float] = []
@@ -98,6 +100,9 @@ func _ready():
 	recent_positions.append(first_x)
 
 	next_platform_y = FLOOR_TOP_Y - FIRST_PLATFORM_ABOVE_FLOOR
+
+	# GUARDAR LA ALTURA DE REFERENCIA DE LOS NIVELES
+	platform_anchor_y = next_platform_y
 
 	spawn_platform(first_x, TYPE_NORMAL)
 
@@ -157,21 +162,38 @@ func generate_ahead():
 
 
 # =========================================================
+# ALTURA SEGURA PARA LOS ALIENS
+# =========================================================
+
+func get_safe_alien_y(target_y: float) -> float:
+
+	# CALCULAR QUÉ ESPACIO ENTRE PLATAFORMAS
+	# ESTÁ MÁS CERCA DE LA ALTURA DESEADA.
+
+	var level_index = roundi(
+		(platform_anchor_y - target_y) / VERTICAL_GAP - 0.5
+	)
+
+	# CENTRO DEL ESPACIO ENTRE DOS NIVELES.
+	var safe_y = platform_anchor_y - (
+		(level_index + 0.5) * VERTICAL_GAP
+	)
+
+	return safe_y
+
+
+# =========================================================
 # ELEGIR TIPO DE PLATAFORMA
 # =========================================================
 
 func choose_platform_type(height: float) -> int:
 
-	# ESPACIO: SOLAMENTE PLATAFORMAS ROCOSAS.
-	# NO ES UN CAMBIO DE DIFICULTAD, SINO DE AMBIENTACIÓN.
 	if height >= SPACE_START_HEIGHT:
 		return TYPE_ROCK
 
-	# INICIO: SOLO PLATAFORMAS NORMALES.
 	if height < NORMAL_ONLY_HEIGHT:
 		return TYPE_NORMAL
 
-	# TIERRA: MEZCLA CONSTANTE DE PLATAFORMAS.
 	var roll = randf()
 
 	if roll < 0.45:
@@ -222,8 +244,6 @@ func is_position_valid(
 	current_platforms: Array[Dictionary]
 ) -> bool:
 
-	# DEBE SER ALCANZABLE DESDE ALGUNA
-	# PLATAFORMA DEL NIVEL ANTERIOR.
 	var reachable = false
 
 	for previous_x in previous_positions:
@@ -237,8 +257,6 @@ func is_position_valid(
 	if not reachable:
 		return false
 
-	# EVITAR QUE SE ENCIME CON OTRAS
-	# PLATAFORMAS DEL MISMO NIVEL.
 	for existing in current_platforms:
 
 		var existing_x: float = existing["x"]
@@ -280,7 +298,6 @@ func spawn_platform(center_x: float, platform_type: int):
 			new_platform = ROCK_PLATFORM_SCENE.instantiate()
 			can_have_spring = true
 
-	# POSICIONAR LA PLATAFORMA
 	new_platform.position = Vector2(
 		center_x - PLATFORM_CENTER_X,
 		next_platform_y - PLATFORM_TOP_OFFSET_Y
@@ -288,7 +305,6 @@ func spawn_platform(center_x: float, platform_type: int):
 
 	main.add_child.call_deferred(new_platform)
 
-	# GENERAR RESORTE
 	if can_have_spring and randf() < SPRING_CHANCE:
 
 		var spring = SPRING_SCENE.instantiate()
@@ -316,8 +332,6 @@ func create_platform_level():
 	var current_level_platforms: Array[Dictionary] = []
 	var current_level_positions: Array[float] = []
 
-	# NORMALMENTE 2 PLATAFORMAS.
-	# OCASIONALMENTE 3.
 	var platform_count = 2
 
 	if randf() < THREE_PLATFORM_CHANCE:
@@ -325,7 +339,6 @@ func create_platform_level():
 
 	var height = start_y - next_platform_y
 
-	# GENERAR LAS PLATAFORMAS DEL NIVEL.
 	for platform_index in range(platform_count):
 
 		var platform_type = choose_platform_type(height)
@@ -344,8 +357,6 @@ func create_platform_level():
 			):
 				continue
 
-			# EVITAR REPETIR DEMASIADO LAS MISMAS
-			# POSICIONES HORIZONTALES.
 			var repetitive = false
 
 			for recent_x in recent_positions:
@@ -359,7 +370,6 @@ func create_platform_level():
 
 			possible_positions.append(candidate)
 
-		# ELEGIR UNA POSICIÓN VÁLIDA.
 		if possible_positions.size() > 0:
 
 			var chosen_x = possible_positions[
@@ -381,8 +391,6 @@ func create_platform_level():
 			if recent_positions.size() > 8:
 				recent_positions.pop_front()
 
-	# SI NO SE GENERÓ NINGUNA PLATAFORMA,
-	# INTENTAR CREAR UNA NORMAL DE RESPALDO.
 	if current_level_positions.is_empty():
 
 		for attempt in range(GENERATION_ATTEMPTS):
@@ -404,8 +412,6 @@ func create_platform_level():
 
 				break
 
-	# GUARDAR LAS POSICIONES DEL NIVEL ACTUAL
-	# PARA CONECTARLAS CON EL SIGUIENTE.
 	if not current_level_positions.is_empty():
 		previous_level_positions = current_level_positions.duplicate()
 
@@ -426,11 +432,14 @@ func create_alien():
 
 	var alien_x = randf_range(min_x, max_x)
 
+	# AJUSTAR LA ALTURA AL CENTRO DE UN ESPACIO SEGURO.
+	var alien_y = get_safe_alien_y(next_alien_y)
+
 	var alien = ALIEN_SCENE.instantiate()
 
 	alien.global_position = Vector2(
 		alien_x,
-		next_alien_y
+		alien_y
 	)
 
 	main.add_child.call_deferred(alien)

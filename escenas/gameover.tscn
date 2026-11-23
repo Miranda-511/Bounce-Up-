@@ -107,21 +107,27 @@ stretch_mode = 0
 script = ExtResource("6_j5brv")
 
 [node name="ScoreLabel" type="Label" parent="UIContainer" unique_id=1763219133]
+custom_minimum_size = Vector2(550, 80)
 layout_mode = 1
-anchors_preset = -1
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-offset_left = -251.0
-offset_top = 287.21994
-offset_right = -251.0
-offset_bottom = 364.0
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -40.0
+offset_right = 270.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Puntuación: 0"
 label_settings = SubResource("LabelSettings_ewdes")
 horizontal_alignment = 1
 vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
+autowrap_mode = 2
 
 [node name="BestScoreLabel" type="Label" parent="UIContainer" unique_id=1675372408]
+custom_minimum_size = Vector2(500, 80)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -134,6 +140,7 @@ text = "Récord: 0"
 label_settings = SubResource("LabelSettings_ewdes")
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="TitleLabel" type="Label" parent="UIContainer" unique_id=1319267948]
