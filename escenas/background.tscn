@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://bdaevce65k24h"]
 
+[ext_resource type="Texture2D" uid="uid://cciojeixkgukp" path="res://assets/forest.png" id="1_cgat3"]
+
 [sub_resource type="GDScript" id="GDScript_esbpa"]
 resource_name = "bg"
 script/source = "
@@ -1065,3 +1067,8 @@ func cleanup_old_decorations():
 
 [node name="background" type="Node2D" unique_id=33009793]
 script = SubResource("GDScript_esbpa")
+
+[node name="Forest" type="Sprite2D" parent="." unique_id=837879469]
+position = Vector2(576, 450)
+scale = Vector2(1.45, 1)
+texture = ExtResource("1_cgat3")

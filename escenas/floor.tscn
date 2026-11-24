@@ -3,13 +3,13 @@
 [ext_resource type="Texture2D" uid="uid://dx7jptfs76imd" path="res://assets/floor.png" id="1_qm5f7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eaw6l"]
-size = Vector2(1900, 95)
+size = Vector2(1700, 95)
 
 [node name="floor" type="Node2D" unique_id=1799524660]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=974689065]
-position = Vector2(593, 756.99994)
-scale = Vector2(1.8, 1)
+position = Vector2(573.05, 756.99994)
+scale = Vector2(1.5177184, 1)
 texture = ExtResource("1_qm5f7")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1078611672]
