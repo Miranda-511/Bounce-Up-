@@ -26,7 +26,7 @@ outline_color = Color(1, 1, 0, 1)
 [node name="floor" parent="." unique_id=1799524660 instance=ExtResource("3_dkga6")]
 
 [node name="player" parent="." unique_id=847637617 instance=ExtResource("1_jumxm")]
-position = Vector2(-19, -74)
+position = Vector2(-183, 55)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=846533705]
 position = Vector2(576, 333)
